@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: asmanager
+    password: insecure
+    url: jdbc:postgresql://localhost:5432/asmanager
+    platform: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    show-sql: true
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
