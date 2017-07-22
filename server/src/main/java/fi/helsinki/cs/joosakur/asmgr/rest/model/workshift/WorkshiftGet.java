@@ -1,9 +1,10 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.model.workshift;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,13 +18,26 @@ public class WorkshiftGet {
     private UUID id = null;
 
     @JsonProperty("start")
-    private LocalDate start = null;
+    private LocalDateTime start = null;
 
     @JsonProperty("end")
-    private LocalDate end = null;
+    private LocalDateTime end = null;
 
-    @JsonProperty("assistant")
-    private WorkshiftsAssistant assistant = null;
+    @JsonProperty("assistantId")
+    private UUID assistantId = null;
+
+    @JsonProperty("sick")
+    private Boolean sick = null;
+
+
+    public WorkshiftGet fromEntity(WorkShift workShift) {
+        this.id = workShift.getId();
+        this.start = workShift.getStarts();
+        this.end = workShift.getEnds();
+        this.assistantId = workShift.getAssistant().getId();
+        this.sick = workShift.isSick();
+        return this;
+    }
 
     public WorkshiftGet id(UUID id) {
         this.id = id;
@@ -44,7 +58,7 @@ public class WorkshiftGet {
         this.id = id;
     }
 
-    public WorkshiftGet start(LocalDate start) {
+    public WorkshiftGet start(LocalDateTime start) {
         this.start = start;
         return this;
     }
@@ -55,15 +69,15 @@ public class WorkshiftGet {
      * @return start
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public WorkshiftGet end(LocalDate end) {
+    public WorkshiftGet end(LocalDateTime end) {
         this.end = end;
         return this;
     }
@@ -74,16 +88,16 @@ public class WorkshiftGet {
      * @return end
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
-    public WorkshiftGet assistant(WorkshiftsAssistant assistant) {
-        this.assistant = assistant;
+    public WorkshiftGet assistantId(UUID assistantId) {
+        this.assistantId = assistantId;
         return this;
     }
 
@@ -93,13 +107,28 @@ public class WorkshiftGet {
      * @return assistant
      **/
     @ApiModelProperty(value = "")
-    public WorkshiftsAssistant getAssistant() {
-        return assistant;
+    public UUID getAssistantId() {
+        return assistantId;
     }
 
-    public void setAssistant(WorkshiftsAssistant assistant) {
-        this.assistant = assistant;
+    public void setAssistant(UUID assistantId) {
+        this.assistantId = assistantId;
     }
+
+    /**
+     * Get sick
+     *
+     * @return sick
+     **/
+    @ApiModelProperty(value = "")
+    public Boolean getSick() {
+        return sick;
+    }
+
+    public void setSick(Boolean sick) {
+        this.sick = sick;
+    }
+
 
 
     @Override
@@ -114,12 +143,13 @@ public class WorkshiftGet {
         return Objects.equals(this.id, workshiftGet.id) &&
                 Objects.equals(this.start, workshiftGet.start) &&
                 Objects.equals(this.end, workshiftGet.end) &&
-                Objects.equals(this.assistant, workshiftGet.assistant);
+                Objects.equals(this.assistantId, workshiftGet.assistantId) &&
+                Objects.equals(this.sick, workshiftGet.sick);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, assistant);
+        return Objects.hash(id, start, end, assistantId, sick);
     }
 
     @Override
@@ -130,7 +160,8 @@ public class WorkshiftGet {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    start: ").append(toIndentedString(start)).append("\n");
         sb.append("    end: ").append(toIndentedString(end)).append("\n");
-        sb.append("    assistant: ").append(toIndentedString(assistant)).append("\n");
+        sb.append("    assistant: ").append(toIndentedString(assistantId)).append("\n");
+        sb.append("    sick: ").append(toIndentedString(sick)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -145,5 +176,6 @@ public class WorkshiftGet {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
 }
 

@@ -1,6 +1,7 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerPost;
@@ -26,6 +27,12 @@ public class EmployersController implements EmployersApi {
         this.employerService = employerService;
     }
 
+    private Employer getAuthenticatedEmployer() throws NotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        return employerService.findByEmail(email);
+    }
+
     @Override
     public ResponseEntity<EmployerGet> createEmployer(@Valid @RequestBody EmployerPost employerModel) {
         Employer employer = new Employer(
@@ -43,20 +50,30 @@ public class EmployersController implements EmployersApi {
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     public ResponseEntity<EmployerGet> getEmployerSelf() throws NotFoundException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        Employer employer = employerService.findByEmail(email);
+        Employer employer = getAuthenticatedEmployer();
         EmployerGet response = new EmployerGet().fromEntity(employer);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> changePassword(PasswordChange passwordData) {
-        return null;
+    @PreAuthorize("hasRole('EMPLOYER')")
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody PasswordChange passwordData) throws NotFoundException, AuthorizationException {
+        Employer employer = getAuthenticatedEmployer();
+        employerService.changePassword(employer.getId(), passwordData.getOldPassword(), passwordData.getNewPassword());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
-    public ResponseEntity<EmployerGet> updateEmployer(EmployerPut employerModel) {
-        return null;
+    @PreAuthorize("hasRole('EMPLOYER')")
+    public ResponseEntity<EmployerGet> updateEmployer(@Valid @RequestBody EmployerPut employerModel) throws NotFoundException {
+        Employer employer = getAuthenticatedEmployer();
+
+        employer.setFirstName(employerModel.getFirstName());
+        employer.setLastName(employerModel.getLastName());
+        employer.setBirthday(employerModel.getBirthday());
+
+        employer = employerService.update(employer);
+        EmployerGet response = new EmployerGet().fromEntity(employer);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

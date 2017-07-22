@@ -4,7 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,12 +35,26 @@ public class WorkShift {
     private Assistant assistant;
 
     @NotNull
-    @Column(name = "starts")
-    private Date starts;
+    @Column(name = "starts", columnDefinition = "TIMESTAMP")
+    private LocalDateTime starts;
 
     @NotNull
-    @Column(name = "ends")
-    private Date ends;
+    @Column(name = "ends", columnDefinition = "TIMESTAMP")
+    private LocalDateTime ends;
+
+    @NotNull
+    @Column(name = "sick")
+    private boolean sick = false;
+
+    public WorkShift() {
+    }
+
+    public WorkShift(Employer employer, Assistant assistant, LocalDateTime starts, LocalDateTime ends) {
+        this.employer = employer;
+        this.assistant = assistant;
+        this.starts = starts;
+        this.ends = ends;
+    }
 
     public UUID getId() {
         return id;
@@ -62,19 +76,27 @@ public class WorkShift {
         this.assistant = assistant;
     }
 
-    public Date getStarts() {
+    public LocalDateTime getStarts() {
         return starts;
     }
 
-    public void setStarts(Date starts) {
+    public void setStarts(LocalDateTime starts) {
         this.starts = starts;
     }
 
-    public Date getEnds() {
+    public LocalDateTime getEnds() {
         return ends;
     }
 
-    public void setEnds(Date ends) {
+    public void setEnds(LocalDateTime ends) {
         this.ends = ends;
+    }
+
+    public boolean isSick() {
+        return sick;
+    }
+
+    public void setSick(boolean sick) {
+        this.sick = sick;
     }
 }

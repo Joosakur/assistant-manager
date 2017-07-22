@@ -2,8 +2,8 @@ package fi.helsinki.cs.joosakur.asmgr.rest.model.workshift;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,10 +17,10 @@ public class WorkshiftPost {
     private UUID assistantId = null;
 
     @JsonProperty("start")
-    private LocalDate start = null;
+    private LocalDateTime start = null;
 
     @JsonProperty("end")
-    private LocalDate end = null;
+    private LocalDateTime end = null;
 
     public WorkshiftPost assistantId(UUID assistantId) {
         this.assistantId = assistantId;
@@ -41,7 +41,7 @@ public class WorkshiftPost {
         this.assistantId = assistantId;
     }
 
-    public WorkshiftPost start(LocalDate start) {
+    public WorkshiftPost start(LocalDateTime start) {
         this.start = start;
         return this;
     }
@@ -52,15 +52,15 @@ public class WorkshiftPost {
      * @return start
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public WorkshiftPost end(LocalDate end) {
+    public WorkshiftPost end(LocalDateTime end) {
         this.end = end;
         return this;
     }
@@ -71,11 +71,11 @@ public class WorkshiftPost {
      * @return end
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 

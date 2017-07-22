@@ -1,9 +1,10 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.model.assistant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.LocalDate;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,8 +17,8 @@ public class AssistantGet {
     @JsonProperty("id")
     private UUID id = null;
 
-    @JsonProperty("emploerId")
-    private UUID emploerId = null;
+    @JsonProperty("employerId")
+    private UUID employerId = null;
 
     @JsonProperty("email")
     private String email = null;
@@ -32,7 +33,7 @@ public class AssistantGet {
     private String nickName = null;
 
     @JsonProperty("birthday")
-    private LocalDate birthday = null;
+    private Date birthday = null;
 
     @JsonProperty("active")
     private Boolean active = null;
@@ -44,10 +45,26 @@ public class AssistantGet {
     private String textColor = null;
 
     @JsonProperty("exportedUntil")
-    private LocalDate exportedUntil = null;
+    private Date exportedUntil = null;
 
     public AssistantGet id(UUID id) {
         this.id = id;
+        return this;
+    }
+
+    public AssistantGet fromEntity(Assistant assistant){
+        this.id = assistant.getId();
+        this.employerId = assistant.getEmployer().getId();
+        this.email = assistant.getEmail();
+        this.firstName = assistant.getFirstName();
+        this.lastName = assistant.getLastName();
+        this.nickName = assistant.getNickname();
+        this.birthday = assistant.getBirthday();
+        this.active = assistant.isActive();
+        this.backgroundColor = String.format("#%06x", assistant.getBackgroundColor().getRGB() & 0x00FFFFFF);
+        this.textColor = String.format("#%06x", assistant.getTextColor().getRGB() & 0x00FFFFFF);
+        this.exportedUntil = null;
+
         return this;
     }
 
@@ -66,22 +83,22 @@ public class AssistantGet {
     }
 
     public AssistantGet emploerId(UUID emploerId) {
-        this.emploerId = emploerId;
+        this.employerId = emploerId;
         return this;
     }
 
     /**
-     * Get emploerId
+     * Get employerId
      *
-     * @return emploerId
+     * @return employerId
      **/
     @ApiModelProperty(value = "")
-    public UUID getEmploerId() {
-        return emploerId;
+    public UUID getEmployerId() {
+        return employerId;
     }
 
-    public void setEmploerId(UUID emploerId) {
-        this.emploerId = emploerId;
+    public void setEmployerId(UUID employerId) {
+        this.employerId = employerId;
     }
 
     public AssistantGet email(String email) {
@@ -160,7 +177,7 @@ public class AssistantGet {
         this.nickName = nickName;
     }
 
-    public AssistantGet birthday(LocalDate birthday) {
+    public AssistantGet birthday(Date birthday) {
         this.birthday = birthday;
         return this;
     }
@@ -171,11 +188,11 @@ public class AssistantGet {
      * @return birthday
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -236,7 +253,7 @@ public class AssistantGet {
         this.textColor = textColor;
     }
 
-    public AssistantGet exportedUntil(LocalDate exportedUntil) {
+    public AssistantGet exportedUntil(Date exportedUntil) {
         this.exportedUntil = exportedUntil;
         return this;
     }
@@ -247,11 +264,11 @@ public class AssistantGet {
      * @return exportedUntil
      **/
     @ApiModelProperty(value = "")
-    public LocalDate getExportedUntil() {
+    public Date getExportedUntil() {
         return exportedUntil;
     }
 
-    public void setExportedUntil(LocalDate exportedUntil) {
+    public void setExportedUntil(Date exportedUntil) {
         this.exportedUntil = exportedUntil;
     }
 
@@ -266,7 +283,7 @@ public class AssistantGet {
         }
         AssistantGet assistantGet = (AssistantGet) o;
         return Objects.equals(this.id, assistantGet.id) &&
-                Objects.equals(this.emploerId, assistantGet.emploerId) &&
+                Objects.equals(this.employerId, assistantGet.employerId) &&
                 Objects.equals(this.email, assistantGet.email) &&
                 Objects.equals(this.firstName, assistantGet.firstName) &&
                 Objects.equals(this.lastName, assistantGet.lastName) &&
@@ -280,7 +297,7 @@ public class AssistantGet {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, emploerId, email, firstName, lastName, nickName, birthday, active, backgroundColor, textColor, exportedUntil);
+        return Objects.hash(id, employerId, email, firstName, lastName, nickName, birthday, active, backgroundColor, textColor, exportedUntil);
     }
 
     @Override
@@ -289,7 +306,7 @@ public class AssistantGet {
         sb.append("class AssistantGet {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    emploerId: ").append(toIndentedString(emploerId)).append("\n");
+        sb.append("    employerId: ").append(toIndentedString(employerId)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");
         sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
         sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");

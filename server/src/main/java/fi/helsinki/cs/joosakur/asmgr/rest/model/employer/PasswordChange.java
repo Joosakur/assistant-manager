@@ -19,6 +19,9 @@ public class PasswordChange {
     @JsonProperty("newPassword")
     private String newPassword = null;
 
+    @JsonProperty("confirmPassword")
+    private String confirmPassword = null;
+
     public PasswordChange oldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
         return this;
@@ -60,6 +63,25 @@ public class PasswordChange {
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
+
+
+    /**
+     * Get confirmPassword
+     *
+     * @return confirmPassword
+     **/
+    @ApiModelProperty(required = true, value = "")
+    @NotNull
+    @Size(min = 8, max = 30)
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+
 
 
     @Override

@@ -1,6 +1,7 @@
 package fi.helsinki.cs.joosakur.asmgr.service;
 
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.repository.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
+    @Transactional
     public Employer update(Employer employer) throws NotFoundException {
         if(employer.getId() == null)
             throw new IllegalArgumentException("Must give id on update.");
@@ -40,6 +42,18 @@ public class EmployerServiceImpl implements EmployerService {
         employer.setPassword(old.getPassword());
         return repository.save(employer);
     }
+
+    @Override
+    @Transactional
+    public Employer changePassword(UUID id, String oldPassword, String newPassword) throws NotFoundException, AuthorizationException {
+        Employer employer = find(id);
+        if(!passwordEncoder.matches(employer.getPassword(), oldPassword))
+            throw new AuthorizationException("Old password did not match");
+        employer.setPassword(passwordEncoder.encode(newPassword));
+        return repository.save(employer);
+    }
+
+
 
     @Override
     public Employer find(UUID id) throws NotFoundException {
@@ -60,6 +74,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) throws NotFoundException {
         repository.delete(find(id));
     }

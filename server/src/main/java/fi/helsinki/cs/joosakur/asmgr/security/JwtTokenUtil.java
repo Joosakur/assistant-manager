@@ -92,6 +92,7 @@ public class JwtTokenUtil implements Serializable {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
+            //todo: logging, especially if SignatureException
             claims = null;
         }
         return claims;

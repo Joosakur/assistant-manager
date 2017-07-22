@@ -1,5 +1,6 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerPost;
@@ -8,6 +9,7 @@ import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.PasswordChange;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.error.ErrorResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,7 @@ public interface EmployersApi {
             @ApiResponse(code = 201, message = "Employer created.", response = EmployerGet.class),
             @ApiResponse(code = 400, message = "Invalid data was sent on the request.", response = ErrorResponse.class)
     })
+    @CrossOrigin
     @RequestMapping(value = "/employers",
             produces = {"application/json"},
             consumes = {"application/json"},
@@ -51,7 +54,7 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<Void> changePassword(@ApiParam(required = true) @RequestBody PasswordChange passwordData);
+    ResponseEntity<Void> changePassword(@ApiParam(required = true) @RequestBody PasswordChange passwordData) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Update employer", notes = "This endpoint is for updating the currently logged in employer. All data except password needs to be passed and will replace the existing data. ",
@@ -65,6 +68,6 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<EmployerGet> updateEmployer(@ApiParam(required = true) @RequestBody EmployerPut employerModel);
+    ResponseEntity<EmployerGet> updateEmployer(@ApiParam(required = true) @RequestBody EmployerPut employerModel) throws NotFoundException;
 
 }

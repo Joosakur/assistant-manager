@@ -1,13 +1,11 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.helsinki.cs.joosakur.asmgr.validation.patterns.Patterns;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -16,9 +14,6 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-11T14:35:13.497Z")
 
 public class EmployerPut {
-    @JsonProperty("email")
-    private String email = null;
-
     @JsonProperty("firstName")
     private String firstName = null;
 
@@ -26,29 +21,7 @@ public class EmployerPut {
     private String lastName = null;
 
     @JsonProperty("birthday")
-    private LocalDate birthday = null;
-
-    public EmployerPut email(String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return email
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 3, max = 60)
-    @Pattern(regexp = Patterns.EMAIL)
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    private Date birthday = null;
 
     public EmployerPut firstName(String firstName) {
         this.firstName = firstName;
@@ -92,7 +65,7 @@ public class EmployerPut {
         this.lastName = lastName;
     }
 
-    public EmployerPut birthday(LocalDate birthday) {
+    public EmployerPut birthday(Date birthday) {
         this.birthday = birthday;
         return this;
     }
@@ -104,11 +77,11 @@ public class EmployerPut {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -122,15 +95,14 @@ public class EmployerPut {
             return false;
         }
         EmployerPut employerPut = (EmployerPut) o;
-        return Objects.equals(this.email, employerPut.email) &&
-                Objects.equals(this.firstName, employerPut.firstName) &&
+        return Objects.equals(this.firstName, employerPut.firstName) &&
                 Objects.equals(this.lastName, employerPut.lastName) &&
                 Objects.equals(this.birthday, employerPut.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, firstName, lastName, birthday);
+        return Objects.hash(firstName, lastName, birthday);
     }
 
     @Override
@@ -138,7 +110,6 @@ public class EmployerPut {
         StringBuilder sb = new StringBuilder();
         sb.append("class EmployerPut {\n");
 
-        sb.append("    email: ").append(toIndentedString(email)).append("\n");
         sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
         sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
         sb.append("    birthday: ").append(toIndentedString(birthday)).append("\n");

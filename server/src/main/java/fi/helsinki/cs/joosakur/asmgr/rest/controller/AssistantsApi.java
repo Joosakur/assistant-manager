@@ -1,5 +1,6 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
+import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPost;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPut;
@@ -26,7 +27,7 @@ public interface AssistantsApi {
     @RequestMapping(value = "/assistants",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<AssistantGet>> listMyAssistants();
+    ResponseEntity<List<AssistantGet>> listMyAssistants() throws NotFoundException;
 
 
     @ApiOperation(value = "Delete assistant", notes = "This endpoint is for deleting an assistant and all related data. Needs to be logged in as an employer of that assistant.",
