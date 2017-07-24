@@ -38,11 +38,6 @@ public class AssistantPost {
     @JsonProperty("textColor")
     private String textColor = null;
 
-    public AssistantPost email(String email) {
-        this.email = email;
-        return this;
-    }
-
     /**
      * Get email
      *
@@ -59,10 +54,6 @@ public class AssistantPost {
         this.email = email;
     }
 
-    public AssistantPost firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
 
     /**
      * Get firstName
@@ -78,11 +69,6 @@ public class AssistantPost {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public AssistantPost lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
     }
 
     /**
@@ -101,11 +87,6 @@ public class AssistantPost {
         this.lastName = lastName;
     }
 
-    public AssistantPost nickName(String nickName) {
-        this.nickName = nickName;
-        return this;
-    }
-
     /**
      * Get nickName
      *
@@ -119,11 +100,6 @@ public class AssistantPost {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public AssistantPost birthday(LocalDate birthday) {
-        this.birthday = birthday;
-        return this;
     }
 
     /**
@@ -141,11 +117,6 @@ public class AssistantPost {
         this.birthday = birthday;
     }
 
-    public AssistantPost active(Boolean active) {
-        this.active = active;
-        return this;
-    }
-
     /**
      * Get active
      *
@@ -159,11 +130,6 @@ public class AssistantPost {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public AssistantPost backgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-        return this;
     }
 
     /**
@@ -180,10 +146,6 @@ public class AssistantPost {
         this.backgroundColor = backgroundColor;
     }
 
-    public AssistantPost textColor(String textColor) {
-        this.textColor = textColor;
-        return this;
-    }
 
     /**
      * Get textColor

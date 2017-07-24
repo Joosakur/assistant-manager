@@ -22,10 +22,6 @@ public class PasswordChange {
     @JsonProperty("confirmPassword")
     private String confirmPassword = null;
 
-    public PasswordChange oldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-        return this;
-    }
 
     /**
      * Get oldPassword
@@ -41,11 +37,6 @@ public class PasswordChange {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
-    }
-
-    public PasswordChange newPassword(String newPassword) {
-        this.newPassword = newPassword;
-        return this;
     }
 
     /**

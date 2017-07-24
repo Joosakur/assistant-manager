@@ -11,17 +11,22 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.Duration;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class HourListBuilder {
 
     private final String templateFilePath = "hour-list-template.ods";
-    private final SimpleDateFormat socialFormat = new SimpleDateFormat("ddMMyy-");
+    private final DateTimeFormatter socialNumberFormatter = DateTimeFormatter.ofPattern("ddMMyy-");
 
     private final WorkShiftService workShiftService;
 
@@ -35,53 +40,11 @@ public class HourListBuilder {
         HourList hourList = new HourList(getTemplateSheet());
         hourList.setEmployerName(employer.getFirstName()+" "+employer.getLastName());
         hourList.setAssistantName(assistant.getFirstName()+" "+assistant.getLastName());
-        hourList.setAssistantSocialNumberStart(socialFormat.format(assistant.getBirthday()));
-
-        Map<RowGroup, List<TimeSpan>> workMap = new HashMap<>(2*workShifts.size());
-        for (WorkShift workShift : workShifts) {
-            if(workShift.getEnds().isBefore(workShift.getStarts()))
-                throw new IllegalArgumentException("Can't have work shift going backwards.. id="+workShift.getId());
-            if(Duration.ofDays(20).minus(Duration.between(workShift.getStarts(), workShift.getEnds())).isNegative())
-                throw new IllegalArgumentException("Too long work shift.. id="+workShift.getId());
-
-            addSpans(workShift.getStarts(), workShift.getEnds(), workMap, workShift.isSick());
-        }
-
-        List<HourListRow> rows = new ArrayList<>();
-        for (RowGroup group : workMap.keySet()) {
-            List<TimeSpan> workTimes = workMap.get(group);
-            workTimes.sort(Comparator.comparing(TimeSpan::getStartTime));
-            if(group.sick) {
-                rows.add(new SickDay(group.date, workTimes));
-            }
-            else
-                rows.add(new WorkDay(group.date, workTimes));
-        }
-        rows.sort(Comparator.comparing(HourListRow::getDate));
-        rows = rows.stream()
-                .filter(row -> !row.getDate().isBefore(startDate) && !row.getDate().isAfter(endDate))
-                .collect(Collectors.toList());
-
-        hourList.setHourListRows(rows);
+        hourList.setAssistantSocialNumberStart(assistant.getBirthday().format(socialNumberFormatter));
+        hourList.setHourListRows(calculateHourListRows(workShifts));
         return hourList;
     }
 
-    private void addSpans(LocalDateTime start, LocalDateTime end, Map<RowGroup, List<TimeSpan>> workMap, boolean sick) {
-        RowGroup group = new RowGroup(start.toLocalDate(), sick);
-        List<TimeSpan> spans = workMap.get(group);
-        if(spans == null)
-            spans = new ArrayList<>();
-        if(start.toLocalDate().equals(end.toLocalDate())) {
-            spans.add(new TimeSpan(new Time(start.toLocalTime()), new Time(end.toLocalTime())));
-            workMap.put(group, spans);
-        }
-        else {
-            spans.add(new TimeSpan(new Time(start.toLocalTime()), new Time(24,0)));
-            workMap.put(group, spans);
-            LocalDateTime nextStart = start.plusDays(1).withHour(0).withMinute(0).withSecond(0);
-            addSpans(nextStart, end, workMap, sick);
-        }
-    }
 
     private File getFileFromResources(String fileName) throws IOException {
         //Get file from resources folder
@@ -97,13 +60,87 @@ public class HourListBuilder {
     }
 
 
-    private class RowGroup {
-        LocalDate date;
-        private boolean sick;
+    private List<HourListRow> calculateHourListRows(List<WorkShift> workShifts) {
+        return workShifts.stream()
+                    .flatMap(splitWorkShiftsIntoSpans) // split work shifts into spans contained inside some date
+                    .collect( // get the time spans grouped by date+isSick
+                            Collectors.groupingBy(HourListSpan::getGroup,
+                                    Collectors.mapping(HourListSpan::getTimeSpan, Collectors.toList()))
+                    )
+                    .entrySet().stream().map(entry -> { //map the entries into instances of HourListRow
+                        HourListRowGroup group = entry.getKey();
+                        List<TimeSpan> timeSpans = entry.getValue();
+                        return HourListRowFactory.build(group.getDate(), timeSpans, true, group.isSick());
+                    })
+                    .sorted(Comparator.comparing(HourListRow::getDate))
+                    .collect(Collectors.toList());
+    }
 
-        public RowGroup(LocalDate date, boolean sick) {
+
+    private Function<WorkShift, Stream<HourListSpan>> splitWorkShiftsIntoSpans = workShift -> {
+        LocalDateTime start = workShift.getStarts().truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime end = workShift.getEnds().truncatedTo(ChronoUnit.MINUTES);
+        boolean sick = workShift.isSick();
+        List<HourListSpan> spans = new ArrayList<>();
+
+        //while the start and end are on different days we need to split at midnight
+        while (!start.toLocalDate().equals(end.toLocalDate())) {
+            Time spanStart = new Time(start);
+            Time spanEnd = new Time(24);
+            spans.add(new HourListSpan(start.toLocalDate(), sick, new TimeSpan(spanStart, spanEnd)));
+            start = start.plusDays(1).withHour(0).withMinute(0);
+        }
+        Time spanStart = new Time(start);
+        Time spanEnd = new Time(end);
+        spans.add(new HourListSpan(start.toLocalDate(), sick, new TimeSpan(spanStart, spanEnd)));
+        return spans.stream();
+    };
+
+
+
+    private class HourListSpan {
+        private final HourListRowGroup group;
+        private final TimeSpan timeSpan;
+
+        private HourListSpan(LocalDate date, boolean sick, TimeSpan timeSpan) {
+            this.group = new HourListRowGroup(date, sick);
+            this.timeSpan = timeSpan;
+        }
+
+
+        public HourListRowGroup getGroup() {
+            return group;
+        }
+
+        public LocalDate getDate() {
+            return group.getDate();
+        }
+
+        public boolean isSick() {
+            return group.isSick();
+        }
+
+        public TimeSpan getTimeSpan() {
+            return timeSpan;
+        }
+    }
+
+
+    private class HourListRowGroup {
+        private final LocalDate date;
+        private final boolean sick;
+
+        private HourListRowGroup(LocalDate date, boolean sick) {
             this.date = date;
             this.sick = sick;
+        }
+
+        public LocalDate getDate() {
+            return date;
+        }
+
+        public boolean isSick() {
+            return sick;
         }
 
         @Override
@@ -111,10 +148,10 @@ public class HourListBuilder {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RowGroup group = (RowGroup) o;
+            HourListRowGroup that = (HourListRowGroup) o;
 
-            if (sick != group.sick) return false;
-            return date.equals(group.date);
+            if (sick != that.sick) return false;
+            return date.equals(that.date);
         }
 
         @Override

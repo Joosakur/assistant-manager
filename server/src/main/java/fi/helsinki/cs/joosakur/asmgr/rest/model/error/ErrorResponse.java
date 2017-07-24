@@ -14,7 +14,6 @@ public class ErrorResponse {
     @JsonProperty("message")
     private String message = null;
 
-
     public ErrorResponse(String message) {
         this.message = message;
     }

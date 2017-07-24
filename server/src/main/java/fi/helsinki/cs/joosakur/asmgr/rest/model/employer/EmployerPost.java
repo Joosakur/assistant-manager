@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -29,12 +29,8 @@ public class EmployerPost {
     private String lastName = null;
 
     @JsonProperty("birthday")
-    private Date birthday = null;
+    private LocalDate birthday = null;
 
-    public EmployerPost email(String email) {
-        this.email = email;
-        return this;
-    }
 
     /**
      * Get email
@@ -53,11 +49,6 @@ public class EmployerPost {
         this.email = email;
     }
 
-    public EmployerPost password(String password) {
-        this.password = password;
-        return this;
-    }
-
     /**
      * Get password
      *
@@ -72,11 +63,6 @@ public class EmployerPost {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public EmployerPost firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
     }
 
     /**
@@ -95,10 +81,6 @@ public class EmployerPost {
         this.firstName = firstName;
     }
 
-    public EmployerPost lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
 
     /**
      * Get lastName
@@ -116,10 +98,6 @@ public class EmployerPost {
         this.lastName = lastName;
     }
 
-    public EmployerPost birthday(Date birthday) {
-        this.birthday = birthday;
-        return this;
-    }
 
     /**
      * Get birthday
@@ -128,11 +106,11 @@ public class EmployerPost {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

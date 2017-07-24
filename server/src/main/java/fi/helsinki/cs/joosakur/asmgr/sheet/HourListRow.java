@@ -1,36 +1,31 @@
 package fi.helsinki.cs.joosakur.asmgr.sheet;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class HourListRow {
 
     private LocalDate date;
     private List<TimeSpan> workTimes;
-    private String notes = "";
-    private TimeDuration normalDuration;
-    private TimeDuration eveningDuration;
-    private TimeDuration saturdayDuration;
-    private TimeDuration sundayDuration;
-    private TimeDuration nightDuration;
+
+    protected abstract boolean isSick();
+    protected abstract boolean isWorking();
 
     public HourListRow(LocalDate date, List<TimeSpan> workTimes) {
         this.date = date;
         this.workTimes = workTimes;
-
-        normalDuration = calculateNormalDuration();
-        eveningDuration = calculateEveningDuration();
-        nightDuration = calculateNightDuration();
-        sundayDuration = calculateSundayDuration();
-        saturdayDuration = calculateSaturdayDuration();
-        notes = calculateNotes();
     }
 
-    private String calculateWeekdayString() {
-        switch (date.getDayOfWeek()) {
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public String getWeekdayString() {
+        switch (getDate().getDayOfWeek()) {
             case MONDAY:
                 return "ma";
             case TUESDAY:
@@ -50,118 +45,57 @@ public abstract class HourListRow {
         }
     }
 
-
-    private TimeDuration calculateNormalDuration() {
-        normalDuration = new TimeDuration();
-        for (TimeSpan workTime : getWorkTimes()) {
-            normalDuration.add(workTime.getDuration());
-        }
-        return normalDuration;
-    }
-
-    protected TimeDuration calculateEveningDuration() {
-        return new TimeDuration();
-    }
-
-    protected TimeDuration calculateSundayDuration() {
-        return new TimeDuration();
-    }
-
-    protected TimeDuration calculateSaturdayDuration() {
-        return new TimeDuration();
-    }
-
-    protected String calculateNotes() {
-        return "";
-    }
-
-    protected TimeDuration calculateNightDuration() {
-        return new TimeDuration();
-    }
-
-    public String[] toStrings() {
-        String [] arr = new String[9];
-
-        arr [0] = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(date);
-        arr [1] = calculateWeekdayString();
-
-        String [] times = new String[getWorkTimes().size()];
-        for (int i = 0; i < getWorkTimes().size(); i++) {
-            times [i] = getWorkTimes().get(i).toString();
-        }
-        arr [2] = StringUtils.join(times, ", ");
-
-        arr [3] = notes;
-        arr [4] = normalDuration.toString();
-        arr [5] = eveningDuration.toString();
-        arr [6] = saturdayDuration.toString();
-        arr [7] = sundayDuration.toString();
-        arr [8] = nightDuration.toString();
-
-        return arr;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public List<TimeSpan> getWorkTimes() {
         return workTimes;
     }
 
-    public void setWorkTimes(List<TimeSpan> workTimes) {
-        this.workTimes = workTimes;
+    public Duration getNormalDuration() {
+        return getWorkTimes().stream()
+                .map(TimeSpan::getDuration)
+                .reduce(Duration.ZERO, Duration::plus);
+    }
+
+    public Duration getEveningDuration() {
+        return Duration.ZERO;
+    }
+
+    public Duration getSundayDuration() {
+        return Duration.ZERO;
+    }
+
+    public Duration getSaturdayDuration() {
+        return Duration.ZERO;
     }
 
     public String getNotes() {
-        return notes;
+        return "";
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public Duration getNightDuration() {
+        return Duration.ZERO;
     }
 
-    public TimeDuration getNormalDuration() {
-        return normalDuration;
+    public List<String> toColumnValueStrings() {
+        List<String> strings = new ArrayList<>(9);
+
+        strings.add(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(getDate()));
+        strings.add(getWeekdayString());
+
+        String times = getWorkTimes().stream()
+                .map(TimeSpan::toString)
+                .collect(Collectors.joining(", "));
+        strings.add(times);
+
+        strings.add(getNotes());
+
+        DurationFormatter formatter = new DurationFormatter();
+        strings.add(formatter.apply(getNormalDuration()));
+        strings.add(formatter.apply(getEveningDuration()));
+        strings.add(formatter.apply(getSaturdayDuration()));
+        strings.add(formatter.apply(getSundayDuration()));
+        strings.add(formatter.apply(getNightDuration()));
+
+        return strings;
     }
 
-    public void setNormalDuration(TimeDuration normalDuration) {
-        this.normalDuration = normalDuration;
-    }
-
-    public TimeDuration getEveningDuration() {
-        return eveningDuration;
-    }
-
-    public void setEveningDuration(TimeDuration eveningDuration) {
-        this.eveningDuration = eveningDuration;
-    }
-
-    public TimeDuration getSaturdayDuration() {
-        return saturdayDuration;
-    }
-
-    public void setSaturdayDuration(TimeDuration saturdayDuration) {
-        this.saturdayDuration = saturdayDuration;
-    }
-
-    public TimeDuration getSundayDuration() {
-        return sundayDuration;
-    }
-
-    public void setSundayDuration(TimeDuration sundayDuration) {
-        this.sundayDuration = sundayDuration;
-    }
-
-    public TimeDuration getNightDuration() {
-        return nightDuration;
-    }
-
-    public void setNightDuration(TimeDuration nightDuration) {
-        this.nightDuration = nightDuration;
-    }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,15 +13,15 @@ import java.util.UUID;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-11T14:35:13.497Z")
 
-public class WorkshiftGet {
+public class WorkShiftGet {
     @JsonProperty("id")
     private UUID id = null;
 
     @JsonProperty("start")
-    private LocalDateTime start = null;
+    private String start = null;
 
     @JsonProperty("end")
-    private LocalDateTime end = null;
+    private String end = null;
 
     @JsonProperty("assistantId")
     private UUID assistantId = null;
@@ -30,17 +30,12 @@ public class WorkshiftGet {
     private Boolean sick = null;
 
 
-    public WorkshiftGet fromEntity(WorkShift workShift) {
+    public WorkShiftGet fromEntity(WorkShift workShift) {
         this.id = workShift.getId();
-        this.start = workShift.getStarts();
-        this.end = workShift.getEnds();
+        this.start = workShift.getStarts().format(DateTimeFormatter.ISO_DATE_TIME);
+        this.end = workShift.getEnds().format(DateTimeFormatter.ISO_DATE_TIME);
         this.assistantId = workShift.getAssistant().getId();
         this.sick = workShift.isSick();
-        return this;
-    }
-
-    public WorkshiftGet id(UUID id) {
-        this.id = id;
         return this;
     }
 
@@ -58,10 +53,6 @@ public class WorkshiftGet {
         this.id = id;
     }
 
-    public WorkshiftGet start(LocalDateTime start) {
-        this.start = start;
-        return this;
-    }
 
     /**
      * Get start
@@ -69,17 +60,12 @@ public class WorkshiftGet {
      * @return start
      **/
     @ApiModelProperty(value = "")
-    public LocalDateTime getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(String start) {
         this.start = start;
-    }
-
-    public WorkshiftGet end(LocalDateTime end) {
-        this.end = end;
-        return this;
     }
 
     /**
@@ -88,18 +74,14 @@ public class WorkshiftGet {
      * @return end
      **/
     @ApiModelProperty(value = "")
-    public LocalDateTime getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 
-    public WorkshiftGet assistantId(UUID assistantId) {
-        this.assistantId = assistantId;
-        return this;
-    }
 
     /**
      * Get assistant
@@ -139,12 +121,12 @@ public class WorkshiftGet {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        WorkshiftGet workshiftGet = (WorkshiftGet) o;
-        return Objects.equals(this.id, workshiftGet.id) &&
-                Objects.equals(this.start, workshiftGet.start) &&
-                Objects.equals(this.end, workshiftGet.end) &&
-                Objects.equals(this.assistantId, workshiftGet.assistantId) &&
-                Objects.equals(this.sick, workshiftGet.sick);
+        WorkShiftGet workShiftGet = (WorkShiftGet) o;
+        return Objects.equals(this.id, workShiftGet.id) &&
+                Objects.equals(this.start, workShiftGet.start) &&
+                Objects.equals(this.end, workShiftGet.end) &&
+                Objects.equals(this.assistantId, workShiftGet.assistantId) &&
+                Objects.equals(this.sick, workShiftGet.sick);
     }
 
     @Override

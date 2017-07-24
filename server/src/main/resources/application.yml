@@ -13,3 +13,7 @@ jwt:
   header: Authorization
   secret: mySecret
   expiration: 604800
+management:
+  port: 8081
+  security:
+    enabled: false

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -53,7 +54,7 @@ public class Employer implements UserDetails {
 
     @Column(name = "birthday")
     @NotNull
-    private Date birthday;
+    private LocalDate birthday;
 
     @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
@@ -62,7 +63,7 @@ public class Employer implements UserDetails {
     public Employer() {
     }
 
-    public Employer(String email, String password, String firstName, String lastName, Date birthday) {
+    public Employer(String email, String password, String firstName, String lastName, LocalDate birthday) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -106,11 +107,11 @@ public class Employer implements UserDetails {
         this.lastName = lastName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

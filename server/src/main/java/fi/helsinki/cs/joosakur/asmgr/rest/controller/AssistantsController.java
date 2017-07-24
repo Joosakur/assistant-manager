@@ -16,9 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class AssistantsController implements AssistantsApi {
@@ -43,10 +43,9 @@ public class AssistantsController implements AssistantsApi {
     public ResponseEntity<List<AssistantGet>> listMyAssistants() throws NotFoundException {
         Employer employer = getAuthenticatedEmployer();
         List<Assistant> assistants = assistantService.listByEmployer(employer);
-        List<AssistantGet> response = new ArrayList<>(assistants.size());
-        for (Assistant assistant : assistants) {
-            response.add(new AssistantGet().fromEntity(assistant));
-        }
+        List<AssistantGet> response = assistants.stream()
+                .map(assistant -> new AssistantGet().fromEntity(assistant))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

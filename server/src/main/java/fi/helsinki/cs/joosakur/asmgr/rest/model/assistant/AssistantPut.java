@@ -35,10 +35,6 @@ public class AssistantPut {
     @JsonProperty("color")
     private String color = null;
 
-    public AssistantPut email(String email) {
-        this.email = email;
-        return this;
-    }
 
     /**
      * Get email
@@ -54,11 +50,6 @@ public class AssistantPut {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public AssistantPut firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
     }
 
     /**
@@ -77,10 +68,6 @@ public class AssistantPut {
         this.firstName = firstName;
     }
 
-    public AssistantPut lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
 
     /**
      * Get lastName
@@ -98,11 +85,6 @@ public class AssistantPut {
         this.lastName = lastName;
     }
 
-    public AssistantPut nickName(String nickName) {
-        this.nickName = nickName;
-        return this;
-    }
-
     /**
      * Get nickName
      *
@@ -116,11 +98,6 @@ public class AssistantPut {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public AssistantPut birthday(LocalDate birthday) {
-        this.birthday = birthday;
-        return this;
     }
 
     /**
@@ -138,10 +115,6 @@ public class AssistantPut {
         this.birthday = birthday;
     }
 
-    public AssistantPut active(Boolean active) {
-        this.active = active;
-        return this;
-    }
 
     /**
      * Get active
@@ -158,10 +131,6 @@ public class AssistantPut {
         this.active = active;
     }
 
-    public AssistantPut color(String color) {
-        this.color = color;
-        return this;
-    }
 
     /**
      * Get color

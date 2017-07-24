@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,21 +27,17 @@ public class EmployerGet {
     private String lastName = null;
 
     @JsonProperty("birthday")
-    private Date birthday = null;
+    private String birthday = null;
 
     public EmployerGet fromEntity(Employer employer){
         this.id = employer.getId();
         this.email = employer.getEmail();
         this.firstName = employer.getFirstName();
         this.lastName = employer.getLastName();
-        this.birthday = employer.getBirthday();
+        this.birthday = employer.getBirthday().format(DateTimeFormatter.ISO_DATE);
         return this;
     }
 
-    public EmployerGet id(UUID id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Get id
@@ -57,10 +53,6 @@ public class EmployerGet {
         this.id = id;
     }
 
-    public EmployerGet email(String email) {
-        this.email = email;
-        return this;
-    }
 
     /**
      * Get email
@@ -76,10 +68,6 @@ public class EmployerGet {
         this.email = email;
     }
 
-    public EmployerGet firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
 
     /**
      * Get firstName
@@ -95,10 +83,6 @@ public class EmployerGet {
         this.firstName = firstName;
     }
 
-    public EmployerGet lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
 
     /**
      * Get lastName
@@ -114,10 +98,6 @@ public class EmployerGet {
         this.lastName = lastName;
     }
 
-    public EmployerGet birthday(Date birthday) {
-        this.birthday = birthday;
-        return this;
-    }
 
     /**
      * Get birthday
@@ -125,12 +105,8 @@ public class EmployerGet {
      * @return birthday
      **/
     @ApiModelProperty(value = "")
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
 

@@ -2,10 +2,11 @@ package fi.helsinki.cs.joosakur.asmgr.sheet;
 
 import org.jopendocument.dom.ODValueType;
 import org.jopendocument.dom.OOUtils;
-import org.jopendocument.dom.spreadsheet.Sheet;
+import org.jopendocument.dom.spreadsheet.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -20,7 +21,8 @@ public class HourList {
     }
 
     private void setCellText(int column, int row, String text) {
-        sheet.getCellAt(column,row).setValue(text, ODValueType.STRING, false, true);
+        MutableCell<SpreadSheet> cell = sheet.getCellAt(column, row);
+        cell.setValue(text, ODValueType.STRING, false, true);
     }
 
     public void setEmployerName(String name) {
@@ -36,45 +38,54 @@ public class HourList {
     }
 
     private void populateSummary(List<HourListRow> rows) {
-        TimeDuration hours = new TimeDuration();
-        TimeDuration eveningHours = new TimeDuration();
-        TimeDuration satHours = new TimeDuration();
-        TimeDuration sunHours = new TimeDuration();
-        TimeDuration nightHours = new TimeDuration();
+
+        Duration hours = Duration.ZERO;
+        Duration eveningHours = Duration.ZERO;
+        Duration satHours = Duration.ZERO;
+        Duration sunHours = Duration.ZERO;
+        Duration nightHours = Duration.ZERO;
 
         for (HourListRow row : rows) {
-            hours.add(row.getNormalDuration());
-            eveningHours.add(row.getEveningDuration());
-            satHours.add(row.getSaturdayDuration());
-            sunHours.add(row.getSundayDuration());
-            nightHours.add(row.getNightDuration());
+            hours = hours.plus(row.getNormalDuration());
+            eveningHours = eveningHours.plus(row.getEveningDuration());
+            satHours = satHours.plus(row.getSaturdayDuration());
+            sunHours = sunHours.plus(row.getSundayDuration());
+            nightHours = nightHours.plus(row.getNightDuration());
         }
 
         final int SUMMARY_ROW = 32;
+        DurationFormatter formatter = new DurationFormatter();
         setCellText(2, SUMMARY_ROW, ""+rows.size());
-        setCellText(5, SUMMARY_ROW, hours.toString());
-        setCellText(6, SUMMARY_ROW, eveningHours.toString());
-        setCellText(7, SUMMARY_ROW, satHours.toString());
-        setCellText(8, SUMMARY_ROW, sunHours.toString());
-        setCellText(9, SUMMARY_ROW, nightHours.toString());
+        setCellText(5, SUMMARY_ROW, formatter.apply(hours));
+        setCellText(6, SUMMARY_ROW, formatter.apply(eveningHours));
+        setCellText(7, SUMMARY_ROW, formatter.apply(satHours));
+        setCellText(8, SUMMARY_ROW, formatter.apply(sunHours));
+        setCellText(9, SUMMARY_ROW, formatter.apply(nightHours));
     }
 
     public void setHourListRows(List<HourListRow> rows) {
         int r = 8;
         for (HourListRow row : rows) {
             int c = 1;
-            for (String cellValue : row.toStrings()) {
+            for (String cellValue : row.toColumnValueStrings()) {
                 setCellText(c, r, cellValue);
                 c++;
             }
             r++;
         }
+
         populateSummary(rows);
     }
 
 
-    public void saveAs(String filePath) throws IOException {
+    public File saveAs(String filePath) throws IOException {
         File outputFile = new File(filePath);
-        OOUtils.open(sheet.getSpreadSheet().saveAs(outputFile));
+        return sheet.getSpreadSheet().saveAs(outputFile);
     }
+
+    public void saveAsAndOpen(String filePath) throws IOException {
+        OOUtils.open(saveAs(filePath));
+    }
+
+
 }

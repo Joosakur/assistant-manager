@@ -1,34 +1,58 @@
 package fi.helsinki.cs.joosakur.asmgr.sheet;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.Optional;
+
+/**
+ * This class represents an immutable range of time during one day and its duration.
+ */
 public class TimeSpan {
-    private Time startTime;
-    private Time endTime;
-    private TimeDuration duration;
+    private final Time startTime;
+    private final Time endTime;
+    private final Duration duration;
 
     public TimeSpan(Time startTime, Time endTime) {
-        if(startTime!=null && endTime!=null && startTime.after(endTime))
+        if(startTime.isAfter(endTime))
             throw new IllegalArgumentException("Time goes backwards");
         this.startTime = startTime;
         this.endTime = endTime;
-        this.duration = new TimeDuration(this);
+
+        if(endTime.getHour() == 24)
+            this.duration = Duration.between(startTime.toLocalTime(), LocalTime.MIDNIGHT).plusDays(1);
+        else
+            this.duration = Duration.between(startTime.toLocalTime(), endTime.toLocalTime());
     }
 
-    public TimeSpan intersection(TimeSpan ts2) {
-        if(this.endTime.before(ts2.startTime) || this.startTime.after(ts2.endTime))
-            return new TimeSpan(null, null);
-        else if(this.startTime.before(ts2.startTime)) {
-            if(this.endTime.before(ts2.endTime))
-                return new TimeSpan(ts2.startTime.getCopy(), this.endTime.getCopy());
+    public Optional<TimeSpan> intersection(TimeSpan ts2) {
+        TimeSpan intersection;
+
+        if(this.endTime.isBefore(ts2.startTime) || this.startTime.isAfter(ts2.endTime))
+            intersection = null;
+        else if(this.startTime.isBefore(ts2.startTime)) {
+            if(this.endTime.isBefore(ts2.endTime))
+                intersection = new TimeSpan(ts2.startTime.clone(), this.endTime.clone());
             else
-                return new TimeSpan(ts2.startTime.getCopy(), ts2.endTime.getCopy());
+                intersection = new TimeSpan(ts2.startTime.clone(), ts2.endTime.clone());
         }
         else {
-            if(this.endTime.before(ts2.endTime))
-                return new TimeSpan(this.startTime.getCopy(), this.endTime.getCopy());
+            if(this.endTime.isBefore(ts2.endTime))
+                intersection = new TimeSpan(this.startTime.clone(), this.endTime.clone());
             else
-                return new TimeSpan(this.startTime.getCopy(), ts2.endTime.getCopy());
+                intersection = new TimeSpan(this.startTime.clone(), ts2.endTime.clone());
         }
+
+        return Optional.ofNullable(intersection);
     }
+
+    public Duration intersectionDuration(TimeSpan ts2) {
+        Optional<TimeSpan> intersection = intersection(ts2);
+        if(intersection.isPresent())
+            return intersection.get().duration;
+        return Duration.ZERO;
+    }
+
+
 
     public Time getStartTime() {
         return startTime;
@@ -38,9 +62,7 @@ public class TimeSpan {
         return endTime;
     }
 
-    public TimeDuration getDuration() {
-        if(duration == null)
-            duration = new TimeDuration(this);
+    public Duration getDuration() {
         return duration;
     }
 

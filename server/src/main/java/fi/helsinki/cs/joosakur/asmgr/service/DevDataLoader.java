@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Date;
 
 @Component
 public class DevDataLoader implements CommandLineRunner {
@@ -36,16 +35,16 @@ public class DevDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", new Date());
+        Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7));
         employer = employerService.create(employer);
 
-        Assistant assistant = new Assistant(employer, "abc@gmail.com", "Matti", "Koivisto", new Date());
+        Assistant assistant = new Assistant(employer, "abc@gmail.com", "Matti", "Koivisto", LocalDate.of(1988, 3, 12));
         assistant.setBackgroundColor(Color.yellow);
         assistantRepository.save(assistant);
-        Assistant assistant2 = new Assistant(employer, "def@gmail.com", "Teppo", "Mikkola", new Date());
+        Assistant assistant2 = new Assistant(employer, "def@gmail.com", "Teppo", "Mikkola", LocalDate.of(1992, 9, 21));
         assistant2.setBackgroundColor(Color.cyan);
         assistantRepository.save(assistant2);
-        Assistant assistant3 = new Assistant(employer, "something.amazing@outlook.com", "Heikki", "Katajainen", new Date());
+        Assistant assistant3 = new Assistant(employer, "something.amazing@outlook.com", "Heikki", "Katajainen", LocalDate.of(1982, 2, 1));
         assistant3.setNickname("Hela");
         assistant3.setBackgroundColor(new Color(100, 20, 10));
         assistant3.setTextColor(Color.white);
@@ -65,18 +64,26 @@ public class DevDataLoader implements CommandLineRunner {
         from = from.withHour(23);
         to = to.plusDays(1).withHour(9);
         for (int i = 0; i < 7; i++) {
-            workShift3 = new WorkShift(employer, assistant3, from, to);
-            workShiftRepository.save(workShift3);
+            if(i==3){
+                workShift3 = new WorkShift(employer, assistant3, from.withHour(21).withMinute(20), to);
+                workShiftRepository.save(workShift3);
+            }
+            else if(i==5){
+                workShift3 = new WorkShift(employer, assistant3, from.withHour(14), to.withHour(20).minusDays(1));
+                workShift3.setSick(true);
+                workShiftRepository.save(workShift3);
+            }
+            else {
+                workShift3 = new WorkShift(employer, assistant3, from, to);
+                workShiftRepository.save(workShift3);
+            }
+
             from = from.plusDays(1);
             to = to.plusDays(1);
         }
 
-        LocalDateTime rangeFrom = LocalDate.of(2017, Month.JULY, 20).atStartOfDay();//LocalDate.now().atStartOfDay()
-        LocalDateTime rangeTo = LocalDate.of(2017, Month.JULY, 24).atTime(LocalTime.MAX); //LocalDate.now().plusDays(10).atTime(LocalTime.MAX)
-        hourListBuilder.build(employer, assistant3, rangeFrom.toLocalDate(), rangeTo.toLocalDate()).saveAs("/asmgr/test.ods");
-        LocalDateTime rangeFrom2 = LocalDate.of(2017, Month.JULY, 25).atStartOfDay();
-        LocalDateTime rangeTo2 = LocalDate.of(2017, Month.JULY, 30).atTime(LocalTime.MAX);
-        hourListBuilder.build(employer, assistant3, rangeFrom2.toLocalDate(), rangeTo2.toLocalDate()).saveAs("/asmgr/test2.ods");
-
+        LocalDateTime rangeFrom = LocalDate.now().atStartOfDay();
+        LocalDateTime rangeTo = LocalDate.now().plusDays(10).atTime(LocalTime.MAX);
+        hourListBuilder.build(employer, assistant3, rangeFrom.toLocalDate(), rangeTo.toLocalDate()).saveAsAndOpen("/asmgr/test.ods");
     }
 }

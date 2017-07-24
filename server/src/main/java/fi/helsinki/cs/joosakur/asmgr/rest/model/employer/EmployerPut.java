@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -21,12 +21,7 @@ public class EmployerPut {
     private String lastName = null;
 
     @JsonProperty("birthday")
-    private Date birthday = null;
-
-    public EmployerPut firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
+    private LocalDate birthday = null;
 
     /**
      * Get firstName
@@ -42,11 +37,6 @@ public class EmployerPut {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public EmployerPut lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
     }
 
     /**
@@ -65,10 +55,6 @@ public class EmployerPut {
         this.lastName = lastName;
     }
 
-    public EmployerPut birthday(Date birthday) {
-        this.birthday = birthday;
-        return this;
-    }
 
     /**
      * Get birthday
@@ -77,11 +63,11 @@ public class EmployerPut {
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

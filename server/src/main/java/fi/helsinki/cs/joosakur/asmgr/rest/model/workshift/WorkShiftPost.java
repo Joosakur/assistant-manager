@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-11T14:35:13.497Z")
 
-public class WorkshiftPost {
+public class WorkShiftPost {
     @JsonProperty("assistantId")
     private UUID assistantId = null;
 
@@ -22,10 +22,8 @@ public class WorkshiftPost {
     @JsonProperty("end")
     private LocalDateTime end = null;
 
-    public WorkshiftPost assistantId(UUID assistantId) {
-        this.assistantId = assistantId;
-        return this;
-    }
+    @JsonProperty("sick")
+    private Boolean sick = null;
 
     /**
      * Get assistantId
@@ -39,11 +37,6 @@ public class WorkshiftPost {
 
     public void setAssistantId(UUID assistantId) {
         this.assistantId = assistantId;
-    }
-
-    public WorkshiftPost start(LocalDateTime start) {
-        this.start = start;
-        return this;
     }
 
     /**
@@ -60,10 +53,6 @@ public class WorkshiftPost {
         this.start = start;
     }
 
-    public WorkshiftPost end(LocalDateTime end) {
-        this.end = end;
-        return this;
-    }
 
     /**
      * Get end
@@ -79,6 +68,21 @@ public class WorkshiftPost {
         this.end = end;
     }
 
+    /**
+     * Get sick
+     *
+     * @return sick
+     **/
+    @ApiModelProperty(value = "")
+    public Boolean getSick() {
+        return sick;
+    }
+
+    public void setSick(Boolean sick) {
+        this.sick = sick;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -88,10 +92,10 @@ public class WorkshiftPost {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        WorkshiftPost workshiftPost = (WorkshiftPost) o;
-        return Objects.equals(this.assistantId, workshiftPost.assistantId) &&
-                Objects.equals(this.start, workshiftPost.start) &&
-                Objects.equals(this.end, workshiftPost.end);
+        WorkShiftPost workShiftPost = (WorkShiftPost) o;
+        return Objects.equals(this.assistantId, workShiftPost.assistantId) &&
+                Objects.equals(this.start, workShiftPost.start) &&
+                Objects.equals(this.end, workShiftPost.end);
     }
 
     @Override

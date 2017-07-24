@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.awt.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -52,7 +52,7 @@ public class Assistant {
 
     @Column(name = "birthday")
     @NotNull
-    private Date birthday;
+    private LocalDate birthday;
 
     @Column(name = "nick", length = 12)
     @Size(min = 1, max = 12)
@@ -72,7 +72,7 @@ public class Assistant {
     public Assistant() {
     }
 
-    public Assistant(Employer employer, String email, String firstName, String lastName, Date birthday) {
+    public Assistant(Employer employer, String email, String firstName, String lastName, LocalDate birthday) {
         this.employer = employer;
         this.email = email;
         this.firstName = firstName;
@@ -124,11 +124,11 @@ public class Assistant {
         this.nickname = nickname;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

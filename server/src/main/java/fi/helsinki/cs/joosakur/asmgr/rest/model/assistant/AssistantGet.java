@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class AssistantGet {
     private String nickName = null;
 
     @JsonProperty("birthday")
-    private Date birthday = null;
+    private String birthday = null;
 
     @JsonProperty("active")
     private Boolean active = null;
@@ -59,7 +60,7 @@ public class AssistantGet {
         this.firstName = assistant.getFirstName();
         this.lastName = assistant.getLastName();
         this.nickName = assistant.getNickname();
-        this.birthday = assistant.getBirthday();
+        this.birthday = assistant.getBirthday().format(DateTimeFormatter.ISO_DATE);
         this.active = assistant.isActive();
         this.backgroundColor = String.format("#%06x", assistant.getBackgroundColor().getRGB() & 0x00FFFFFF);
         this.textColor = String.format("#%06x", assistant.getTextColor().getRGB() & 0x00FFFFFF);
@@ -82,11 +83,6 @@ public class AssistantGet {
         this.id = id;
     }
 
-    public AssistantGet emploerId(UUID emploerId) {
-        this.employerId = emploerId;
-        return this;
-    }
-
     /**
      * Get employerId
      *
@@ -101,10 +97,6 @@ public class AssistantGet {
         this.employerId = employerId;
     }
 
-    public AssistantGet email(String email) {
-        this.email = email;
-        return this;
-    }
 
     /**
      * Get email
@@ -118,11 +110,6 @@ public class AssistantGet {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public AssistantGet firstName(String firstName) {
-        this.firstName = firstName;
-        return this;
     }
 
     /**
@@ -139,11 +126,6 @@ public class AssistantGet {
         this.firstName = firstName;
     }
 
-    public AssistantGet lastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
     /**
      * Get lastName
      *
@@ -158,10 +140,6 @@ public class AssistantGet {
         this.lastName = lastName;
     }
 
-    public AssistantGet nickName(String nickName) {
-        this.nickName = nickName;
-        return this;
-    }
 
     /**
      * Get nickName
@@ -177,28 +155,18 @@ public class AssistantGet {
         this.nickName = nickName;
     }
 
-    public AssistantGet birthday(Date birthday) {
-        this.birthday = birthday;
-        return this;
-    }
-
     /**
      * Get birthday
      *
      * @return birthday
      **/
     @ApiModelProperty(value = "")
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
-    }
-
-    public AssistantGet active(Boolean active) {
-        this.active = active;
-        return this;
     }
 
     /**
@@ -215,10 +183,6 @@ public class AssistantGet {
         this.active = active;
     }
 
-    public AssistantGet backgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-        return this;
-    }
 
     /**
      * Get backgroundColor
@@ -234,10 +198,6 @@ public class AssistantGet {
         this.backgroundColor = backgroundColor;
     }
 
-    public AssistantGet textColor(String textColor) {
-        this.textColor = textColor;
-        return this;
-    }
 
     /**
      * Get textColor
@@ -251,11 +211,6 @@ public class AssistantGet {
 
     public void setTextColor(String textColor) {
         this.textColor = textColor;
-    }
-
-    public AssistantGet exportedUntil(Date exportedUntil) {
-        this.exportedUntil = exportedUntil;
-        return this;
     }
 
     /**

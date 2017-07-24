@@ -10,7 +10,17 @@ public class SickDay extends HourListRow{
     }
 
     @Override
-    protected String calculateNotes() {
+    protected boolean isSick() {
+        return true;
+    }
+
+    @Override
+    protected boolean isWorking() {
+        return false;
+    }
+
+    @Override
+    public String getNotes() {
         return "Sairaana";
     }
 }

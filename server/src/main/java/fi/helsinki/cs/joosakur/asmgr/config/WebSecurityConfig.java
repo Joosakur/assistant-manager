@@ -79,6 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/login"
                 ).permitAll()
+                .requestMatchers(request -> request.getLocalPort() == 8081).permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(HttpMethod.POST, "/employers", "/login").permitAll()
                 .anyRequest().authenticated();

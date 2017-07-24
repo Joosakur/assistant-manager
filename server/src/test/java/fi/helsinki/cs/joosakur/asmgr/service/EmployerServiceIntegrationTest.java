@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -30,7 +30,7 @@ public class EmployerServiceIntegrationTest {
         employer.setPassword(TestUtils.randomAlphabetString(8, 20, true, true));
         employer.setFirstName(TestUtils.randomAlphabetString(20,true,true));
         employer.setLastName(TestUtils.randomAlphabetString(30, true, true));
-        employer.setBirthday(new Date());
+        employer.setBirthday(LocalDate.of(1980, 1, 2));
         return employer;
     }
 }
