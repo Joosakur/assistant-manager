@@ -3,6 +3,7 @@ package fi.helsinki.cs.joosakur.asmgr.rest.model.workshift;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -17,9 +18,11 @@ public class WorkShiftPost {
     private UUID assistantId = null;
 
     @JsonProperty("start")
+    @NotNull
     private LocalDateTime start = null;
 
     @JsonProperty("end")
+    @NotNull
     private LocalDateTime end = null;
 
     @JsonProperty("sick")

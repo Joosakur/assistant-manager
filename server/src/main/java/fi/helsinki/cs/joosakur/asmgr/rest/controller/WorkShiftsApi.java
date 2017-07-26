@@ -81,6 +81,7 @@ public interface WorkShiftsApi {
             consumes = {"application/json"},
             method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @CrossOrigin
     WorkShiftGet createWorkShift(@ApiParam(required = true) @RequestBody WorkShiftPost workShiftModel) throws NotFoundException;
 
 }

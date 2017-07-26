@@ -84,6 +84,6 @@ public class DevDataLoader implements CommandLineRunner {
 
         LocalDateTime rangeFrom = LocalDate.now().atStartOfDay();
         LocalDateTime rangeTo = LocalDate.now().plusDays(10).atTime(LocalTime.MAX);
-        hourListBuilder.build(employer, assistant3, rangeFrom.toLocalDate(), rangeTo.toLocalDate()).saveAsAndOpen("/asmgr/test.ods");
+        hourListBuilder.build(employer, assistant3, rangeFrom.toLocalDate(), rangeTo.toLocalDate()).saveAs("/asmgr/test.ods");
     }
 }

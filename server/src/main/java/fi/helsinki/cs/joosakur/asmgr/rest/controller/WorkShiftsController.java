@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -75,9 +76,11 @@ public class WorkShiftsController implements WorkShiftsApi {
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkShiftGet createWorkShift(@RequestBody WorkShiftPost workShiftModel) throws NotFoundException {
+    public WorkShiftGet createWorkShift(@RequestBody @Valid WorkShiftPost workShiftModel) throws NotFoundException {
         Employer employer = getAuthenticatedEmployer();
-        Assistant assistant = assistantService.find(workShiftModel.getAssistantId());
+        Assistant assistant = null;
+        if(workShiftModel.getAssistantId() != null)
+            assistant = assistantService.find(workShiftModel.getAssistantId());
         WorkShift workShift = new WorkShift(employer, assistant, workShiftModel.getStart(), workShiftModel.getEnd());
         workShift = workShiftService.create(workShift);
         return new WorkShiftGet().fromEntity(workShift);
