@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: dbuser
-    password: dbpassword
-    url: jdbc:postgresql://host:5432/dbname
+    username: xxxx #pass through environment variable SPRING_DATASOURCE_USERNAME
+    password: xxxx #pass through environment variable SPRING_DATASOURCE_PASSWORD
+    url: jdbc:postgresql://host:5432/dbname #pass through environment variable SPRING_DATASOURCE_URL
     platform: postgres
   jpa:
     hibernate:
@@ -11,7 +11,7 @@ spring:
     show-sql: true
 jwt:
   header: Authorization
-  secret: mySecret
+  secret: mySecret #pass through environment variable JTW_SECRET
   expiration: 604800
 management:
   port: 8081
