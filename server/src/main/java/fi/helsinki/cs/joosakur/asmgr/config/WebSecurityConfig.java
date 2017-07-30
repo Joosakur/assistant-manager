@@ -77,6 +77,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
+                        "/webjars/*",
+                        "/webjars/**",
+                        "/swagger-resources",
+                        "/swagger-resources/*",
+                        "/swagger-resources/**/*",
+                        "/v2/api-docs",
                         "/login"
                 ).permitAll()
                 .requestMatchers(request -> request.getLocalPort() == 8081).permitAll()

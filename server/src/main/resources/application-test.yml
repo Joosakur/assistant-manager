@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: dbuser
-    password: dbpassword
-    url: jdbc:postgresql://host:5432/dbname
+    username: asmanager
+    password: insecure
+    url: jdbc:postgresql://localhost:5432/asmanager
     platform: postgres
   jpa:
     hibernate:
