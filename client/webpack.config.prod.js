@@ -9,7 +9,9 @@ import path from 'path';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
-  __DEV__: false
+  __DEV__: false,
+  __API_ORIGIN__: "\"http://api.assistant-manager.joosa.net\"",
+  __SELF_ORIGIN__: "\"http://assistant-manager.joosa.net\""
 };
 
 export default {
@@ -17,7 +19,9 @@ export default {
     extensions: ['*', '.js', '.jsx', '.json']
   },
   devtool: 'source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
-  entry: path.resolve(__dirname, 'src/index'),
+  entry: [
+    path.resolve(__dirname, 'src/index')
+  ],
   target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
   output: {
     path: path.resolve(__dirname, 'dist'),

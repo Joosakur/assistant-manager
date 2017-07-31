@@ -1,25 +1,18 @@
-import RegistrationForm from '../components/registration/RegistrationForm';
 import {connect} from 'react-redux';
-import {postRegistration} from '../thunks/registrationThunk';
-
+import LoginForm from "../components/login/LoginForm";
+import {postLogin} from "../thunks/loginThunk";
 
 const mapStateToProps = state => {
   return {
-    loading: state.registration.loading
+    loading: state.login.loading
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmit: (values) => dispatch(postRegistration(values))
+    onSubmit: (values) => dispatch(postLogin(values.email, values.password))
   };
 };
 
-/*
-const RegistrationContainer = () => {
-  return
-}
-*/
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 

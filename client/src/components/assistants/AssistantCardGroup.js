@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Card, Icon} from "semantic-ui-react";
+import {Card} from "semantic-ui-react";
+import AssistantFluidCard from "./AssistantFluidCard";
 
-const AssistantFluidCard = ({firstName, lastName}) => {
-    return (
-      <Card fluid>
-        <Card.Content>
-          <Card.Header>
-            <Icon name="user"/> {firstName} {lastName}
-          </Card.Header>
-        </Card.Content>
-      </Card>
-    );
+const AssistantCardGroup = (props) => {
+  let {assistants} = props;
+
+  return (
+    <Card.Group>
+      {assistants.map((assistant) => <AssistantFluidCard key={assistant.id} assistant={assistant}/>)}
+    </Card.Group>
+  );
 };
 
-AssistantFluidCard.propTypes = {
-    //foobar: PropTypes.string.isRequired
+AssistantCardGroup.propTypes = {
+    assistants: PropTypes.array.isRequired
 };
 
-export default AssistantFluidCard;
+export default AssistantCardGroup;

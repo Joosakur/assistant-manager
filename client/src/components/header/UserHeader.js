@@ -1,17 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Link} from "react-router";
-import {Menu} from "semantic-ui-react";
+import {Icon, Menu} from "semantic-ui-react";
 
-const UserHeader = (props) => {
+const UserHeader = ({onLogout}) => {
   return (
       <Menu.Menu position="right">
-        <Menu.Item as={Link} to="/logout" activeClassName="active">Sign In</Menu.Item>
+        <Menu.Item header>Logged in as Joosa</Menu.Item>
+        <Menu.Item onClick={onLogout}><Icon name="sign out"/>Sign Out</Menu.Item>
       </Menu.Menu>
   );
 };
 
 UserHeader.propTypes = {
+  onLogout: PropTypes.func.isRequired
 };
 
 export default UserHeader;

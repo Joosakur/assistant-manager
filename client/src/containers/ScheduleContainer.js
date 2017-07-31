@@ -1,35 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import {startWorkShiftEdit} from "../actions/workShiftActions";
+import Schedule from "../components/schedule/Schedule";
 
-class ScheduleContainer extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
-    render() {
-        return (
-            <div></div>
-        );
-    }
-}
-
-ScheduleContainer.propTypes = {
-    //foobar: PropTypes.string.isRequired
-};
-
-function mapStateToProps(state, ownProps) {
-    return {
-        state: state
-    }
+function mapStateToProps(state) {
+  return {
+    loading: state.schedule.loading
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
+  return {
+    onCreateNew: () => dispatch(startWorkShiftEdit(null))
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleContainer);
-
+export default connect(null, mapDispatchToProps)(Schedule);

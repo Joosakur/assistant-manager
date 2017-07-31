@@ -1,18 +1,19 @@
 import {connect} from 'react-redux';
-import LoginForm from "../components/login/LoginForm";
-import {postLogin} from "../thunks/loginThunk";
+import {ownPropsToArray} from "../utils/jsUtils";
+import AssistantCardGroup from "../components/assistants/AssistantCardGroup";
 
 const mapStateToProps = state => {
+  let assistants = ownPropsToArray(state.entities.assistants);
+
   return {
-    loading: state.login.loading
+    loading: state.assistants.loading,
+    assistants: assistants
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return {
-    onSubmit: (values) => dispatch(postLogin(values.email, values.password))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-
+export default connect(mapStateToProps, mapDispatchToProps)(AssistantCardGroup);

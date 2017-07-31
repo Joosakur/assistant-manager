@@ -1,31 +1,48 @@
+@import '~react-redux-toastr/src/styles/index';
+@import '~react-big-calendar/lib/css/react-big-calendar.css';
+@import "~react-datetime/css/react-datetime.css";
+
 /* Variables */
-$vin-blue: #382adb;
-$vin-green: #60b044;
-$vin-red: #ff0000;
+$header-height: 50px;
+$color-negative: #db2828;
 
-/* Styles */
-body {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.4em;
-  color: #4d4d4d;
-  min-width: 230px;
-  max-width: 550px;
-  margin: 0 auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  font-weight: 300;
+#header {
+  height: $header-height;
 }
 
-td {
-	padding: 12px;
+#main-container {
+  padding-top: $header-height;
 }
 
-h2 {
-	color: $vin-blue;
+.page-container{
+  padding-top: 50px;
 }
 
-.savings { color: $vin-green; }
-.loss { color: $vin-red; }
-input.small { width: 46px; }
-td.fuel-savings-label { width: 175px; }
+.ui.container.narrow {
+  width: 400px;
+}
+
+.float-left {
+  float: left;
+}
+
+.hover-warning:hover {
+  background-color: $color-negative !important;
+}
+
+.ui.divider.thin {
+  margin: 0.5rem 0;
+}
+
+.rbc-month-view {
+  display: grid;
+}
+
+.rbc-month-row {
+  height: inherit;
+  min-height: 100px;
+}
+
+.rbc-row-segment {
+  margin: 3px 0;
+}

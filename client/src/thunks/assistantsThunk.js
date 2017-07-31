@@ -1,34 +1,27 @@
 import {API, SELF} from '../constants/urls';
-import {postRegistrationBegin, postRegistrationSuccess, postRegistrationError} from '../actions/registrationActions';
 import {push} from 'react-router-redux';
 import {toastr} from 'react-redux-toastr';
-import {formErrorFromApiError} from '../utils/formUtils';
-import {SubmissionError} from 'redux-form';
 import axios from 'axios';
+import {getAssistantsBegin, getAssistantsError, getAssistantsSuccess} from "../actions/assistantActions";
+import {generalErrorFromApiError} from "../utils/errorUtils";
 
-export function postRegistration(registration) {
-  return function (dispatch) {
-    dispatch(postRegistrationBegin());
+export function getAssistants() {
+  return function (dispatch, getState) {
+    dispatch(getAssistantsBegin());
 
-    let body = {
-      email: registration.email,
-      password: registration.password,
-      firstName: registration.firstName,
-      lastName: registration.lastName,
-      birthday: new Date()
-    };
+    if(!getState().login.authenticated) {
+      dispatch(push(SELF.login));
+      toastr.error("Error", "Please login");
+    }
 
-    return axios.post(API.origin+API.employers, body, {withCredentials: true})
-      .then(() => {
-        dispatch(postRegistrationSuccess());
-        dispatch(push(SELF.login));
-        toastr.success('Success', 'You can now login!');
+    return axios.get(API.origin+API.assistants, {headers: {'Authorization': getState().login.token}})
+      .then((response) => {
+        dispatch(getAssistantsSuccess(response.data));
       })
       .catch(e => {
-        let error = formErrorFromApiError(e);
-        dispatch(postRegistrationError(error));
-        toastr.error("Error", error._error);
-        throw new SubmissionError(error);
+        let error = generalErrorFromApiError(e);
+        dispatch(getAssistantsError());
+        toastr.error("Error", error);
       });
   };
 }

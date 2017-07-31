@@ -1,16 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Form, Input, Label} from 'semantic-ui-react';
+import {Grid} from 'semantic-ui-react';
+import {Field} from "redux-form";
+import FormFieldWithErrorLabel from "./FormFieldWithErrorLabel";
 
-const FormFieldWithErrorLabel = (props) => {
-  let {input, label, type, meta: {error}} = props;
+const FormTimeGroupWithErrorLabel = (props) => {
+  let {name, label} = props;
   return (
-    <Form.Field error={error}>
-      <label style={{float: 'left'}}>{label}</label>
-      {error && <Label pointing="left" basic horizontal color="red">{error}</Label>}
-      <Input {...input} placeholder={label} type={type} error={error} fluid/>
-    </Form.Field>
+    <Grid columns="equal" fluid>
+      <Grid.Row verticalAlign="bottom">
+        <Grid.Column>
+          <Field name={name+"Hours"} placeholder="h (00-23)" component={FormFieldWithErrorLabel} type="text" label={label}/>
+        </Grid.Column>
+        <Grid.Column>
+          <Field name={name+"Minutes"} placeholder="min (00-59)" component={FormFieldWithErrorLabel} type="text"/>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+
   );
 };
 
-export default FormFieldWithErrorLabel;
+FormTimeGroupWithErrorLabel.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired
+};
+
+export default FormTimeGroupWithErrorLabel;

@@ -1,35 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import AppHeader from '../components/header/AppHeader';
+import {logout} from "../thunks/loginThunk";
 
-class HeaderContainer extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
-    render() {
-        return (
-            <div></div>
-        );
-    }
-}
-
-HeaderContainer.propTypes = {
-    //foobar: PropTypes.string.isRequired
-};
-
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
-        state: state
-    }
+        authenticated: state.login.authenticated
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+      onLogout: (e) => {
+        e.preventDefault();
+        dispatch(logout());
+      }
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);
 

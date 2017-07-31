@@ -1,16 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Form, Input, Label} from 'semantic-ui-react';
+import {Form} from 'semantic-ui-react';
 
-const FormFieldWithErrorLabel = (props) => {
-  let {input, label, type, meta: {error}} = props;
+const FormDropdownField = (props) => {
+  let {input, label, options} = props;
   return (
-    <Form.Field error={error}>
+    <Form.Field>
       <label style={{float: 'left'}}>{label}</label>
-      {error && <Label pointing="left" basic horizontal color="red">{error}</Label>}
-      <Input {...input} placeholder={label} type={type} error={error} fluid/>
+      <Form.Select {...input}
+                options={options}
+                value={input.value}
+                onChange={(param,data) => input.onChange(data.value)}
+                placeholder={label}
+                fluid/>
     </Form.Field>
   );
 };
 
-export default FormFieldWithErrorLabel;
+FormDropdownField.propTypes = {
+  input: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  }).isRequired,
+  label: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired
+};
+
+export default FormDropdownField;

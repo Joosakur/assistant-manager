@@ -1,15 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import RegistrationForm from '../components/registration/RegistrationForm';
+import {connect} from 'react-redux';
+import {postRegistration} from '../thunks/registrationThunk';
 
-const RegistrationContainer = (props) => {
-    return (
-        <div></div>
-    );
+
+const mapStateToProps = state => {
+  return {
+    loading: state.registration.loading
+  };
 };
 
-RegistrationContainer.propTypes = {
-    //foobar: PropTypes.string.isRequired
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmit: (values) => dispatch(postRegistration(values))
+  };
 };
 
-export default RegistrationContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
 

@@ -1,13 +1,22 @@
 import React from 'react';
-import RegistrationContainer from '../containers/RegistrationContainer';
+import LoginContainer from "../containers/LoginContainer";
+import HeaderContainer from "../containers/HeaderContainer";
+import {Container} from "semantic-ui-react";
 
-class RegistrationPage extends React.Component {
+class LoginPage extends React.Component {
 
   render() {
     return (
-      <RegistrationContainer/>
+      <div>
+        <HeaderContainer/>
+        <Container fluid id="main-container">
+          <Container className="page-container">
+            <LoginContainer/>
+          </Container>
+        </Container>
+      </div>
     );
   }
 }
 
-export default RegistrationPage;
+export default LoginPage;

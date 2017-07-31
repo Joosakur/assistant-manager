@@ -1,13 +1,46 @@
 import React from 'react';
-import RegistrationContainer from '../containers/RegistrationContainer';
+import PropTypes from 'prop-types';
+import {getAssistants} from "../thunks/assistantsThunk";
+import {connect} from 'react-redux';
+import AssistantListContainer from "../containers/AssistantListContainer";
+import {Button, Container, Divider, Header, Icon} from "semantic-ui-react";
+import HeaderContainer from "../containers/HeaderContainer";
 
-class RegistrationPage extends React.Component {
+const addUserIcon = (
+  <Icon.Group size="large" style={{marginRight: '2rem'}}>
+    <Icon name="user"/><Icon name="add" color="green" corner/>
+  </Icon.Group>
+);
+
+class AssistantsPage extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getAssistants());
+  }
 
   render() {
     return (
-      <RegistrationContainer/>
+      <div>
+        <HeaderContainer/>
+        <Container fluid id="main-container">
+          <Container className="page-container">
+            <Header floated="left" as="h1"><Icon name="address book"/> My Assistants</Header>
+            <Button primary size="large" floated="right" icon={addUserIcon} content="Create new"/>
+            <Divider hidden section clearing/>
+            <AssistantListContainer/>
+          </Container>
+        </Container>
+      </div>
     );
   }
 }
 
-export default RegistrationPage;
+AssistantsPage.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+export default connect()(AssistantsPage);

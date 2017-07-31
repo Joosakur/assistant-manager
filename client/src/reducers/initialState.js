@@ -1,18 +1,31 @@
 export default {
-  fuelSavings: {
-    newMpg: '',
-    tradeMpg: '',
-    newPpg: '',
-    tradePpg: '',
-    milesDriven: '',
-    milesDrivenTimeframe: 'week',
-    displayResults: false,
-    dateModified: null,
-    necessaryDataIsProvidedToCalculateSavings: false,
-    savings: {
-      monthly: 0,
-      annual: 0,
-      threeYear: 0
+  entities: {
+    assistants: {
+
+    },
+    workShifts: {
+
     }
-  }
+  },
+  assistants: {
+    loading: false
+  },
+  schedule: {
+    loading: false,
+    submitting: false,
+    editing: false,
+    target: null
+  },
+  registration: {
+    loading: false
+  },
+  login: {
+    loading: false,
+    authenticated: false,
+    token: '',
+    firstName: '',
+    lastName: ''
+  },
+
+
 };

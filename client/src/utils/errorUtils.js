@@ -19,6 +19,9 @@ export const formErrorFromApiError = e => {
 };
 
 export const generalErrorFromApiError = e => {
+  if(!e.response) {
+    return "Oops, something went wrong..";
+  }
   if(!e.response.data)
     return "Connection error";
 

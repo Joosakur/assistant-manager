@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Header from './common/Header';
+import localizer from 'react-big-calendar/lib/localizers/moment';
+import moment from 'moment';
 
 class App extends React.Component {
+
+  componentWillMount() {
+    moment.updateLocale('en', {
+      week: {
+        dow: 1
+      }
+    });
+    localizer(moment);
+
+  }
+
   render() {
     return (
       <div>
-        <Header/>
         {this.props.children}
       </div>
     );
@@ -18,30 +29,3 @@ App.propTypes = {
 };
 
 export default App;
-
-/*
-// This is a class-based component because the current
-// version of hot reloading won't hot reload a stateless
-// component at the top-level.
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <IndexLink to="/">Home</IndexLink>
-        {' | '}
-        <Link to="/fuel-savings">Demo App</Link>
-        {' | '}
-        <Link to="/about">About</Link>
-        <br/>
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
-App.propTypes = {
-  children: PropTypes.element
-};
-
-export default App;
-*/
