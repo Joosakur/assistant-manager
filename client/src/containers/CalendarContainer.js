@@ -53,6 +53,8 @@ const mapStateToProps = state => {
 
   let events = Object.getOwnPropertyNames(state.entities.workShifts).map((id) => {
     let workShift = state.entities.workShifts [id];
+    if(!workShift)
+      return null;
     let assistant = state.entities.assistants[workShift.assistantId];
     if(workShift.assistantId && !assistant) {
       console.warn("Oops, assistant of a work shift not found"); // eslint-disable-line no-console

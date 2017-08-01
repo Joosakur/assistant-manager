@@ -32,3 +32,15 @@ export function submitWorkShiftError() {
   return {type: types.SUBMIT_WORK_SHIFT_ERROR};
 }
 
+export function deleteWorkShiftBegin() {
+  return {type: types.DELETE_WORK_SHIFT_BEGIN};
+}
+
+export function deleteWorkShiftSuccess(id) {
+  return {type: types.DELETE_WORK_SHIFT_SUCCESS, id};
+}
+
+export function deleteWorkShiftError() {
+  return {type: types.DELETE_WORK_SHIFT_ERROR};
+}
+

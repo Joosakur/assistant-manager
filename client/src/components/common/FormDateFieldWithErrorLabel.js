@@ -15,6 +15,10 @@ const FormDateFieldWithErrorLabel = (props) => {
         value = {input.value}
         onChange={(value) => input.onChange(typeof value === "string" ? value : value.format('DD.MM.YYYY'))}
         timeFormat={false}
+        closeOnSelect
+        isValidDate={(date) => {
+          return date.isBetween(moment('2017-1-1'), moment().add(1, 'years'));
+        }}
         inputProps={{
           type: "text",
           placeholder: moment().format("DD.MM.YYYY"),

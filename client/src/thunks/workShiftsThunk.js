@@ -4,6 +4,9 @@ import {toastr} from 'react-redux-toastr';
 import axios from 'axios';
 import {formErrorFromApiError, generalErrorFromApiError} from "../utils/errorUtils";
 import {
+  deleteWorkShiftBegin,
+  deleteWorkShiftError,
+  deleteWorkShiftSuccess,
   endWorkShiftEdit,
   getWorkShiftsBegin, getWorkShiftsError, getWorkShiftsSuccess,
   submitWorkShiftBegin, submitWorkShiftError, submitWorkShiftSuccess
@@ -32,6 +35,28 @@ export function getWorkShifts(fromDate, toDate) {
         toastr.error("Error", error);
       });
   };
+}
+
+export function deleteWorkShift(id) {
+  return function (dispatch, getState) {
+    dispatch(deleteWorkShiftBegin());
+
+    return axios({
+      url: API.origin+API.workShifts+"/"+id,
+      method: 'delete',
+      headers: {'Authorization': getState().login.token}
+    })
+      .then(() => {
+        dispatch(deleteWorkShiftSuccess(id));
+        dispatch(endWorkShiftEdit());
+        toastr.success('Deleted');
+      })
+      .catch(e => {
+        let error = formErrorFromApiError(e);
+        dispatch(deleteWorkShiftError(error));
+        toastr.error("Error", error._error);
+      });
+  }
 }
 
 export function sendWorkShiftEdit(form) {

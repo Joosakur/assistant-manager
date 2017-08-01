@@ -57,8 +57,8 @@ class ScheduleModalForm extends React.Component {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          {this.props.target && <Button negative floated="left" onClick={this.props.onClose}>Delete</Button>}
-          <Button secondary onClick={this.props.onClose}>Cancel</Button>
+          {this.props.target && <Button negative floated="left" onClick={() => this.props.onDelete(this.props.target)} loading={this.props.submitting} disabled={this.props.submitting}>Delete</Button>}
+          <Button secondary onClick={this.props.onClose} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
           <Button form="WorkShiftForm" type="submit" loading={this.props.submitting} disabled={this.props.submitting} positive>Save</Button>
         </Modal.Actions>
       </Modal>
@@ -71,6 +71,7 @@ ScheduleModalForm.propTypes = {
   open: PropTypes.bool.isRequired,
   target: PropTypes.string,
   onClose: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
   submitting: PropTypes.bool.isRequired

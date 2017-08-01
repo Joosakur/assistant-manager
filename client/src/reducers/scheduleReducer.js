@@ -13,6 +13,12 @@ export default function scheduleReducer(state = initialState.schedule, action) {
       return Object.assign({}, state, {submitting: false});
     case types.SUBMIT_WORK_SHIFT_ERROR:
       return Object.assign({}, state, {submitting: false});
+    case types.DELETE_WORK_SHIFT_BEGIN:
+      return Object.assign({}, state, {submitting: true});
+    case types.DELETE_WORK_SHIFT_SUCCESS:
+      return Object.assign({}, state, {submitting: false});
+    case types.DELETE_WORK_SHIFT_ERROR:
+      return Object.assign({}, state, {submitting: false});
     default:
       return state;
   }

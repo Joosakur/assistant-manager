@@ -3,7 +3,7 @@ import ScheduleModalForm from "../components/schedule/ScheduleModalForm";
 import {endWorkShiftEdit} from "../actions/workShiftActions";
 import {ownPropsToArray} from "../utils/jsUtils";
 import moment from "moment";
-import {sendWorkShiftEdit} from "../thunks/workShiftsThunk";
+import {deleteWorkShift, sendWorkShiftEdit} from "../thunks/workShiftsThunk";
 
 const mapStateToProps = state => {
   let targetId = state.schedule.target;
@@ -33,7 +33,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => dispatch(endWorkShiftEdit()),
-    onSubmit: (values) => dispatch(sendWorkShiftEdit(values))
+    onSubmit: (values) => dispatch(sendWorkShiftEdit(values)),
+    onDelete: (id) => {
+      dispatch(deleteWorkShift(id))
+    }
   };
 };
 

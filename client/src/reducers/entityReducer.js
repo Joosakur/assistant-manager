@@ -17,11 +17,19 @@ const populateWorkShifts = (state, workShifts) => {
   return Object.assign({}, state, {workShifts: workShiftsObj});
 };
 
-const workShiftSuccess = (state, workShift) => {
+const submitWorkShiftSuccess = (state, workShift) => {
   let newWorkShifts = Object.assign({}, state.workShifts);
   newWorkShifts[workShift.id] = workShift;
   return Object.assign({}, state, {workShifts: newWorkShifts});
 };
+
+const deleteWorkShiftSuccess = (state, id) => {
+  let newWorkShifts = Object.assign({}, state.workShifts);
+  newWorkShifts[id] = undefined;
+  return Object.assign({}, state, {workShifts: newWorkShifts});
+};
+
+
 
 export default function entityReducer(state = initialState.entities, action) {
   switch (action.type) {
@@ -30,7 +38,9 @@ export default function entityReducer(state = initialState.entities, action) {
     case types.GET_WORK_SHIFTS_SUCCESS:
       return populateWorkShifts(state, action.workShifts);
     case types.SUBMIT_WORK_SHIFT_SUCCESS:
-      return workShiftSuccess(state, action.workShift);
+      return submitWorkShiftSuccess(state, action.workShift);
+    case types.DELETE_WORK_SHIFT_SUCCESS:
+      return deleteWorkShiftSuccess(state, action.id);
     default:
       return state;
   }
