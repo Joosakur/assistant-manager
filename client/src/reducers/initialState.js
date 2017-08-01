@@ -8,7 +8,9 @@ export default {
     }
   },
   assistants: {
-    loading: false
+    loading: false,
+    editing: false,
+    submitting: false
   },
   schedule: {
     loading: false,

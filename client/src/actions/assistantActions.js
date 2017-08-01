@@ -16,3 +16,23 @@ export function getAssistantsError() {
   return {type: types.GET_ASSISTANTS_ERROR};
 }
 
+
+export function startAssistantEdit(target) {
+  return {type: types.EDIT_ASSISTANT_START, target};
+}
+
+export function endAssistantEdit() {
+  return {type: types.EDIT_ASSISTANT_END};
+}
+
+export function submitAssistantBegin() {
+  return {type: types.SUBMIT_ASSISTANT_BEGIN};
+}
+
+export function submitAssistantSuccess(assistant) {
+  return {type: types.SUBMIT_ASSISTANT_SUCCESS, assistant};
+}
+
+export function submitAssistantError() {
+  return {type: types.SUBMIT_ASSISTANT_ERROR};
+}

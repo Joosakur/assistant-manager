@@ -6,6 +6,7 @@ import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
 import FormDropdownField from "../common/FormDropdownField";
 import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel";
 import FormToggle from "../common/FormToggle";
+import moment from "moment";
 
 class ScheduleModalForm extends React.Component {
 
@@ -41,7 +42,11 @@ class ScheduleModalForm extends React.Component {
                 <Field name="assistant" component={FormDropdownField} label="Assistant" options={this.state.assistantArray}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="16" mobile="16">
-                <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"/>
+                <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"
+                       isValidDate={(date) => {
+                         return date.isBetween(moment('2017-1-1'), moment().add(1, 'years'));}
+                       }
+                />
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
                 <FormTimeGroupWithErrorLabel name="startTime" label="Start time"/>

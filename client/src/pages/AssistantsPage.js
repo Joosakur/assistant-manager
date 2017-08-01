@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import AssistantListContainer from "../containers/AssistantListContainer";
 import {Button, Container, Divider, Header, Icon} from "semantic-ui-react";
 import HeaderContainer from "../containers/HeaderContainer";
+import {startAssistantEdit} from "../actions/assistantActions";
+import AssistantEditorContainer from "../containers/AssistantEditorContainer";
 
 const addUserIcon = (
   <Icon.Group size="large" style={{marginRight: '2rem'}}>
@@ -26,10 +28,11 @@ class AssistantsPage extends React.Component {
     return (
       <div>
         <HeaderContainer/>
+        <AssistantEditorContainer/>
         <Container fluid id="main-container">
           <Container className="page-container">
             <Header floated="left" as="h1"><Icon name="address book"/> My Assistants</Header>
-            <Button primary size="large" floated="right" icon={addUserIcon} content="Create new"/>
+            <Button primary size="large" floated="right" icon={addUserIcon} content="Create new" onClick={() => this.props.dispatch(startAssistantEdit(null))}/>
             <Divider hidden section clearing/>
             <AssistantListContainer/>
           </Container>

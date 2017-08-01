@@ -23,6 +23,12 @@ const submitWorkShiftSuccess = (state, workShift) => {
   return Object.assign({}, state, {workShifts: newWorkShifts});
 };
 
+const submitAssistantSuccess = (state, assistant) => {
+  let newAssistants = Object.assign({}, state.assistants);
+  newAssistants[assistant.id] = assistant;
+  return Object.assign({}, state, {assistants: newAssistants});
+};
+
 const deleteWorkShiftSuccess = (state, id) => {
   let newWorkShifts = Object.assign({}, state.workShifts);
   newWorkShifts[id] = undefined;
@@ -41,6 +47,8 @@ export default function entityReducer(state = initialState.entities, action) {
       return submitWorkShiftSuccess(state, action.workShift);
     case types.DELETE_WORK_SHIFT_SUCCESS:
       return deleteWorkShiftSuccess(state, action.id);
+    case types.SUBMIT_ASSISTANT_SUCCESS:
+      return submitAssistantSuccess(state, action.assistant);
     default:
       return state;
   }

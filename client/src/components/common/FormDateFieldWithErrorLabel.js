@@ -6,7 +6,7 @@ import Datetime from "react-datetime";
 
 
 const FormDateFieldWithErrorLabel = (props) => {
-  let {input, label, meta: {error}} = props;
+  let {input, label, placeholder, isValidDate, meta: {error}} = props;
   return (
     <Form.Field error={error}>
       <label style={{float: 'left'}}>{label}</label>
@@ -16,12 +16,10 @@ const FormDateFieldWithErrorLabel = (props) => {
         onChange={(value) => input.onChange(typeof value === "string" ? value : value.format('DD.MM.YYYY'))}
         timeFormat={false}
         closeOnSelect
-        isValidDate={(date) => {
-          return date.isBetween(moment('2017-1-1'), moment().add(1, 'years'));
-        }}
+        isValidDate={isValidDate || (() => true)}
         inputProps={{
           type: "text",
-          placeholder: moment().format("DD.MM.YYYY"),
+          placeholder: placeholder || moment().format("DD.MM.YYYY"),
           error: error
         }}
       />
@@ -32,6 +30,8 @@ const FormDateFieldWithErrorLabel = (props) => {
 FormDateFieldWithErrorLabel.propTypes = {
   input: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  isValidDate: PropTypes.func,
   meta: PropTypes.shape({
     error: PropTypes.string
   })
