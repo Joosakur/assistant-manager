@@ -1,15 +1,15 @@
 package fi.helsinki.cs.joosakur.asmgr.security;
 
+import fi.helsinki.cs.joosakur.asmgr.common.utils.TimeProvider;
+import fi.helsinki.cs.joosakur.asmgr.config.properties.AppConfig;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import fi.helsinki.cs.joosakur.asmgr.common.utils.TimeProvider;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -34,11 +34,8 @@ public class JwtTokenUtil implements Serializable {
     @Autowired
     private TimeProvider timeProvider;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.expiration}")
-    private Long expiration;
+    @Autowired
+    private AppConfig appConfig;
 
     public String getUsernameFromToken(String token) {
         String username;
@@ -88,7 +85,7 @@ public class JwtTokenUtil implements Serializable {
         Claims claims;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(appConfig.getJwt().getSecret())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -134,12 +131,12 @@ public class JwtTokenUtil implements Serializable {
 
     private String doGenerateToken(Map<String, Object> claims) {
         final Date createdDate = (Date) claims.get(CLAIM_KEY_CREATED);
-        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+        final Date expirationDate = new Date(createdDate.getTime() + appConfig.getJwt().getExpiration() * 1000);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, appConfig.getJwt().getSecret())
                 .compact();
     }
 

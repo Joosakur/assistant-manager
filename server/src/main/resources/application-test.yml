@@ -1,19 +1,21 @@
 spring:
   datasource:
-    username: asmanager
-    password: insecure
-    url: jdbc:postgresql://localhost:5432/asmanager
-    platform: postgres
+    username: sa
+    password:
+    url: jdbc:hsqldb:mem:asmanager
+    driver-class-name: org.hsqldb.jdbcDriver
   jpa:
     hibernate:
       ddl-auto: create-drop
-    database: postgresql
+    database: HSQL
     show-sql: true
-jwt:
-  header: Authorization
-  secret: mySecret
-  expiration: 604800
-management:
-  port: 8081
-  security:
-    enabled: false
+  mail:
+    test-connection: false
+flyway:
+  enabled: false
+  check-location: false
+app:
+  api-origin: "http://localhost:8080"
+  gui-origin: "http://localhost:3000"
+  jwt:
+    secret: mySecret

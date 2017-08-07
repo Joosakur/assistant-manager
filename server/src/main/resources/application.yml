@@ -3,17 +3,32 @@ spring:
     username: xxxx #pass through environment variable SPRING_DATASOURCE_USERNAME
     password: xxxx #pass through environment variable SPRING_DATASOURCE_PASSWORD
     url: jdbc:postgresql://host:5432/dbname #pass through environment variable SPRING_DATASOURCE_URL
-    platform: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     database: postgresql
-    show-sql: true
-jwt:
-  header: Authorization
-  secret: mySecret #pass through environment variable JTW_SECRET
-  expiration: 604800
+    show-sql: false
+  mail:
+    host: xxxx #pass through environment variable SPRING_MAIL_HOST
+    protocol: smtps
+    port: 465
+    username: xxxx #pass through environment variable SPRING_MAIL_USERNAME
+    password: xxxx #pass through environment variable SPRING_MAIL_PASSWORD
+    test-connection: true
+flyway:
+  enabled: true
+  locations: classpath:db/migration
+  check-location: true
 management:
   port: 8081
   security:
     enabled: false
+app:
+  api-origin: "https://api.host" #pass through environment variable APP_API_ORIGIN
+  gui-origin: "https://host" #pass through environment variable APP_GUI_ORIGIN
+  recaptcha:
+    secret: xxxx #pass through environment variable APP_RECAPTCHA_SECRET
+  jwt:
+    header: Authorization
+    secret: xxxx #pass through environment variable APP_JTW_SECRET
+    expiration: 604800

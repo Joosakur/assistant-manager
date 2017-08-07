@@ -31,6 +31,8 @@ public class EmployerPost {
     @JsonProperty("birthday")
     private LocalDate birthday = null;
 
+    @JsonProperty("captcha")
+    private String captcha = null;
 
     /**
      * Get email
@@ -114,6 +116,13 @@ public class EmployerPost {
         this.birthday = birthday;
     }
 
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
 
     @Override
     public boolean equals(Object o) {

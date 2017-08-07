@@ -2,25 +2,29 @@ package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
 import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPost;
-import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPut;
 import fi.helsinki.cs.joosakur.asmgr.service.AssistantService;
 import fi.helsinki.cs.joosakur.asmgr.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class AssistantsController implements AssistantsApi {
 
     private final EmployerService employerService;
@@ -40,32 +44,72 @@ public class AssistantsController implements AssistantsApi {
 
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
-    public ResponseEntity<List<AssistantGet>> listMyAssistants() throws NotFoundException {
+    public List<AssistantGet> listMyAssistants() throws NotFoundException {
         Employer employer = getAuthenticatedEmployer();
         List<Assistant> assistants = assistantService.listByEmployer(employer);
-        List<AssistantGet> response = assistants.stream()
-                .map(assistant -> new AssistantGet().fromEntity(assistant))
+        return assistants.stream()
+                .map(AssistantGet::newFromEntity)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> deleteAssistant(UUID id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAssistant(UUID id) {
+        return;
+    }
+
+    @Override
+    @ResponseStatus(HttpStatus.OK)
+    public AssistantGet getAssistant(UUID id) {
         return null;
     }
 
     @Override
-    public ResponseEntity<AssistantGet> getAssistant(UUID id) {
-        return null;
+    public List<AssistantGet> listActiveCoworkers(@PathVariable("id") UUID id) throws NotFoundException, AuthorizationException {
+        Assistant assistant = assistantService.find(id);
+        if(!assistant.isActive())
+            throw new AuthorizationException("Not currently employed, access denied.");
+        return assistantService.listByEmployer(assistant.getEmployer()).stream()
+                .filter(Assistant::isActive)
+                .map(AssistantGet::newFromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ResponseEntity<AssistantGet> updateAssistant(UUID id, AssistantPut assistantModel) {
-        return null;
+    @ResponseStatus(HttpStatus.OK)
+    public AssistantGet updateAssistant(@PathVariable("id") UUID id, @Valid @RequestBody AssistantPost assistantModel) throws NotFoundException, AuthorizationException {
+        Employer employer = getAuthenticatedEmployer();
+        Assistant assistant = assistantService.find(id);
+        if(!assistant.getEmployer().equals(employer))
+            throw new AuthorizationException("Not your assistant!");
+
+        assistant.setFirstName(assistantModel.getFirstName());
+        assistant.setLastName(assistantModel.getLastName());
+        assistant.setNickname(assistantModel.getNickName());
+        assistant.setBirthday(assistantModel.getBirthday());
+        assistant.setNickname(assistantModel.getNickName());
+        if(assistantModel.getBackgroundColor() != null)
+            assistant.setBackgroundColor(Color.decode(assistantModel.getBackgroundColor()));
+        if(assistantModel.getTextColor() != null)
+            assistant.setTextColor(Color.decode(assistantModel.getTextColor()));
+
+        assistant = assistantService.update(assistant);
+        return new AssistantGet().fromEntity(assistant);
     }
 
     @Override
-    public ResponseEntity<AssistantGet> createAssistant(AssistantPost assistantModel) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public AssistantGet createAssistant(@Valid @RequestBody AssistantPost assistantModel) throws NotFoundException {
+        Employer employer = getAuthenticatedEmployer();
+        Assistant assistant = new Assistant(employer, assistantModel.getEmail(),
+                assistantModel.getFirstName(), assistantModel.getLastName(), assistantModel.getBirthday());
+        assistant.setNickname(assistantModel.getNickName());
+        if(assistantModel.getBackgroundColor() != null)
+            assistant.setBackgroundColor(Color.decode(assistantModel.getBackgroundColor()));
+        if(assistantModel.getTextColor() != null)
+            assistant.setTextColor(Color.decode(assistantModel.getTextColor()));
+
+        assistant = assistantService.create(assistant);
+        return new AssistantGet().fromEntity(assistant);
     }
 }

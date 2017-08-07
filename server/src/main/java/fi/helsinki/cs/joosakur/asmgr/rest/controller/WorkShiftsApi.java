@@ -1,5 +1,6 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.error.ErrorResponse;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.workshift.WorkShiftGet;
@@ -32,7 +33,7 @@ public interface WorkShiftsApi {
     @ResponseStatus(HttpStatus.OK)
     List<WorkShiftGet> listWorkShifts(@NotNull @ApiParam(value = "from date", required = true) @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate from,
                                                       @NotNull @ApiParam(value = "to date", required = true) @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
-                                                      @ApiParam(value = "id of the assistant") @RequestParam(value = "assistantId", required = false) String assistantId) throws NotFoundException;
+                                                      @ApiParam(value = "id of the assistant") @RequestParam(value = "assistantId", required = false) UUID assistantId) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Delete work shift", notes = "This endpoint is for deleting a work shift. Needs to be logged in as the associated employer. ",
@@ -47,7 +48,7 @@ public interface WorkShiftsApi {
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteWorkShift(@ApiParam(value = "id of the work shift", required = true) @PathVariable("id") UUID id);
+    void deleteWorkShift(@ApiParam(value = "id of the work shift", required = true) @PathVariable("id") UUID id) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Update work shift", notes = "This endpoint is for updating a work shift. All data needs to be passed and will replace the existing data. Needs to be logged in as the associated employer. ",
@@ -65,7 +66,7 @@ public interface WorkShiftsApi {
             method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     WorkShiftGet updateWorkShift(@ApiParam(value = "id of the work shift", required = true) @PathVariable("id") UUID id,
-                                                 @ApiParam(required = true) @RequestBody WorkShiftPost workShiftModel);
+                                                 @ApiParam(required = true) @RequestBody WorkShiftPost workShiftModel) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Create work shift", notes = "This endpoint is for creating a new work shift. The given assistant must be employed by the logged in user. ",

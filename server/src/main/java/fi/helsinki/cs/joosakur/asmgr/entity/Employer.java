@@ -60,6 +60,10 @@ public class Employer implements UserDetails {
     @NotNull
     private List<Assistant> assistants = new ArrayList<>();
 
+    @Column(name = "enabled")
+    @NotNull
+    private boolean enabled;
+
     public Employer() {
     }
 
@@ -115,6 +119,10 @@ public class Employer implements UserDetails {
         this.birthday = birthday;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public List<Assistant> getAssistants() {
         return assistants;
     }
@@ -152,7 +160,7 @@ public class Employer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
 

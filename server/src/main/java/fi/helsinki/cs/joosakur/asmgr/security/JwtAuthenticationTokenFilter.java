@@ -1,9 +1,9 @@
 package fi.helsinki.cs.joosakur.asmgr.security;
 
+import fi.helsinki.cs.joosakur.asmgr.config.properties.AppConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,12 +27,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
+    @Autowired
+    private AppConfig appConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authToken = request.getHeader(this.tokenHeader);
+        String authToken = request.getHeader(appConfig.getJwt().getHeader());
         String username = jwtTokenUtil.getUsernameFromToken(authToken);
 
         logger.info("checking authentication for user " + username);

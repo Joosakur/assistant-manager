@@ -46,10 +46,24 @@ public class ControllerAdviceImpl extends ResponseEntityExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(ResourceExpiredException.class)
+    @ResponseStatus(HttpStatus.GONE)
+    ErrorResponse handleException(ResourceExpiredException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(NotReadyException.class)
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+    ErrorResponse handleException(NotReadyException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+
+
     @Override
     @ResponseBody
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        String parameterName = ex.getParameter().getParameterName();
+        //todo: better handling
         System.out.println(ex.getMessage());
         return new ResponseEntity<>(new FormErrorResponse(ex.getBindingResult()), HttpStatus.BAD_REQUEST);
     }

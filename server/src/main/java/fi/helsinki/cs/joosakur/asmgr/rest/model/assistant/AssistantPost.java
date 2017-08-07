@@ -44,7 +44,6 @@ public class AssistantPost {
      * @return email
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
     @Size(min = 3, max = 60)
     public String getEmail() {
         return email;

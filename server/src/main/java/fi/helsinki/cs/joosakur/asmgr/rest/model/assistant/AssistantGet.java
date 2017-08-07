@@ -69,6 +69,10 @@ public class AssistantGet {
         return this;
     }
 
+    public static AssistantGet newFromEntity(Assistant assistant) {
+        return new AssistantGet().fromEntity(assistant);
+    }
+
     /**
      * Get id
      *

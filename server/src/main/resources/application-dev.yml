@@ -3,17 +3,13 @@ spring:
     username: asmanager
     password: insecure
     url: jdbc:postgresql://localhost:5432/asmanager
-    platform: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     database: postgresql
     show-sql: true
-jwt:
-  header: Authorization
-  secret: mySecret
-  expiration: 604800
-management:
-  port: 8081
-  security:
-    enabled: false
+app:
+  api-origin: "http://localhost:8080"
+  gui-origin: "http://localhost:3000"
+  jwt:
+    secret: mySecret

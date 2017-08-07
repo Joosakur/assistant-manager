@@ -1,11 +1,11 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
+import fi.helsinki.cs.joosakur.asmgr.exception.NotReadyException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.auth.JwtAuthenticationRequest;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.auth.JwtAuthenticationResponse;
 import fi.helsinki.cs.joosakur.asmgr.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,18 +14,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthenticationRestController {
-
-    @Value("${jwt.header}")
-    private String tokenHeader;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,7 +29,8 @@ public class AuthenticationRestController {
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+    @ResponseStatus(HttpStatus.OK)
+    public JwtAuthenticationResponse createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException, NotReadyException {
 
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
@@ -50,21 +43,24 @@ public class AuthenticationRestController {
 
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        if(!userDetails.isEnabled())
+            throw new NotReadyException("Account is pending for verification, please check your email.");
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        return new JwtAuthenticationResponse(token);
     }
 
+    /*
     @RequestMapping(value = "/login-refresh", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+    @ResponseStatus(HttpStatus.OK)
+    public JwtAuthenticationResponse refreshAndGetAuthenticationToken(HttpServletRequest request) throws ResourceExpiredException {
         String token = request.getHeader(tokenHeader);
         if (jwtTokenUtil.canTokenBeRefreshed(token)) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
-        } else {
-            return ResponseEntity.badRequest().body(null);
+            return new JwtAuthenticationResponse(refreshedToken);
         }
+        throw new ResourceExpiredException("Can not refresh token");
     }
-
+    */
 }

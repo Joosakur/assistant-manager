@@ -83,11 +83,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/*",
                         "/swagger-resources/**/*",
                         "/v2/api-docs",
-                        "/login"
-                ).permitAll()
+                        "/login",
+                        "/assistants/*/coworkers",
+                        "/work-shifts"
+                        ).permitAll()
                 .requestMatchers(request -> request.getLocalPort() == 8081).permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(HttpMethod.POST, "/employers", "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/employers", "/employers/verify", "/login", "/assistants/*/coworkers").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter

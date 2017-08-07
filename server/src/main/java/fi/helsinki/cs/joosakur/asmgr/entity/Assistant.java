@@ -34,8 +34,7 @@ public class Assistant {
     @NotNull
     private Employer employer;
 
-    @Column(name = "email", nullable = false, length = 64)
-    @NotNull
+    @Column(name = "email", length = 64)
     @Size(min = 3, max = 64)
     @Email
     private String email;
@@ -58,6 +57,8 @@ public class Assistant {
     @Size(min = 1, max = 12)
     private String nickname;
 
+    @Column(name = "active")
+    @NotNull
     private boolean active = true;
 
     @NotNull

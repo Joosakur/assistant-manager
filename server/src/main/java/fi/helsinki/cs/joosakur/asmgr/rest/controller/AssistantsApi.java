@@ -1,12 +1,11 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPost;
-import fi.helsinki.cs.joosakur.asmgr.rest.model.assistant.AssistantPut;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.error.ErrorResponse;
 import io.swagger.annotations.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ public interface AssistantsApi {
     @RequestMapping(value = "/assistants",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<AssistantGet>> listMyAssistants() throws NotFoundException;
+    List<AssistantGet> listMyAssistants() throws NotFoundException;
 
 
     @ApiOperation(value = "Delete assistant", notes = "This endpoint is for deleting an assistant and all related data. Needs to be logged in as an employer of that assistant.",
@@ -41,7 +40,7 @@ public interface AssistantsApi {
     @RequestMapping(value = "/assistants/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id);
+    void deleteAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id);
 
 
     @ApiOperation(value = "Get assistant", notes = "This endpoint is for finding a single assistant. Needs to be logged in  as an employer of that assistant. ",
@@ -55,7 +54,19 @@ public interface AssistantsApi {
     @RequestMapping(value = "/assistants/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<AssistantGet> getAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id);
+    AssistantGet getAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id);
+
+
+    @ApiOperation(value = "List assistants", notes = "This endpoint is for listing active assistants employed by the same employer.",
+            response = AssistantGet.class, responseContainer = "List", tags = {}, authorizations = {@Authorization(value = "basicAuth")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listing assistants successful.", response = AssistantGet.class),
+            @ApiResponse(code = 403, message = "Authorization failed.", response = ErrorResponse.class)
+    })
+    @RequestMapping(value = "/assistants/{id}/coworkers",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    List<AssistantGet> listActiveCoworkers(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Update assistant", notes = "This endpoint is for updating an assistant. All data needs to be passed and will replace the existing data. Needs to be logged in as an employer  of that assistant. ",
@@ -71,8 +82,8 @@ public interface AssistantsApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<AssistantGet> updateAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id,
-                                                 @ApiParam(required = true) @RequestBody AssistantPut assistantModel);
+    AssistantGet updateAssistant(@ApiParam(value = "id of the assistant", required = true) @PathVariable("id") UUID id,
+                                                 @ApiParam(required = true) @RequestBody AssistantPost assistantModel) throws NotFoundException, AuthorizationException;
 
 
     @ApiOperation(value = "Create assistant", notes = "This endpoint is for creating a new assistant for the currently logged in employer. ",
@@ -86,6 +97,6 @@ public interface AssistantsApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<AssistantGet> createAssistant(@ApiParam(required = true) @RequestBody AssistantPost assistantModel);
+    AssistantGet createAssistant(@ApiParam(required = true) @RequestBody AssistantPost assistantModel) throws NotFoundException;
 
 }

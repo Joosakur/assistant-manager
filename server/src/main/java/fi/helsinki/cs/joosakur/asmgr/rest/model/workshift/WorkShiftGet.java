@@ -34,9 +34,13 @@ public class WorkShiftGet {
         this.id = workShift.getId();
         this.start = workShift.getStarts().format(DateTimeFormatter.ISO_DATE_TIME);
         this.end = workShift.getEnds().format(DateTimeFormatter.ISO_DATE_TIME);
-        this.assistantId = workShift.getAssistant().getId();
+        this.assistantId = workShift.getAssistant() != null ? workShift.getAssistant().getId() : null;
         this.sick = workShift.isSick();
         return this;
+    }
+
+    public static WorkShiftGet newFromEntity(WorkShift workShift) {
+        return new WorkShiftGet().fromEntity(workShift);
     }
 
     /**

@@ -3,6 +3,7 @@ package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
+import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.workshift.WorkShiftGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.workshift.WorkShiftPost;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class WorkShiftsController implements WorkShiftsApi {
@@ -45,11 +47,40 @@ public class WorkShiftsController implements WorkShiftsApi {
 
 
     @Override
-    @PreAuthorize("hasRole('EMPLOYER')")
+    @PreAuthorize("hasRole('EMPLOYER') or #assistantId != null ")
     @ResponseStatus(HttpStatus.OK)
     public List<WorkShiftGet> listWorkShifts(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate from,
-                                                             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
-                                                             @RequestParam(value = "assistantId", required = false) String assistantId)
+                                             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
+                                             @RequestParam(value = "assistantId", required = false) UUID assistantId)
+            throws NotFoundException, AuthorizationException {
+
+        Employer employer;
+        if(assistantId == null) {
+            employer = getAuthenticatedEmployer();
+            if(employer == null)
+                throw new AuthorizationException("You need to be logged in");
+        }
+        else {
+            Assistant assistant = assistantService.find(assistantId);
+            if(assistant == null || !assistant.isActive())
+                throw new AuthorizationException("Not an active assistant, access denied.");
+            employer = assistant.getEmployer();
+        }
+        List<WorkShift> workShifts = workShiftService.listByEmployerAndTime(employer, from, to);
+        Stream<WorkShift> stream = workShifts.stream();
+        if(assistantId!=null)
+            stream = stream.filter(workShift -> !workShift.isSick());
+
+        return stream
+                .map(WorkShiftGet::newFromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<WorkShiftGet> listWorkShiftsForAssistant(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate from,
+                                                         @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
+                                                         @RequestParam(value = "assistantId", required = false) String assistantId)
             throws NotFoundException
     {
         Employer employer = getAuthenticatedEmployer();
@@ -59,18 +90,36 @@ public class WorkShiftsController implements WorkShiftsApi {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteWorkShift(@PathVariable("id") UUID id) {
-
+    public void deleteWorkShift(@PathVariable("id") UUID id) throws NotFoundException, AuthorizationException {
+        Employer employer = getAuthenticatedEmployer();
+        WorkShift workShift = workShiftService.find(id);
+        if(!workShift.getEmployer().equals(employer))
+            throw new AuthorizationException("Not your work shift!");
+        workShiftService.delete(id);
     }
 
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.OK)
-    public WorkShiftGet updateWorkShift(@PathVariable("id") UUID id, @RequestBody WorkShiftPost workShiftModel) {
-        return null;
+    public WorkShiftGet updateWorkShift(@PathVariable("id") UUID id, @RequestBody WorkShiftPost workShiftModel) throws NotFoundException, AuthorizationException {
+        Employer employer = getAuthenticatedEmployer();
+        WorkShift workShift = workShiftService.find(id);
+        if(!workShift.getEmployer().equals(employer))
+            throw new AuthorizationException("Not your work shift!");
+        Assistant assistant = null;
+        if(workShiftModel.getAssistantId() != null)
+            assistant = assistantService.find(workShiftModel.getAssistantId());
+        workShift.setAssistant(assistant);
+        workShift.setStarts(workShiftModel.getStart());
+        workShift.setEnds(workShiftModel.getEnd());
+        workShift.setSick(workShiftModel.getSick());
+        workShift = workShiftService.update(workShift);
+        return new WorkShiftGet().fromEntity(workShift);
     }
 
     @Override
@@ -82,6 +131,7 @@ public class WorkShiftsController implements WorkShiftsApi {
         if(workShiftModel.getAssistantId() != null)
             assistant = assistantService.find(workShiftModel.getAssistantId());
         WorkShift workShift = new WorkShift(employer, assistant, workShiftModel.getStart(), workShiftModel.getEnd());
+        workShift.setSick(workShiftModel.getSick());
         workShift = workShiftService.create(workShift);
         return new WorkShiftGet().fromEntity(workShift);
     }
