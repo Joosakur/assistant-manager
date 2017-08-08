@@ -8,6 +8,7 @@ import fi.helsinki.cs.joosakur.asmgr.repository.WorkShiftRepository;
 import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -17,7 +18,8 @@ import java.time.LocalTime;
 import java.time.Month;
 
 @Component
-public class DevDataLoader implements CommandLineRunner {
+@Profile("test")
+public class TestDataLoader implements CommandLineRunner {
 
     private final EmployerService employerService;
     private final AssistantRepository assistantRepository;
@@ -26,7 +28,7 @@ public class DevDataLoader implements CommandLineRunner {
     private final HourListBuilder hourListBuilder;
 
     @Autowired
-    public DevDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilder hourListBuilder) {
+    public TestDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilder hourListBuilder) {
         this.employerService = employerService;
         this.assistantRepository = assistantRepository;
         this.workShiftRepository = workShiftRepository;
