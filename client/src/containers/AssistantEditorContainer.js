@@ -3,12 +3,13 @@ import {endAssistantEdit} from "../actions/assistantActions";
 import {sendAssistantEdit} from "../thunks/assistantsThunk";
 import AssistantModalForm from "../components/assistants/AssistantModalForm";
 import {formValueSelector} from "redux-form";
+import moment from "moment";
 
 const mapStateToProps = state => {
-  let targetId = state.schedule.target;
+  let targetId = state.assistants.target;
   let target;
   if(targetId)
-    target = state.entities.workShifts[targetId];
+    target = state.entities.assistants[targetId];
 
   const selector = formValueSelector("AssistantForm");
 
@@ -23,11 +24,13 @@ const mapStateToProps = state => {
     submitting: state.assistants.submitting,
     enableReinitialize: true,
     initialValues: {
-      firstName:  target && target.firstName ? target.firstDayOfWeek : "",
       target: targetId,
+      firstName:  target && target.firstName ? target.firstName : "",
+      lastName:  target && target.lastName ? target.lastName : "",
+      nickName:  target && target.nickName ? target.nickName : "",
+      birthday:  target && target.birthday ? moment(target.birthday, "YYYY-MM-DD").format("DD.MM.YYYY") : undefined,
       backgroundColor: target && target.backgroundColor ? target.backgroundColor : "#808080",
       whiteText: target && target.whiteText ? target.whiteText : false,
-
     },
     shortName,
     backgroundColor,

@@ -22,9 +22,9 @@ const mapStateToProps = state => {
       startDate: target ? moment(target.start).format("DD.MM.YYYY") :  moment().format("DD.MM.YYYY"),
       target: targetId,
       startTimeHours: target ? moment(target.start).hours() : null,
-      startTimeMinutes: target ? moment(target.start).minutes() : null,
+      startTimeMinutes: target ? moment(target.start).minutes() : "00",
       endTimeHours: target ? moment(target.end).hours() : null,
-      endTimeMinutes: target ? moment(target.end).minutes() : null,
+      endTimeMinutes: target ? moment(target.end).minutes() : "00",
       sick: target ? target.sick : false
     }
   };
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch) => {
     onClose: () => dispatch(endWorkShiftEdit()),
     onSubmit: (values) => dispatch(sendWorkShiftEdit(values)),
     onDelete: (id) => {
-      dispatch(deleteWorkShift(id))
+      dispatch(deleteWorkShift(id));
     }
   };
 };

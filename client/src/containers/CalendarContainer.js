@@ -42,14 +42,15 @@ const getEvent = (workShift, assistant) =>
   return event;
 };
 
-const eventStyling = (event) => { //start, end, isSelected
+const eventStyling = (assistantId) => (event) => { //start, end, isSelected
   return {style: {
-    backgroundColor: event.assistant.backgroundColor,
-    color: event.assistant.textColor
+    backgroundColor: assistantId && event.assistant.id !== assistantId ? "#aaaaaa" : event.assistant.backgroundColor,
+    color: assistantId && event.assistant.id !== assistantId ? "#000000" : event.assistant.textColor,
+    opacity: assistantId && event.assistant.id !== assistantId ? 0.5 : 1
   }};
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
 
   let events = Object.getOwnPropertyNames(state.entities.workShifts).map((id) => {
     let workShift = state.entities.workShifts [id];
@@ -62,7 +63,16 @@ const mapStateToProps = state => {
     } else {
       return getEvent(workShift, assistant);
     }
-  }).filter((event) => event !== null);
+  }).filter((event) => event !== null)
+    .sort((a,b) => {
+      a = moment(a.start);
+      b = moment(b.start);
+      if(a.isBefore(b))
+        return -1;
+      if(b.isBefore(a))
+        return 1;
+      return 0;
+    });
 
   return {
     loading: state.login.loading,
@@ -74,16 +84,16 @@ const mapStateToProps = state => {
     components: {
       event: WorkEvent
     },
-    eventPropGetter: eventStyling
+    eventPropGetter: eventStyling(ownProps.assistantId)
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onNavigate: (date) => {
       let from = moment(date).date(1).add(-7, 'days').hours(0).minutes(0).second(0).millisecond(0).format();
       let to = moment(date).add(1, 'month').date(1).add(7, 'days').hours(0).minutes(0).second(0).millisecond(0).format();
-      dispatch(getWorkShifts(from, to));
+      dispatch(getWorkShifts(from, to, ownProps.assistantId));
     },
     onSelectEvent: (event, e) => {
       e.preventDefault();

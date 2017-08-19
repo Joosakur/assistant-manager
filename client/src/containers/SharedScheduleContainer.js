@@ -1,17 +1,11 @@
 import {connect} from 'react-redux';
-import {startWorkShiftEdit} from "../actions/workShiftActions";
-import Schedule from "../components/schedule/Schedule";
+import SharedSchedule from "../components/schedule/SharedSchedule";
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    loading: state.schedule.loading
+    loading: state.schedule.loading,
+    assistantId: ownProps.assistantId
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onCreateNew: () => dispatch(startWorkShiftEdit(null))
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Schedule);
+export default connect(mapStateToProps)(SharedSchedule);

@@ -1,34 +1,19 @@
-import {API, SELF} from '../constants/urls';
-import {postRegistrationBegin, postRegistrationSuccess, postRegistrationError} from '../actions/registrationActions';
-import {push} from 'react-router-redux';
-import {toastr} from 'react-redux-toastr';
-import {formErrorFromApiError} from '../utils/errorUtils';
-import {SubmissionError} from 'redux-form';
+import {API} from '../constants/urls';
+import {generalErrorFromApiError} from '../utils/errorUtils';
 import axios from 'axios';
+import {postVerificationBegin, postVerificationError, postVerificationSuccess} from "../actions/verificationActions";
 
-export function postRegistration(registration) {
+export function postVerification(token) {
   return function (dispatch) {
-    dispatch(postRegistrationBegin());
+    dispatch(postVerificationBegin());
 
-    let body = {
-      email: registration.email,
-      password: registration.password,
-      firstName: registration.firstName,
-      lastName: registration.lastName,
-      birthday: new Date()
-    };
-
-    return axios.post(API.origin+API.employers, body, {withCredentials: true})
+    return axios.post(API.origin+API.employerVerification+"?token="+token)
       .then(() => {
-        dispatch(postRegistrationSuccess());
-        dispatch(push(SELF.registered));
-        toastr.success('Success', 'Account created');
+        dispatch(postVerificationSuccess());
       })
       .catch(e => {
-        let error = formErrorFromApiError(e);
-        dispatch(postRegistrationError(error));
-        toastr.error("Error", error._error);
-        throw new SubmissionError(error);
+        let error = generalErrorFromApiError(e);
+        dispatch(postVerificationError(error));
       });
   };
 }

@@ -12,7 +12,7 @@ const Schedule = ({onCreateNew, loading}) => {
         <Header floated="left" as="h1"><Icon name="calendar"/> Work Schedule</Header>
         <Button primary size="big" floated="right" icon="add" content="Create new" onClick={onCreateNew}/>
         <Divider hidden section clearing/>
-        <Segment basic style={{height: "700px"}} loading={loading}>
+        <Segment basic loading={loading}>
           <CalendarContainer/>
         </Segment>
       </Container>

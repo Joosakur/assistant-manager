@@ -4,7 +4,10 @@ import {Form, Icon, Radio} from 'semantic-ui-react';
 
 const FormToggle = (props) => {
   let {input, label, icon} = props;
-  console.log(input);
+
+  if(typeof icon === 'string')
+    icon = <Icon size="large" name={icon}/>;
+
   return (
     <Form.Field>
       <Radio
@@ -14,14 +17,14 @@ const FormToggle = (props) => {
                event.preventDefault();
                input.onChange(data.checked);
              }}
-             label={<label>{icon && <Icon size="large" name={icon}/>}{label}</label>}/>
+             label={<label>{icon}{label}</label>}/>
     </Form.Field>
   );
 };
 
 FormToggle.propTypes = {
   input: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired
   }).isRequired,
   label: PropTypes.string.isRequired,

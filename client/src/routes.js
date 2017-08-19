@@ -11,6 +11,11 @@ import LoginPage from "./pages/LoginPage";
 import {connectedRouterRedirect} from "redux-auth-wrapper/history3/redirect";
 import locationHelperBuilder from 'redux-auth-wrapper/history3/locationHelper';
 import SchedulePage from "./pages/SchedulePage";
+import AuthLoader from "./components/login/AuthLoader";
+import SharedSchedulePage from "./pages/SharedSchedulePage";
+import RegisteredPage from "./pages/RegisteredPage";
+import VerificationPage from "./pages/VerificationPage";
+import ReportingPage from "./pages/ReportingPage";
 
 const locationHelper = locationHelperBuilder({});
 
@@ -19,6 +24,9 @@ const userIsAuthenticated = connectedRouterRedirect({
   redirectPath: SELF.login,
   // Determine if the user is authenticated or not
   authenticatedSelector: state => state.login.authenticated === true,
+  //authentication is on going
+  authenticatingSelector: state => state.login.authenticating === true,
+  AuthenticatingComponent: AuthLoader,
   // A nice display name for this check
   wrapperDisplayName: 'UserIsAuthenticated',
   //redirect via redux-router
@@ -32,6 +40,8 @@ const userIsNotAuthenticated = connectedRouterRedirect({
   allowRedirectBack: false,
   // Determine if the user is authenticated or not
   authenticatedSelector: state => state.login.authenticated === false,
+  //authentication is on going
+  authenticatingSelector: state => state.login.authenticating === true,
   // A nice display name for this check
   wrapperDisplayName: 'UserIsNotAuthenticated',
   //redirect via redux-router
@@ -44,6 +54,10 @@ export default (
     <Route path={SELF.assistants} component={userIsAuthenticated(AssistantsPage)}/>
     <Route path={SELF.schedule} component={userIsAuthenticated(SchedulePage)}/>
     <Route path={SELF.register} component={userIsNotAuthenticated(RegistrationPage)}/>
+    <Route path={SELF.registered} component={RegisteredPage}/>
+    <Route path={SELF.verifyAccount} component={VerificationPage}/>
     <Route path={SELF.login} component={userIsNotAuthenticated(LoginPage)}/>
+    <Route path={SELF.scheduleShare+"/:shareId"} component={SharedSchedulePage}/>
+    <Route path={SELF.reporting} component={ReportingPage}/>
   </Route>
 );

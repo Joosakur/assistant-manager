@@ -6,6 +6,7 @@ import { Router } from 'react-router';
 import ReduxToastr from 'react-redux-toastr';
 
 export default class Root extends Component {
+
   render() {
     const { store, history } = this.props;
     return (

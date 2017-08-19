@@ -1,18 +1,19 @@
 import {connect} from 'react-redux';
-import LoginForm from "../components/login/LoginForm";
-import {postLogin} from "../thunks/loginThunk";
+import {postVerification} from "../thunks/verificationThunk";
+import Verifier from "../components/registration/Verifier";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    loading: state.login.loading
+    loading: state.verification.loading,
+    error: state.verification.error
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onSubmit: (values) => dispatch(postLogin(values.email, values.password))
+    onMount: () => dispatch(postVerification(ownProps.token))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Verifier);
 

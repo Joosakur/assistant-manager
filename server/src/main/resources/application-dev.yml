@@ -8,6 +8,8 @@ spring:
       ddl-auto: validate
     database: postgresql
     show-sql: true
+flyway:
+  enabled: true
 app:
   api-origin: "http://localhost:8080"
   gui-origin: "http://localhost:3000"

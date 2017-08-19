@@ -15,14 +15,15 @@ export function postRegistration(registration) {
       password: registration.password,
       firstName: registration.firstName,
       lastName: registration.lastName,
-      birthday: new Date()
+      birthday: new Date(),
+      captcha: registration.captcha
     };
 
-    return axios.post(API.origin+API.employers, body, {withCredentials: true})
+    return axios.post(API.origin+API.employers, body)
       .then(() => {
         dispatch(postRegistrationSuccess());
-        dispatch(push(SELF.login));
-        toastr.success('Success', 'You can now login!');
+        dispatch(push(SELF.registered));
+        toastr.success('Success', 'Account created');
       })
       .catch(e => {
         let error = formErrorFromApiError(e);

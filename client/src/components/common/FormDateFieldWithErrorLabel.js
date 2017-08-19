@@ -19,8 +19,7 @@ const FormDateFieldWithErrorLabel = (props) => {
         isValidDate={isValidDate || (() => true)}
         inputProps={{
           type: "text",
-          placeholder: placeholder || moment().format("DD.MM.YYYY"),
-          error: error
+          placeholder: placeholder || moment().format("DD.MM.YYYY")
         }}
       />
     </Form.Field>

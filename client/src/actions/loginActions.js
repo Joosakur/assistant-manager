@@ -1,11 +1,15 @@
 import * as types from "../constants/actionTypes";
 
+export function loadAuthBegin() {
+  return {type: types.LOAD_AUTH_BEGIN};
+}
+
 export function postLoginBegin() {
   return {type: types.POST_LOGIN_BEGIN};
 }
 
-export function postLoginSuccess(token, firstName, lastName) {
-  return {type: types.POST_LOGIN_SUCCESS, token, firstName, lastName};
+export function postLoginSuccess(token, userData) {
+  return {type: types.POST_LOGIN_SUCCESS, token, userData};
 }
 
 export function postLoginError(error) {

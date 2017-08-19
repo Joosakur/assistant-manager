@@ -6,8 +6,9 @@ import path from 'path';
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
   __DEV__: true,
-  __API_ORIGIN__: "\"http://localhost:8080\"",
-  __SELF_ORIGIN__: "\"http://localhost:3000\""
+  __API_ORIGIN__: JSON.stringify("http://localhost:8080"),
+  __SELF_ORIGIN__: JSON.stringify("http://localhost:3000"),
+  __RECAPTCHA_SITE_KEY__: JSON.stringify(process.env.RECAPTCHA_SITE_KEY_DEV)
 };
 
 export default {

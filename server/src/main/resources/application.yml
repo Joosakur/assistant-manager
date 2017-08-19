@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: xxxx #pass through environment variable SPRING_DATASOURCE_USERNAME
-    password: xxxx #pass through environment variable SPRING_DATASOURCE_PASSWORD
+    username: #pass through environment variable SPRING_DATASOURCE_USERNAME
+    password: #pass through environment variable SPRING_DATASOURCE_PASSWORD
     url: jdbc:postgresql://host:5432/dbname #pass through environment variable SPRING_DATASOURCE_URL
   jpa:
     hibernate:
@@ -9,11 +9,11 @@ spring:
     database: postgresql
     show-sql: false
   mail:
-    host: xxxx #pass through environment variable SPRING_MAIL_HOST
+    host: #pass through environment variable SPRING_MAIL_HOST
     protocol: smtps
     port: 465
-    username: xxxx #pass through environment variable SPRING_MAIL_USERNAME
-    password: xxxx #pass through environment variable SPRING_MAIL_PASSWORD
+    username: #pass through environment variable SPRING_MAIL_USERNAME
+    password: #pass through environment variable SPRING_MAIL_PASSWORD
     test-connection: true
 flyway:
   enabled: true
@@ -27,8 +27,13 @@ app:
   api-origin: "https://api.host" #pass through environment variable APP_API_ORIGIN
   gui-origin: "https://host" #pass through environment variable APP_GUI_ORIGIN
   recaptcha:
-    secret: xxxx #pass through environment variable APP_RECAPTCHA_SECRET
+    secret: #pass through environment variable APP_RECAPTCHA_SECRET
   jwt:
     header: Authorization
-    secret: xxxx #pass through environment variable APP_JTW_SECRET
+    secret: #pass through environment variable APP_JTW_SECRET
     expiration: 604800
+  s3:
+    access-key: #pass through environment variable APP_S3_ACCESS_KEY
+    secret-key: #pass through environment variable APP_S3_SECRET_KEY
+    region: eu_west_1
+    bucket: #pass through environment variable APP_S3_BUCKET

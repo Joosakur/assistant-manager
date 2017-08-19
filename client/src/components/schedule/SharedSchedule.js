@@ -1,29 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ScheduleEditorContainer from "../../containers/ScheduleEditorContainer";
-import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from "semantic-ui-react";
+import {Container, Divider, Header, Icon, Segment} from "semantic-ui-react";
 import CalendarContainer from "../../containers/CalendarContainer";
 
-const Schedule = ({onCreateNew, loading}) => {
+const SharedSchedule = ({loading, assistantId}) => {
   return (
-    <Sidebar.Pushable>
-      <ScheduleEditorContainer/>
-      <Container className="page-container">
+      <Container>
         <Header floated="left" as="h1"><Icon name="calendar"/> Work Schedule</Header>
-        <Button primary size="big" floated="right" icon="add" content="Create new" onClick={onCreateNew}/>
         <Divider hidden section clearing/>
         <Segment basic loading={loading}>
-          <CalendarContainer/>
+          <CalendarContainer assistantId={assistantId}/>
         </Segment>
       </Container>
-    </Sidebar.Pushable>
   );
 };
 
-Schedule.propTypes = {
-  onCreateNew: PropTypes.func.isRequired,
-  loading: PropTypes.bool
+SharedSchedule.propTypes = {
+  loading: PropTypes.bool,
+  assistantId: PropTypes.string.isRequired
 };
 
-export default Schedule;
+export default SharedSchedule;
 

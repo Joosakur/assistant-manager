@@ -1,35 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import {toastr} from 'react-redux-toastr';
+import Clipboard from 'clipboard';
 
 class CopyButton extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
+  constructor(props, context) {
+    super(props, context);
+  }
 
-    render() {
-        return (
-            <div></div>
-        );
-    }
+  componentDidMount() {
+    let cb = new Clipboard('#'+this.props.children.props.id);
+    cb.on('success', () => toastr.success("Success", "Link was copied to the clipboard."));
+    cb.on('error', () => toastr.error("Error", "Copy failed, please copy manually."));
+    this.cb=cb;
+    console.log(this.props);
+  }
+
+  componentWillUnmount() {
+    this.cb.destroy();
+  }
+
+  render() {
+    return (
+      <div>{React.cloneElement(this.props.children, {'data-clipboard-text': this.props.text})}</div>
+    );
+  }
 }
 
 CopyButton.propTypes = {
-    //foobar: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired
 };
 
-function mapStateToProps(state, ownProps) {
-    return {
-        state: state
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CopyButton);
+export default CopyButton;
 

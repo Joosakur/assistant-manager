@@ -18,7 +18,7 @@ import java.time.LocalTime;
 import java.time.Month;
 
 @Component
-@Profile("test")
+@Profile({"test"})
 public class TestDataLoader implements CommandLineRunner {
 
     private final EmployerService employerService;

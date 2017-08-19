@@ -1,5 +1,6 @@
 package fi.helsinki.cs.joosakur.asmgr.config.properties;
 
+import com.amazonaws.regions.Regions;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ public class AppConfig {
     @NestedConfigurationProperty
     private Jwt jwt = new Jwt();
 
+    @NestedConfigurationProperty
+    private S3 s3 = new S3();
 
 
     public String getApiOrigin() {
@@ -57,6 +60,13 @@ public class AppConfig {
         this.jwt = jwt;
     }
 
+    public S3 getS3() {
+        return s3;
+    }
+
+    public void setS3(S3 s3) {
+        this.s3 = s3;
+    }
 
     public class Recaptcha {
 
@@ -109,4 +119,49 @@ public class AppConfig {
         }
     }
 
+    public class S3 {
+        @NotNull
+        private String accessKey;
+
+        @NotNull
+        private String secretKey;
+
+        @NotNull
+        private Regions region;
+
+        @NotNull
+        private String bucket;
+
+        public String getAccessKey() {
+            return accessKey;
+        }
+
+        public void setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+        }
+
+        public String getSecretKey() {
+            return secretKey;
+        }
+
+        public void setSecretKey(String secretKey) {
+            this.secretKey = secretKey;
+        }
+
+        public Regions getRegion() {
+            return region;
+        }
+
+        public void setRegion(Regions region) {
+            this.region = region;
+        }
+
+        public String getBucket() {
+            return bucket;
+        }
+
+        public void setBucket(String bucket) {
+            this.bucket = bucket;
+        }
+    }
 }

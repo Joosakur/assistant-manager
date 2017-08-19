@@ -1,14 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {Loader, Segment} from "semantic-ui-react";
 
-const AuthLoader = (props) => {
-    return (
-        <div></div>
-    );
-};
-
-AuthLoader.propTypes = {
-    //foobar: PropTypes.string.isRequired
+const AuthLoader = () => {
+  return (
+    <Segment inverted style={{position: 'absolute', top:0, bottom:0, width: '100%', display: 'flex', alignItems: 'center'}}>
+        <Loader active size="huge" content="Authenticating..."/>
+    </Segment>
+  );
 };
 
 export default AuthLoader;

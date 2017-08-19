@@ -34,15 +34,67 @@ $color-negative: #db2828;
   margin: 0.5rem 0;
 }
 
-.rbc-month-view {
-  display: grid;
+/* Schedule */
+.rbc-calendar {
+  height: auto;
+  display: block;
+
+  .rbc-month-view {
+    display: block;
+
+    .rbc-month-row {
+      min-height: 100px;
+      height:auto;
+
+      .rbc-row-content {
+        .rbc-row {
+          .rbc-row-segment {
+            margin: 3px 0;
+
+            .rbc-event {
+              .rbc-event-content {
+                .event-data-container {
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: space-between;
+
+                  .event-data-item {
+                    padding: 3px;
+                    flex-grow:1;
+                    flex-shrink: 0;
+
+                  }
+                  .event-data-item-name {
+                    .icon-sick {
+                      margin-left: 3px;
+                    }
+                  }
+                  .event-data-item-time {
+                    flex-grow: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-.rbc-month-row {
-  height: inherit;
-  min-height: 100px;
+.icon-sick {
+  color: red;
+  background-color: white;
+  padding: 3px;
 }
 
-.rbc-row-segment {
-  margin: 3px 0;
+p.details {
+  font-size: 0.85rem;
+  color: #666666
+}
+
+.assistant-share-popup {
+  .ui.segment {
+    padding: 1rem 0 0 0;
+  }
 }

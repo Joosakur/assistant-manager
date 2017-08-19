@@ -41,7 +41,7 @@ public class HourListBuilder {
         hourList.setEmployerName(employer.getFirstName()+" "+employer.getLastName());
         hourList.setAssistantName(assistant.getFirstName()+" "+assistant.getLastName());
         hourList.setAssistantSocialNumberStart(assistant.getBirthday().format(socialNumberFormatter));
-        hourList.setHourListRows(calculateHourListRows(workShifts));
+        hourList.setHourListRows(calculateHourListRows(workShifts, startDate, endDate));
         return hourList;
     }
 
@@ -60,7 +60,7 @@ public class HourListBuilder {
     }
 
 
-    private List<HourListRow> calculateHourListRows(List<WorkShift> workShifts) {
+    private List<HourListRow> calculateHourListRows(List<WorkShift> workShifts, LocalDate startDate, LocalDate endDate) {
         return workShifts.stream()
                     .flatMap(splitWorkShiftsIntoSpans) // split work shifts into spans contained inside some date
                     .collect( // get the time spans grouped by date+isSick
@@ -72,6 +72,7 @@ public class HourListBuilder {
                         List<TimeSpan> timeSpans = entry.getValue();
                         return HourListRowFactory.build(group.getDate(), timeSpans, true, group.isSick());
                     })
+                    .filter((row) -> !row.getDate().isBefore(startDate) && !row.getDate().isAfter(endDate))
                     .sorted(Comparator.comparing(HourListRow::getDate))
                     .collect(Collectors.toList());
     }

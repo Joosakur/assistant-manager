@@ -1,9 +1,19 @@
 import {connect} from 'react-redux';
 import {ownPropsToArray} from "../utils/jsUtils";
 import AssistantCardGroup from "../components/assistants/AssistantCardGroup";
+import {startAssistantEdit} from "../actions/assistantActions";
 
 const mapStateToProps = state => {
-  let assistants = ownPropsToArray(state.entities.assistants);
+  let assistants = ownPropsToArray(state.entities.assistants)
+    .sort((a,b) => {
+      let nameA = (a.firstName+" "+a.lastName).toUpperCase();
+      let nameB = (b.firstName+" "+b.lastName).toUpperCase();
+      if (nameA < nameB)
+        return -1;
+      if (nameA > nameB)
+        return 1;
+      return 0;
+    });
 
   return {
     loading: state.assistants.loading,
@@ -11,8 +21,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
+    openEditor: (id) => dispatch(startAssistantEdit(id))
   };
 };
 

@@ -2,24 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, Form, Grid, Icon, Label, Modal} from "semantic-ui-react";
 import {reduxForm, Field} from 'redux-form';
-import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
-import FormDropdownField from "../common/FormDropdownField";
-import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel";
 import FormToggle from "../common/FormToggle";
 import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel";
-import moment from "moment";
 import FormColorPickerWithLabel from "../common/FormColorPickerWithLabel";
+import {dateBefore, maxLength, required} from "../../utils/validationConstraints";
+import moment from "moment";
 
 class AssistantModalForm extends React.Component {
 
   constructor(props, context) {
-    console.log(props);
     super(props, context);
-  }
-
-  componentWillReceiveProps(newProps) {
-    console.log("received");
-    console.log(newProps);
   }
 
   render() {
@@ -36,16 +28,20 @@ class AssistantModalForm extends React.Component {
           <Form id="AssistantForm" onSubmit={this.props.handleSubmit}>
             <Grid columns="equal">
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="firstName" component={FormFieldWithErrorLabel} type="text" label="First name" placeholder="First name" isRequired/>
+                <Field name="firstName" component={FormFieldWithErrorLabel} type="text" label="First name" placeholder="First name" isRequired
+                       validate={[required, maxLength(20)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label="Last name" placeholder="Last name" isRequired/>
+                <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label="Last name" placeholder="Last name" isRequired
+                       validate={[required, maxLength(30)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="nickName" component={FormFieldWithErrorLabel} type="text" label="Nick name" placeholder="Nick name"/>
+                <Field name="nickName" component={FormFieldWithErrorLabel} type="text" label="Nick name" placeholder="Nick name"
+                       validate={[maxLength(12)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="birthday" component={FormFieldWithErrorLabel} type="text" label="Birthday" placeholder="31.12.1980" isRequired/>
+                <Field name="birthday" component={FormFieldWithErrorLabel} type="text" label="Birthday" placeholder="31.12.1980" isRequired
+                       validate={[required, dateBefore('D.M.YYYY', moment().add(-16, 'years'))]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
                 <Field name="backgroundColor" component={FormColorPickerWithLabel} label="Background color"/>
@@ -59,7 +55,7 @@ class AssistantModalForm extends React.Component {
         </Modal.Content>
         <Modal.Actions>
           <Button secondary onClick={this.props.onClose} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
-          <Button form="AssistantForm" type="submit" loading={this.props.submitting} disabled={this.props.submitting} positive>Save</Button>
+          <Button form="AssistantForm" type="submit" loading={this.props.submitting} disabled={this.props.pristine && this.props.submitting} positive>Save</Button>
         </Modal.Actions>
       </Modal>
     );
@@ -71,7 +67,10 @@ AssistantModalForm.propTypes = {
   target: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired
+  submitting: PropTypes.bool.isRequired,
+  shortName: PropTypes.string,
+  whiteText: PropTypes.bool,
+  backgroundColor: PropTypes.string
 };
 
 export default reduxForm({

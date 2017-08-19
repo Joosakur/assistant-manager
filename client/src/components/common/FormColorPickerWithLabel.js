@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Form, Input, Label} from 'semantic-ui-react';
+import {Form} from 'semantic-ui-react';
 import {CompactPicker} from 'react-color';
-import Segment from "semantic-ui-react/dist/es/elements/Segment/Segment";
 
 const FormColorPickerWithLabel = (props) => {
   let {input, label} = props;

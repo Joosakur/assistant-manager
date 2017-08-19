@@ -21,13 +21,20 @@ export default {
   registration: {
     loading: false
   },
+  verification: {
+    loading: false,
+    error: undefined
+  },
   login: {
     loading: false,
     authenticated: false,
     token: '',
-    firstName: '',
-    lastName: ''
+    userData: undefined
   },
-
+  reporting: {
+    submitting: false,
+    polling: false,
+    downloadLink: undefined
+  }
 
 };

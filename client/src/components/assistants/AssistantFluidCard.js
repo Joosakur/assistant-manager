@@ -1,34 +1,76 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, ButtonGroup, Card, Header, Icon} from "semantic-ui-react";
+import {Button, ButtonGroup, Card, Header, Icon, Popup, Segment} from "semantic-ui-react";
+import {SELF} from "../../constants/urls";
+import CopyButton from "../common/CopyButton";
 
-const AssistantFluidCard = (props) => {
-  let {assistant: {firstName, lastName, backgroundColor}} = props;
+class AssistantFluidCard extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+  }
 
-  let archived = false;
+  render() {
+    let {assistant: {id, firstName, lastName, backgroundColor}, onEdit} = this.props;
+    if(!backgroundColor)
+      backgroundColor = "#333333";
+    let archived = false;
+    let shareLink = SELF.origin+SELF.scheduleShare+"/"+id;
 
-  if(!backgroundColor)
-    backgroundColor = "#333333";
+    return (
+      <Card fluid color="green">
+        <Card.Content>
+          <Header>
+            <div className="float-left">
+              <Icon circular bordered name="user" style={{color: backgroundColor}}/>
+              {firstName} {lastName}
+            </div>
+            <div style={{float: "right"}}>
+              {!archived &&
+              <Popup
+                className="assistant-share-popup"
+                trigger={<Button icon="share alternate" content="Share"/>}
+                header="Share link to assistant"
+                content={
+                  <div>
+                    <p>
+                      Your assistant may check his work schedule via this link: <br/>
+                      <a href={shareLink} target="_blank">{shareLink}</a>
+                    </p>
+                    <p className="details">
+                      Assistant's own work shifts are shown with the chosen color. Other assistant's shift are also
+                      shown as dimmed, excluding archived assistants and sick leaves.
+                    </p>
+                    <Segment basic textAlign="right">
+                      <ButtonGroup>
+                        <Popup
+                          trigger={<Button content="Send by email" icon="mail"/>}
+                          content="Not yet implemented :("
+                          size="tiny"
+                          inverted
+                        />
+                        <Button.Or/>
+                        <CopyButton text={shareLink} >
+                          <Button id={"copy-btn-"+id} content="Copy to clipboard" icon="clipboard"/>
+                        </CopyButton>
+                      </ButtonGroup>
+                    </Segment>
 
-  return (
-    <Card fluid color="green">
-      <Card.Content>
-        <Header>
-          <div className="float-left">
-            <Icon circular bordered name="user" style={{color: backgroundColor}}/>
-            {firstName} {lastName}
-          </div>
-          <ButtonGroup floated="right">
-            {!archived && <Button className="hover-warning">Archive</Button>}
-            {archived && <Button>Delete</Button>}
-            {!archived && <Button secondary>Edit</Button>}
-            {archived && <Button secondary>Reactivate</Button>}
-          </ButtonGroup>
-        </Header>
-      </Card.Content>
-    </Card>
-  );
-};
+                  </div>
+
+                }
+                on="click"
+                position="left center"
+                wide="very"
+              />
+              }
+              <Button onClick={onEdit} icon="edit" content="Edit"/>
+            </div>
+          </Header>
+        </Card.Content>
+      </Card>
+    );
+  }
+}
 
 AssistantFluidCard.propTypes = {
   assistant: PropTypes.shape({
@@ -37,7 +79,8 @@ AssistantFluidCard.propTypes = {
     lastName: PropTypes.string.isRequired,
     nickName: PropTypes.string,
     backgroundColor: PropTypes.string.isRequired,
-  }).isRequired
+  }).isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default AssistantFluidCard;

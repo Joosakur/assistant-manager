@@ -14,17 +14,17 @@ import {
 import SubmissionError from "redux-form/es/SubmissionError";
 import moment from "moment";
 
-export function getWorkShifts(fromDate, toDate) {
+export function getWorkShifts(fromDate, toDate, assistantId) {
   return function (dispatch, getState) {
     dispatch(getWorkShiftsBegin());
-    if(!getState().login.authenticated) {
+    if(!assistantId && !getState().login.authenticated) {
       dispatch(push(SELF.login));
       toastr.error("Error", "Please login");
     }
 
     return axios.get(API.origin+API.workShifts, {
       headers: {'Authorization': getState().login.token},
-      params: {'from': fromDate, 'to': toDate}
+      params: {'from': fromDate, 'to': toDate, assistantId}
     })
       .then((response) => {
         dispatch(getWorkShiftsSuccess(response.data));
@@ -56,16 +56,16 @@ export function deleteWorkShift(id) {
         dispatch(deleteWorkShiftError(error));
         toastr.error("Error", error._error);
       });
-  }
+  };
 }
 
 export function sendWorkShiftEdit(form) {
   return function (dispatch, getState) {
     dispatch(submitWorkShiftBegin());
 
-    let start = moment(form.startDate, "DD.MM.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes);
+    let start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes);
 
-    let end = moment(form.startDate, "DD.MM.YYYY");
+    let end = moment(form.startDate, "D.M.YYYY");
     if(form.endTimeHours === 24 && form.endTimeMinutes === 0) {
       end.add(1, "days").hours(0).minutes(0);
     }

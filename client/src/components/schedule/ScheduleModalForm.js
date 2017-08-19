@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Form, Grid, Modal} from "semantic-ui-react";
+import {Button, Form, Grid, Icon, Modal} from "semantic-ui-react";
 import {reduxForm, Field} from 'redux-form';
 import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
 import FormDropdownField from "../common/FormDropdownField";
 import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel";
 import FormToggle from "../common/FormToggle";
 import moment from "moment";
+import {dateBetween, required} from "../../utils/validationConstraints";
 
 class ScheduleModalForm extends React.Component {
 
@@ -44,8 +45,9 @@ class ScheduleModalForm extends React.Component {
               <Grid.Column computer="8" tablet="16" mobile="16">
                 <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"
                        isValidDate={(date) => {
-                         return date.isBetween(moment('2017-1-1'), moment().add(1, 'years'));}
+                         return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'));}
                        }
+                       validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, 'years'))]}
                 />
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
@@ -55,7 +57,7 @@ class ScheduleModalForm extends React.Component {
                 <FormTimeGroupWithErrorLabel name="endTime" label="End time"/>
               </Grid.Column>
               <Grid.Column computer="16" tablet="16" mobile="16" verticalAlign="bottom">
-                <Field name="sick" component={FormToggle} label="Was sick?" icon="doctor"/>
+                <Field name="sick" component={FormToggle} label="Was sick?" icon={<Icon name="plus" circular size="small" className="icon-sick"/>} />
               </Grid.Column>
             </Grid>
             <Field component="input" type="hidden" name="target"/>
@@ -63,7 +65,7 @@ class ScheduleModalForm extends React.Component {
         </Modal.Content>
         <Modal.Actions>
           {this.props.target && <Button negative floated="left" onClick={() => this.props.onDelete(this.props.target)} loading={this.props.submitting} disabled={this.props.submitting}>Delete</Button>}
-          <Button secondary onClick={this.props.onClose} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
+          <Button secondary onClick={() => (this.props.reset() & this.props.onClose())} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
           <Button form="WorkShiftForm" type="submit" loading={this.props.submitting} disabled={this.props.submitting} positive>Save</Button>
         </Modal.Actions>
       </Modal>

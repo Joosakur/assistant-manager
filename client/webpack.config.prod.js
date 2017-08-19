@@ -10,8 +10,9 @@ import path from 'path';
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
   __DEV__: false,
-  __API_ORIGIN__: "\"http://api.assistant-manager.joosa.net\"",
-  __SELF_ORIGIN__: "\"http://assistant-manager.joosa.net\""
+  __API_ORIGIN__: JSON.stringify("https://api.assistant-manager.joosa.net"),
+  __SELF_ORIGIN__: JSON.stringify("https://assistant-manager.joosa.net"),
+  __RECAPTCHA_SITE_KEY__: JSON.stringify(process.env.RECAPTCHA_SITE_KEY_PROD)
 };
 
 export default {

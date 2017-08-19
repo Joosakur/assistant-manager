@@ -8,8 +8,8 @@ import {
   submitAssistantBegin, submitAssistantError, submitAssistantSuccess
 } from "../actions/assistantActions";
 import {formErrorFromApiError, generalErrorFromApiError} from "../utils/errorUtils";
-import moment from "moment";
 import SubmissionError from "redux-form/es/SubmissionError";
+import moment from "moment";
 
 export function getAssistants() {
   return function (dispatch, getState) {
@@ -32,13 +32,39 @@ export function getAssistants() {
   };
 }
 
+export function getCoworkers(assistantId) {
+  return function (dispatch, getState) {
+    dispatch(getAssistantsBegin());
+
+    return axios.get(API.origin+API.assistants+"/"+assistantId+"/coworkers", {
+      headers: {'Authorization': getState().login.token}
+    })
+      .then((response) => {
+        dispatch(getAssistantsSuccess(response.data));
+      })
+      .catch(e => {
+        let error = generalErrorFromApiError(e);
+        dispatch(getAssistantsError());
+        toastr.error("Error", error);
+      });
+  };
+}
+
+
+
 
 export function sendAssistantEdit(form) {
   return function (dispatch, getState) {
     dispatch(submitAssistantBegin());
 
     let body = {
-      firstName: form.firstName
+      firstName: form.firstName,
+      lastName: form.lastName,
+      nickName: form.nickName,
+      birthday: moment(form.birthday, "D.M.YYYY").format("YYYY-MM-DD"),
+      active: true,
+      backgroundColor: form.backgroundColor,
+      textColor: form.whiteText ? "#ffffff" : "#000000"
     };
 
     let url = API.origin+API.assistants;
