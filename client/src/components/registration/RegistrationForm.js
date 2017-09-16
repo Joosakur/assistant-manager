@@ -1,24 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Form, Button, Divider} from 'semantic-ui-react';
+import {Form, Button, Divider, Checkbox} from 'semantic-ui-react';
 import {reduxForm, Field} from 'redux-form';
 import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel";
-import {email, maxLength, minLength, required} from "../../utils/validationConstraints";
+import {dateBefore, email, maxLength, minLength, required} from "../../utils/validationConstraints";
 import ReduxFormRecaptcha from "../common/ReduxFormRecaptcha";
+import moment from "moment";
+import FormToggle from "../common/FormToggle";
+import FormCheckbox from "../common/FormCheckbox";
+import FormDropdownField from "../common/FormDropdownField";
+
+const cities = ['Helsinki','Espoo','Vantaa','Lande'];
+const getCityOptions = () => {
+  return cities.map(city => {return {key: city, text: city, value: city};})
+};
 
 const RegistrationForm = (props) => {
   let {handleSubmit, error, loading} = props;
 
+  const cityOptions = getCityOptions();
+
   return (
     <Form error={!!error} onSubmit={handleSubmit} >
-      <Field name="email" component={FormFieldWithErrorLabel} type="text" label="Email" isRequired
+      <Field name="email" component={FormFieldWithErrorLabel} type="text" label="Sähköpostiosoite" isRequired
              validate={[required, email, maxLength(64)]}/>
-      <Field name="password" component={FormFieldWithErrorLabel} type="password" label="Password" isRequired
+      <Field name="password" component={FormFieldWithErrorLabel} type="password" label="Salasana" isRequired
              validate={[required, minLength(8), maxLength(30)]}/>
-      <Field name="firstName" component={FormFieldWithErrorLabel} type="text" label="First Name" isRequired
+      <Field name="firstName" component={FormFieldWithErrorLabel} type="text" label="Etunimi" isRequired
              validate={[required, maxLength(20)]}/>
-      <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label="Last Name" isRequired
+      <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label="Sukunimi" isRequired
              validate={[required, maxLength(30)]}/>
+      <Field name="birthday" component={FormFieldWithErrorLabel} type="text" label="Syntymäpäivä" placeholder="31.12.1980" isRequired
+             validate={[required, dateBefore('D.M.YYYY', moment().add(-13, 'years'))]}/>
+      <Field name="city" component={FormDropdownField} label="Kotikunta" options={cityOptions}/>
+      <Field name="hetaMember" component={FormCheckbox}
+             label={<span>Kuulun <a href="http://www.heta-liitto.fi/" target="_blank"> heta-liittoon</a>.</span>}
+      />
+      <Field name="agreement" component={FormCheckbox}
+             label={<span>Hyväksyn palvelun <a href="/terms" target="_blank">käyttöehdot</a>.</span>}
+             isRequired
+             validate={required}/>
+
       <Field name="captcha" component={ReduxFormRecaptcha} explicit={true}/>
       <Divider hidden/>
       <Button type="submit" disabled={loading} positive size="huge" fluid>Sign up now!</Button>

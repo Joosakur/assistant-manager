@@ -98,3 +98,29 @@ p.details {
     padding: 1rem 0 0 0;
   }
 }
+
+.day-control-group {
+  flex-basis: #{100% / 7};
+  max-width: #{100% / 7};
+  z-index: 100;
+  margin-left:0.4rem;
+  height:1.6rem;
+}
+
+.ui.button.day-control-btn {
+  padding:0.2rem;
+  box-shadow: none;
+  :hover {
+    box-shadow: inherit;
+  }
+}
+
+.ui.button.day-control-btn.disabled {
+  display: none;
+}
+
+.ui.button.day-control-btn.copied {
+  background-color: #c9ffcb !important;
+}
+
+

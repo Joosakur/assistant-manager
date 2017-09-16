@@ -5,6 +5,9 @@ export default {
     },
     workShifts: {
 
+    },
+    workShiftsByStartDate: {
+
     }
   },
   assistants: {
@@ -16,7 +19,8 @@ export default {
     loading: false,
     submitting: false,
     editing: false,
-    target: null
+    target: null,
+    copiedDay: null
   },
   registration: {
     loading: false

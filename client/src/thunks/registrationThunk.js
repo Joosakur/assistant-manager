@@ -16,7 +16,9 @@ export function postRegistration(registration) {
       firstName: registration.firstName,
       lastName: registration.lastName,
       birthday: new Date(),
-      captcha: registration.captcha
+      captcha: registration.captcha,
+      city: registration.city,
+      hetaMember: registration.hetaMember
     };
 
     return axios.post(API.origin+API.employers, body)

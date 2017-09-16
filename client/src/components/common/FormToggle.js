@@ -28,7 +28,7 @@ FormToggle.propTypes = {
     onChange: PropTypes.func.isRequired
   }).isRequired,
   label: PropTypes.string.isRequired,
-  icon: PropTypes.string
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 export default FormToggle;

@@ -37,7 +37,7 @@ public class TestDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7));
+        Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Helsinki", true);
         employer = employerService.create(employer, true);
 
         Assistant assistant = new Assistant(employer, "abc@gmail.com", "Matti", "Koivisto", LocalDate.of(1988, 3, 12));

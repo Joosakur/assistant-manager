@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,11 +42,19 @@ public class WorkShiftsController implements WorkShiftsApi {
         this.workShiftService = workShiftService;
     }
 
-    private Employer getAuthenticatedEmployer() throws NotFoundException {
+    private Employer getAuthenticatedEmployer() throws AuthenticationException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null)
+            throw new AuthenticationCredentialsNotFoundException("Authentication not found.");
+
         String email = auth.getName();
-        return employerService.findByEmail(email);
+        try {
+            return employerService.findByEmail(email);
+        } catch (NotFoundException e) {
+            throw new UsernameNotFoundException("The authenticated user was not found.");
+        }
     }
+
 
 
     @Override
@@ -76,21 +87,21 @@ public class WorkShiftsController implements WorkShiftsApi {
                 .collect(Collectors.toList());
     }
 
+    //todo: what is this? not included in the interface
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.OK)
     public List<WorkShiftGet> listWorkShiftsForAssistant(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate from,
                                                          @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate to,
-                                                         @RequestParam(value = "assistantId", required = false) String assistantId)
-            throws NotFoundException
-    {
+                                                         @RequestParam(value = "assistantId", required = false) String assistantId) throws NotFoundException, AuthorizationException {
         Employer employer = getAuthenticatedEmployer();
-        List<WorkShift> workShifts = workShiftService.listByEmployerAndTime(employer, from, to);
+        Assistant assistant = assistantService.find(UUID.fromString(assistantId));
+        if(!assistant.getEmployer().getId().equals(employer.getId()))
+            throw new AuthorizationException("Not your assistant");
+        List<WorkShift> workShifts = workShiftService.listByAssistantAndTime(assistant, from, to);
         return workShifts.stream()
                 .map(workShift -> new WorkShiftGet().fromEntity(workShift))
                 .collect(Collectors.toList());
     }
-
-
 
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
@@ -134,5 +145,17 @@ public class WorkShiftsController implements WorkShiftsApi {
         workShift.setSick(workShiftModel.getSick());
         workShift = workShiftService.create(workShift);
         return new WorkShiftGet().fromEntity(workShift);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<WorkShiftGet> copyDay(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        Employer employer = getAuthenticatedEmployer();
+
+        return workShiftService.copyDay(employer, from, to).stream()
+                .map(WorkShiftGet::newFromEntity)
+                .collect(Collectors.toList());
     }
 }

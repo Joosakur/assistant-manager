@@ -2,10 +2,8 @@ package fi.helsinki.cs.joosakur.asmgr.rest.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -29,22 +27,24 @@ public class EmployerGet {
     @JsonProperty("birthday")
     private String birthday = null;
 
+    @JsonProperty("hetaMember")
+    private boolean hetaMember;
+
+    @JsonProperty("city")
+    private String city;
+
     public EmployerGet fromEntity(Employer employer){
         this.id = employer.getId();
         this.email = employer.getEmail();
         this.firstName = employer.getFirstName();
         this.lastName = employer.getLastName();
         this.birthday = employer.getBirthday().format(DateTimeFormatter.ISO_DATE);
+        this.hetaMember = employer.isHetaMember();
+        this.city = employer.getCity();
         return this;
     }
 
 
-    /**
-     * Get id
-     *
-     * @return id
-     **/
-    @ApiModelProperty(value = "")
     public UUID getId() {
         return id;
     }
@@ -53,13 +53,6 @@ public class EmployerGet {
         this.id = id;
     }
 
-
-    /**
-     * Get email
-     *
-     * @return email
-     **/
-    @ApiModelProperty(value = "")
     public String getEmail() {
         return email;
     }
@@ -68,13 +61,6 @@ public class EmployerGet {
         this.email = email;
     }
 
-
-    /**
-     * Get firstName
-     *
-     * @return firstName
-     **/
-    @ApiModelProperty(value = "")
     public String getFirstName() {
         return firstName;
     }
@@ -84,12 +70,6 @@ public class EmployerGet {
     }
 
 
-    /**
-     * Get lastName
-     *
-     * @return lastName
-     **/
-    @ApiModelProperty(value = "")
     public String getLastName() {
         return lastName;
     }
@@ -98,62 +78,28 @@ public class EmployerGet {
         this.lastName = lastName;
     }
 
-
-    /**
-     * Get birthday
-     *
-     * @return birthday
-     **/
-    @ApiModelProperty(value = "")
     public String getBirthday() {
         return birthday;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        EmployerGet employerGet = (EmployerGet) o;
-        return Objects.equals(this.id, employerGet.id) &&
-                Objects.equals(this.email, employerGet.email) &&
-                Objects.equals(this.firstName, employerGet.firstName) &&
-                Objects.equals(this.lastName, employerGet.lastName) &&
-                Objects.equals(this.birthday, employerGet.birthday);
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, birthday);
+    public boolean isHetaMember() {
+        return hetaMember;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class EmployerGet {\n");
-
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    email: ").append(toIndentedString(email)).append("\n");
-        sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-        sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-        sb.append("    birthday: ").append(toIndentedString(birthday)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public void setHetaMember(boolean hetaMember) {
+        this.hetaMember = hetaMember;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 

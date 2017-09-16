@@ -19,6 +19,8 @@ export default function scheduleReducer(state = initialState.schedule, action) {
       return Object.assign({}, state, {submitting: false});
     case types.DELETE_WORK_SHIFT_ERROR:
       return Object.assign({}, state, {submitting: false});
+    case types.COPY_DAY:
+      return Object.assign({}, state, {copiedDay: action.date});
     default:
       return state;
   }

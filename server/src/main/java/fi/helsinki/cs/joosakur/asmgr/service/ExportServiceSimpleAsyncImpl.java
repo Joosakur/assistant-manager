@@ -37,11 +37,13 @@ public class ExportServiceSimpleAsyncImpl implements ExportService{
         final UUID id = export.getId();
 
         try {
+            System.out.println("scheduling export");
             hourListService.handleExport(export)
                     .thenAccept(url -> {
                         onExportComplete(id, url);
                     });
         } catch (Exception e) {
+            e.printStackTrace();
             onExportError(id, e.getMessage());
         }
 
@@ -60,6 +62,7 @@ public class ExportServiceSimpleAsyncImpl implements ExportService{
     @Override
     @Transactional
     public void onExportComplete(UUID id, String downloadUrl) {
+        System.out.println("export completed");
         Export export = repository.findOne(id);
         if(export == null)
             return;
@@ -71,6 +74,7 @@ public class ExportServiceSimpleAsyncImpl implements ExportService{
     @Override
     @Transactional
     public void onExportError(UUID id, String error) {
+        System.out.println("export failed:"+error);
         Export export = repository.findOne(id);
         if(export == null)
             return;

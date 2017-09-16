@@ -2,13 +2,11 @@ package fi.helsinki.cs.joosakur.asmgr.rest.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.cs.joosakur.asmgr.validation.patterns.Patterns;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * EmployerPost
@@ -17,32 +15,42 @@ import java.util.Objects;
 
 public class EmployerPost {
     @JsonProperty("email")
+    @NotNull
+    @Size(min = 3, max = 60)
+    @Pattern(regexp = Patterns.EMAIL)
     private String email = null;
 
     @JsonProperty("password")
+    @NotNull
+    @Size(min = 8, max = 30)
     private String password = null;
 
     @JsonProperty("firstName")
+    @NotNull
+    @Size(min = 1, max = 20)
     private String firstName = null;
 
     @JsonProperty("lastName")
+    @NotNull
+    @Size(min = 1, max = 30)
     private String lastName = null;
 
     @JsonProperty("birthday")
+    @NotNull
     private LocalDate birthday = null;
+
+    @JsonProperty("hetaMember")
+    private boolean hetaMember;
+
+    @JsonProperty("city")
+    @NotNull
+    @Size(min = 1, max = 36)
+    private String city;
 
     @JsonProperty("captcha")
     private String captcha = null;
 
-    /**
-     * Get email
-     *
-     * @return email
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 3, max = 60)
-    @Pattern(regexp = Patterns.EMAIL)
+
     public String getEmail() {
         return email;
     }
@@ -51,14 +59,6 @@ public class EmployerPost {
         this.email = email;
     }
 
-    /**
-     * Get password
-     *
-     * @return password
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 8, max = 30)
     public String getPassword() {
         return password;
     }
@@ -67,14 +67,7 @@ public class EmployerPost {
         this.password = password;
     }
 
-    /**
-     * Get firstName
-     *
-     * @return firstName
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 1, max = 20)
+
     public String getFirstName() {
         return firstName;
     }
@@ -83,15 +76,6 @@ public class EmployerPost {
         this.firstName = firstName;
     }
 
-
-    /**
-     * Get lastName
-     *
-     * @return lastName
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 1, max = 30)
     public String getLastName() {
         return lastName;
     }
@@ -100,14 +84,6 @@ public class EmployerPost {
         this.lastName = lastName;
     }
 
-
-    /**
-     * Get birthday
-     *
-     * @return birthday
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -124,50 +100,20 @@ public class EmployerPost {
         this.captcha = captcha;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        EmployerPost employerPost = (EmployerPost) o;
-        return Objects.equals(this.email, employerPost.email) &&
-                Objects.equals(this.password, employerPost.password) &&
-                Objects.equals(this.firstName, employerPost.firstName) &&
-                Objects.equals(this.lastName, employerPost.lastName) &&
-                Objects.equals(this.birthday, employerPost.birthday);
+    public boolean isHetaMember() {
+        return hetaMember;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, password, firstName, lastName, birthday);
+    public void setHetaMember(boolean hetaMember) {
+        this.hetaMember = hetaMember;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class EmployerPost {\n");
-
-        sb.append("    email: ").append(toIndentedString(email)).append("\n");
-        sb.append("    password: ").append(toIndentedString(password)).append("\n");
-        sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-        sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-        sb.append("    birthday: ").append(toIndentedString(birthday)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public String getCity() {
+        return city;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 

@@ -48,7 +48,7 @@ public class AssistantServiceImpl implements AssistantService {
     }
 
     @Override
-    public List<Assistant> listByEmployer(Employer employer) throws NotFoundException {
+    public List<Assistant> listByEmployer(Employer employer) {
         return repository.findByEmployer(employer);
     }
 

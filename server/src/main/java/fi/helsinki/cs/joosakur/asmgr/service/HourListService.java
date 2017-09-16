@@ -33,9 +33,12 @@ public class HourListService {
 
     @Async
     public CompletableFuture<String> handleExport(Export export) throws IOException {
+        System.out.println("handling export");
         HourList build = hourListBuilder.build(export.getEmployer(), export.getAssistant(),
                 export.getFrom(), export.getTo());
+        System.out.println("hourlist built");
         File file = build.saveAs("/asmgr/" + export.getId() + ".ods");
+        System.out.println("tempfile saved");
 
         String filename = new StringJoiner(" ", "", ".ods")
                 .add(export.getTo().format(DateTimeFormatter.ofPattern("yy-MM")))
@@ -47,11 +50,17 @@ public class HourListService {
         System.out.println("putting to bucket");
         try {
             amazonS3.putObject(bucketName, key, file);
+            System.out.println("file uploaded");
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             throw e;
+        }
+        finally {
+            file.delete();
+            System.out.println("tempfile deleted");
+
         }
 
         Date expiration = DateTime.now().plusMinutes(1).toDate();

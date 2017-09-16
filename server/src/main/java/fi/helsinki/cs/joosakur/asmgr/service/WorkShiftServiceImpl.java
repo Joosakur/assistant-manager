@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,5 +70,26 @@ public class WorkShiftServiceImpl implements WorkShiftService {
     @Transactional
     public void delete(UUID id) throws NotFoundException {
         repository.delete(find(id));
+    }
+
+    @Override
+    @Transactional
+    public List<WorkShift> copyDay(Employer employer, LocalDate from, LocalDate to) {
+        List<WorkShift> workShifts = listByEmployerAndTime(employer, from, from);
+        List<WorkShift> copies = new ArrayList<>();
+
+        for (WorkShift workShift : workShifts) {
+            WorkShift copy = new WorkShift();
+            copy.setEmployer(employer);
+            copy.setAssistant(workShift.getAssistant());
+            copy.setStarts(workShift.getStarts().withYear(to.getYear()).withDayOfYear(to.getDayOfYear()));
+            copy.setEnds(workShift.getEnds().withYear(to.getYear()).withDayOfYear(to.getDayOfYear()));
+            int dayDiff = (workShift.getEnds().getDayOfYear() - workShift.getStarts().getDayOfYear()) % 365;
+            copy.setEnds(copy.getEnds().plusDays(dayDiff));
+            copy.setSick(workShift.isSick());
+            copies.add(create(copy));
+        }
+
+        return copies;
     }
 }

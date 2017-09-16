@@ -26,7 +26,7 @@ public interface AssistantsApi {
     @RequestMapping(value = "/assistants",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    List<AssistantGet> listMyAssistants() throws NotFoundException;
+    List<AssistantGet> listMyAssistants();
 
 
     @ApiOperation(value = "Delete assistant", notes = "This endpoint is for deleting an assistant and all related data. Needs to be logged in as an employer of that assistant.",
@@ -61,7 +61,8 @@ public interface AssistantsApi {
             response = AssistantGet.class, responseContainer = "List", tags = {}, authorizations = {@Authorization(value = "basicAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Listing assistants successful.", response = AssistantGet.class),
-            @ApiResponse(code = 403, message = "Authorization failed.", response = ErrorResponse.class)
+            @ApiResponse(code = 403, message = "Authorization failed.", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Entity not found.", response = ErrorResponse.class)
     })
     @RequestMapping(value = "/assistants/{id}/coworkers",
             produces = {"application/json"},
@@ -97,6 +98,6 @@ public interface AssistantsApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    AssistantGet createAssistant(@ApiParam(required = true) @RequestBody AssistantPost assistantModel) throws NotFoundException;
+    AssistantGet createAssistant(@ApiParam(required = true) @RequestBody AssistantPost assistantModel);
 
 }

@@ -59,31 +59,13 @@ export function deleteWorkShift(id) {
   };
 }
 
-export function sendWorkShiftEdit(form) {
+function sendWorkShift(body, target) {
   return function (dispatch, getState) {
     dispatch(submitWorkShiftBegin());
-
-    let start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes);
-
-    let end = moment(form.startDate, "D.M.YYYY");
-    if(form.endTimeHours === 24 && form.endTimeMinutes === 0) {
-      end.add(1, "days").hours(0).minutes(0);
-    }
-    else {
-      end.hours(form.endTimeHours).minutes(form.endTimeMinutes);
-    }
-
-    let body = {
-      assistantId: form.assistant === "Unassigned" ? null : form.assistant,
-      start: start.format("YYYY-MM-DDTHH:mm:ss"),
-      end: end.format("YYYY-MM-DDTHH:mm:ss"),
-      sick: form.sick
-    };
-
     let url = API.origin+API.workShifts;
     let method = 'post';
-    if(form.target) {
-      url += "/"+form.target;
+    if(target) {
+      url += "/"+target;
       method = 'put';
     }
     return axios({
@@ -105,4 +87,79 @@ export function sendWorkShiftEdit(form) {
         throw new SubmissionError(error);
       });
   };
+}
+
+export function sendWorkShiftForm(form) {
+  let start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes);
+  let end = moment(form.startDate, "D.M.YYYY");
+  let startTimeHours = parseInt(form.startTimeHours);
+  let startTimeMinutes = parseInt(form.startTimeMinutes);
+  let endTimeHours = parseInt(form.endTimeHours);
+  let endTimeMinutes = parseInt(form.endTimeMinutes);
+
+  if(endTimeHours === 24 && endTimeMinutes === 0) {
+    end.add(1, "days").hours(0).minutes(0);
+  }
+  else {
+    end.hours(endTimeHours).minutes(endTimeMinutes);
+    if(endTimeHours < startTimeHours ||
+      (endTimeHours === startTimeHours && endTimeMinutes < startTimeMinutes))
+      end.add(1, "days");
+  }
+
+  let body = {
+    assistantId: form.assistant === "Unassigned" ? null : form.assistant,
+    start: start.format("YYYY-MM-DDTHH:mm:ss"),
+    end: end.format("YYYY-MM-DDTHH:mm:ss"),
+    sick: form.sick
+  };
+
+  return sendWorkShift(body, form.target);
+}
+
+export function pasteDay(dateToPaste) {
+  return function (dispatch, getState) {
+    let dateToCopy = moment(getState().schedule.copiedDay);
+    return axios({
+      url: API.origin + API.workShifts + "/copy-day",
+      method: 'post',
+      headers: {'Authorization': getState().login.token},
+
+      params: {
+        from: dateToCopy.format("YYYY-MM-DD"),
+        to: dateToPaste.format("YYYY-MM-DD")
+      }
+    })
+      .then((response) => {
+        response.data.forEach((workShift) => {
+          dispatch(submitWorkShiftSuccess(workShift));
+        });
+        toastr.success('Saved');
+      })
+      .catch((e) => {
+        console.error(e);
+        toastr.error("Copying failed");
+      });
+
+    /*let workShifts = getState().entities.workShiftsByStartDate [dateToCopy.format("DD.MM.YYYY")];
+
+    workShifts && workShifts.map(id => {
+      return getState().entities.workShifts [id]
+    }).forEach((workShift) => {
+      let wStart = moment(workShift.start);
+      let wEnd = moment(workShift.end);
+      let start = moment(dateToPaste).hours(wStart.hours()).minutes(wStart.minutes());
+      let end = moment(dateToPaste).hours(wEnd.hours()).minutes(wEnd.minutes());
+      if(wStart.dayOfYear() !== wEnd.dayOfYear())
+        end.add(1, "days");
+
+      dispatch(sendWorkShift({
+        assistantId: workShift.assistantId,
+        start: start.format("YYYY-MM-DDTHH:mm:ss"),
+        end: end.format("YYYY-MM-DDTHH:mm:ss"),
+        sick: workShift.sick
+      }));
+    });
+    */
+  }
 }

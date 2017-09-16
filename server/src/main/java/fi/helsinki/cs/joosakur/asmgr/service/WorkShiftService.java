@@ -19,4 +19,6 @@ public interface WorkShiftService {
     List<WorkShift> listByAssistantAndTime(Assistant assistant, LocalDate from, LocalDate to);
 
     void delete(UUID id) throws NotFoundException;
+
+    List<WorkShift> copyDay(Employer employer, LocalDate from, LocalDate to);
 }

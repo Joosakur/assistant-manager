@@ -18,5 +18,6 @@ export const SELF = {
   assistants: "/assistants",
   schedule: "/schedule",
   scheduleShare: "/schedule/share",
-  reporting: "/reporting"
+  reporting: "/reporting",
+  terms: "/terms"
 };

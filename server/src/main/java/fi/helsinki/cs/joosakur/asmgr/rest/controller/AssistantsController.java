@@ -11,8 +11,11 @@ import fi.helsinki.cs.joosakur.asmgr.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,15 +39,23 @@ public class AssistantsController implements AssistantsApi {
         this.assistantService = assistantService;
     }
 
-    private Employer getAuthenticatedEmployer() throws NotFoundException {
+    private Employer getAuthenticatedEmployer() throws AuthenticationException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null)
+            throw new AuthenticationCredentialsNotFoundException("Authentication not found.");
+
         String email = auth.getName();
-        return employerService.findByEmail(email);
+        try {
+            return employerService.findByEmail(email);
+        } catch (NotFoundException e) {
+            throw new UsernameNotFoundException("The authenticated user was not found.");
+        }
     }
+
 
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
-    public List<AssistantGet> listMyAssistants() throws NotFoundException {
+    public List<AssistantGet> listMyAssistants() {
         Employer employer = getAuthenticatedEmployer();
         List<Assistant> assistants = assistantService.listByEmployer(employer);
         return assistants.stream()
@@ -99,7 +110,7 @@ public class AssistantsController implements AssistantsApi {
 
     @Override
     @ResponseStatus(HttpStatus.CREATED)
-    public AssistantGet createAssistant(@Valid @RequestBody AssistantPost assistantModel) throws NotFoundException {
+    public AssistantGet createAssistant(@Valid @RequestBody AssistantPost assistantModel) {
         Employer employer = getAuthenticatedEmployer();
         Assistant assistant = new Assistant(employer, assistantModel.getEmail(),
                 assistantModel.getFirstName(), assistantModel.getLastName(), assistantModel.getBirthday());

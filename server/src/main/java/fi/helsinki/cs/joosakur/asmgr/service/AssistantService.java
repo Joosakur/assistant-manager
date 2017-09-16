@@ -12,7 +12,7 @@ public interface AssistantService {
     Assistant update(Assistant assistant) throws NotFoundException;
 
     Assistant find(UUID id) throws NotFoundException;
-    List<Assistant> listByEmployer(Employer employer) throws NotFoundException;
+    List<Assistant> listByEmployer(Employer employer);
 
     void delete(UUID id) throws NotFoundException;
 }

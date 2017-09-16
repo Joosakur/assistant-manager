@@ -41,7 +41,8 @@ class ReportForm extends React.Component {
                      let assistantById = this.props.assistants.filter(a => a.id === value);
                      if(assistantById.length === 1)
                        this.props.onAssistantChange(assistantById[0])
-                   }}/>
+                   }}
+                   validate={[required]}/>
           </Grid.Column>
           <Grid.Column computer="3" tablet="16" mobile="16">
             <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"
@@ -61,9 +62,18 @@ class ReportForm extends React.Component {
           </Grid.Column>
           <Grid.Column computer="5" tablet="16" mobile="16" verticalAlign="bottom">
             {this.props.downloadable ? (
-
-              <Button as="a" href={this.props.downloadLink} floated="right" primary size="large" style={{width: "250px"}}>Download Spreadsheet</Button>
-
+              <div
+                onClick={() => {
+                this.props.resetForm();
+                this.props.onStartDownload();
+              }}>
+                <Button
+                  as="a" href={this.props.downloadLink}
+                  floated="right" primary size="large" style={{width: "250px"}}
+                  >
+                  Download Spreadsheet
+                </Button>
+              </div>
             ) : (
               <Button type="submit" floated="right" primary size="large"
                       disabled={this.props.submitting || this.props.polling}
@@ -86,7 +96,9 @@ ReportForm.propTypes = {
   polling: PropTypes.bool.isRequired,
   downloadable: PropTypes.bool.isRequired,
   downloadLink: PropTypes.string,
-  onAssistantChange: PropTypes.func.isRequired
+  onAssistantChange: PropTypes.func.isRequired,
+  onStartDownload: PropTypes.func.isRequired,
+  resetForm: PropTypes.func.isRequired
 };
 
 export default reduxForm({

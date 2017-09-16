@@ -56,6 +56,14 @@ public class Employer implements UserDetails {
     @NotNull
     private LocalDate birthday;
 
+    @Column(name = "heta_member")
+    @NotNull
+    private boolean hetaMember;
+
+    @Column(name = "city", length = 36)
+    @NotNull
+    private String city;
+
     @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
     private List<Assistant> assistants = new ArrayList<>();
@@ -64,15 +72,20 @@ public class Employer implements UserDetails {
     @NotNull
     private boolean enabled;
 
+
+
+
     public Employer() {
     }
 
-    public Employer(String email, String password, String firstName, String lastName, LocalDate birthday) {
+    public Employer(String email, String password, String firstName, String lastName, LocalDate birthday, String city, boolean hetaMember) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
+        this.city = city;
+        this.hetaMember = hetaMember;
     }
 
     public UUID getId() {
@@ -163,5 +176,20 @@ public class Employer implements UserDetails {
         return enabled;
     }
 
+    public boolean isHetaMember() {
+        return hetaMember;
+    }
+
+    public void setHetaMember(boolean hetaMember) {
+        this.hetaMember = hetaMember;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
 }

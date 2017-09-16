@@ -12,7 +12,7 @@ const FormDropdownField = (props) => {
                 value={input.value}
                 onChange={(param,data) => {
                   input.onChange(data.value);
-                  onChangeExtra(data.value);
+                  onChangeExtra && onChangeExtra(data.value);
                 }}
                 placeholder={label}
                 fluid/>
@@ -27,7 +27,7 @@ FormDropdownField.propTypes = {
   }).isRequired,
   label: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  onChangeExtra: PropTypes.func
+  onChangeExtra: PropTypes.func,
 };
 
 export default FormDropdownField;

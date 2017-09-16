@@ -4,6 +4,7 @@ import moment from 'moment';
 import WorkEvent from "../components/schedule/WorkEvent";
 import {getWorkShifts} from "../thunks/workShiftsThunk";
 import {startWorkShiftEdit} from "../actions/workShiftActions";
+import DayControlsContainer from "./DayControlsContainer";
 
 const getEvent = (workShift, assistant) =>
 {
@@ -21,7 +22,8 @@ const getEvent = (workShift, assistant) =>
     id: workShift.id,
     start: workShift.start,
     end: workShift.end,
-    calEnd: calEnd,
+    calStart,
+    calEnd,
     sick: workShift.sick
   };
 
@@ -78,11 +80,12 @@ const mapStateToProps = (state, ownProps) => {
     loading: state.login.loading,
     events: events,
     defaultDate: new Date(),
-    startAccessor: 'start',
+    startAccessor: 'calStart',
     endAccessor: 'calEnd',
     views: ['month'],
     components: {
-      event: WorkEvent
+      event: WorkEvent,
+      dateCellWrapper: DayControlsContainer
     },
     eventPropGetter: eventStyling(ownProps.assistantId)
   };

@@ -75,7 +75,8 @@ public interface WorkShiftsApi {
             @ApiResponse(code = 201, message = "Work shift created.", response = WorkShiftGet.class),
             @ApiResponse(code = 400, message = "Invalid data was sent on the request.", response = ErrorResponse.class),
             @ApiResponse(code = 401, message = "Authentication failed, should forward to login.", response = ErrorResponse.class),
-            @ApiResponse(code = 403, message = "User was authenticated but is not authorized for the action.", response = ErrorResponse.class)
+            @ApiResponse(code = 403, message = "User was authenticated but is not authorized for the action.", response = ErrorResponse.class),
+            @ApiResponse(code = 404, message = "Assistant was not found.", response = ErrorResponse.class)
     })
     @RequestMapping(value = "/work-shifts",
             produces = {"application/json"},
@@ -84,5 +85,22 @@ public interface WorkShiftsApi {
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin
     WorkShiftGet createWorkShift(@ApiParam(required = true) @RequestBody WorkShiftPost workShiftModel) throws NotFoundException;
+
+    @ApiOperation(value = "Copy work shifts from a day", notes = "This endpoint is for copying work shifts from one day to another",
+            response = WorkShiftGet.class, responseContainer = "List", tags = {}, authorizations = {@Authorization(value = "basicAuth")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Work shifts created.", response = WorkShiftGet.class, responseContainer = "List"),
+            @ApiResponse(code = 400, message = "Invalid data was sent on the request.", response = ErrorResponse.class),
+            @ApiResponse(code = 401, message = "Authentication failed, should forward to login.", response = ErrorResponse.class)
+    })
+    @RequestMapping(value = "/work-shifts/copy-day",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @CrossOrigin
+    List<WorkShiftGet> copyDay(@NotNull @ApiParam(value = "from date", required = true) @RequestParam(value = "from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                         @NotNull @ApiParam(value = "to date", required = true) @RequestParam(value = "to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) throws NotFoundException;
+
+
 
 }

@@ -16,6 +16,7 @@ import SharedSchedulePage from "./pages/SharedSchedulePage";
 import RegisteredPage from "./pages/RegisteredPage";
 import VerificationPage from "./pages/VerificationPage";
 import ReportingPage from "./pages/ReportingPage";
+import TermsPage from "./pages/TermsPage";
 
 const locationHelper = locationHelperBuilder({});
 
@@ -58,6 +59,8 @@ export default (
     <Route path={SELF.verifyAccount} component={VerificationPage}/>
     <Route path={SELF.login} component={userIsNotAuthenticated(LoginPage)}/>
     <Route path={SELF.scheduleShare+"/:shareId"} component={SharedSchedulePage}/>
-    <Route path={SELF.reporting} component={ReportingPage}/>
+    <Route path={SELF.reporting} component={userIsAuthenticated(ReportingPage)}/>
+    <Route path={SELF.terms} component={TermsPage}/>
+
   </Route>
 );

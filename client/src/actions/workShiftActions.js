@@ -44,3 +44,7 @@ export function deleteWorkShiftError() {
   return {type: types.DELETE_WORK_SHIFT_ERROR};
 }
 
+export function copyDay(date) {
+  return {type: types.COPY_DAY, date}
+}
+

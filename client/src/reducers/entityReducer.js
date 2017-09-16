@@ -1,5 +1,31 @@
 import * as types from "../constants/actionTypes";
 import initialState from "./initialState";
+import moment from "moment";
+
+const addToWorkShiftDateIndex = (index, workShift) => {
+  let date = moment(workShift.start).format("DD.MM.YYYY");
+  if(!index [date])
+    index [date] = [];
+  index [date].push(workShift.id);
+};
+
+const removeFromWorkShiftDateIndex = (index, workShift) => {
+  let date = moment(workShift.start).format("DD.MM.YYYY");
+  let indexElem = index [date];
+  if(indexElem) {
+    let deletedIndex = indexElem.indexOf(workShift.id);
+    if(deletedIndex > -1)
+      indexElem.splice(deletedIndex, 1);
+  }
+};
+
+const cloneWorkShiftsDateIndex = (workShiftsByStartDate) => {
+  let clone = {};
+  Object.getOwnPropertyNames(workShiftsByStartDate).forEach((date) => {
+    clone [date] = Array.of(...(workShiftsByStartDate [date]));
+  });
+  return clone;
+};
 
 const populateAssistants = (state, assistants) => {
   let assistantsObj = {};
@@ -11,16 +37,21 @@ const populateAssistants = (state, assistants) => {
 
 const populateWorkShifts = (state, workShifts) => {
   let workShiftsObj = {};
+  let workShiftsByStartDate = {};
   for (let workShift of workShifts) {
     workShiftsObj[workShift.id] = workShift;
+    addToWorkShiftDateIndex(workShiftsByStartDate, workShift);
   }
-  return Object.assign({}, state, {workShifts: workShiftsObj});
+  return Object.assign({}, state, {workShifts: workShiftsObj, workShiftsByStartDate});
 };
 
 const submitWorkShiftSuccess = (state, workShift) => {
   let newWorkShifts = Object.assign({}, state.workShifts);
   newWorkShifts[workShift.id] = workShift;
-  return Object.assign({}, state, {workShifts: newWorkShifts});
+  let newWorkShiftsByDate = cloneWorkShiftsDateIndex(state.workShiftsByStartDate);
+  addToWorkShiftDateIndex(newWorkShiftsByDate, workShift);
+
+  return Object.assign({}, state, {workShifts: newWorkShifts, workShiftsByStartDate: newWorkShiftsByDate});
 };
 
 const submitAssistantSuccess = (state, assistant) => {
@@ -30,9 +61,14 @@ const submitAssistantSuccess = (state, assistant) => {
 };
 
 const deleteWorkShiftSuccess = (state, id) => {
+  let deleted = state.workShifts [id];
+  let newWorkShiftsByDate = cloneWorkShiftsDateIndex(state.workShiftsByStartDate);
+  removeFromWorkShiftDateIndex(newWorkShiftsByDate, deleted);
+
   let newWorkShifts = Object.assign({}, state.workShifts);
   newWorkShifts[id] = undefined;
-  return Object.assign({}, state, {workShifts: newWorkShifts});
+
+  return Object.assign({}, state, {workShifts: newWorkShifts, workShiftsByStartDate: newWorkShiftsByDate});
 };
 
 

@@ -1,12 +1,10 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * EmployerPut
@@ -15,22 +13,28 @@ import java.util.Objects;
 
 public class EmployerPut {
     @JsonProperty("firstName")
+    @NotNull
+    @Size(min = 1, max = 20)
     private String firstName = null;
 
     @JsonProperty("lastName")
+    @NotNull
+    @Size(min = 1, max = 30)
     private String lastName = null;
 
     @JsonProperty("birthday")
+    @NotNull
     private LocalDate birthday = null;
 
-    /**
-     * Get firstName
-     *
-     * @return firstName
-     **/
-    @ApiModelProperty(required = true, value = "")
+    @JsonProperty("hetaMember")
+    private boolean hetaMember;
+
+    @JsonProperty("city")
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 36)
+    private String city;
+
+
     public String getFirstName() {
         return firstName;
     }
@@ -39,14 +43,6 @@ public class EmployerPut {
         this.firstName = firstName;
     }
 
-    /**
-     * Get lastName
-     *
-     * @return lastName
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 1, max = 30)
     public String getLastName() {
         return lastName;
     }
@@ -55,14 +51,6 @@ public class EmployerPut {
         this.lastName = lastName;
     }
 
-
-    /**
-     * Get birthday
-     *
-     * @return birthday
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -71,47 +59,20 @@ public class EmployerPut {
         this.birthday = birthday;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        EmployerPut employerPut = (EmployerPut) o;
-        return Objects.equals(this.firstName, employerPut.firstName) &&
-                Objects.equals(this.lastName, employerPut.lastName) &&
-                Objects.equals(this.birthday, employerPut.birthday);
+    public boolean isHetaMember() {
+        return hetaMember;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, birthday);
+    public void setHetaMember(boolean hetaMember) {
+        this.hetaMember = hetaMember;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class EmployerPut {\n");
-
-        sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-        sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-        sb.append("    birthday: ").append(toIndentedString(birthday)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public String getCity() {
+        return city;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 
