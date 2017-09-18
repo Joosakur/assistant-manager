@@ -4,14 +4,14 @@
 
 <#escape x as x?html>
 <body>
-<h1>Welcome to Assistant Manager!</h1>
+<h1>Tervetuloa Assistant Manager palveluun!</h1>
 <p>
-    Hello ${firstName}, and thank you for registering to Assistant Manager.
+    Hei ${firstName}, ja kiitos rekisteröitymisestä.
 </p>
 
-<h2>Confirmation needed</h2>
+<h2>Vahvistus tarvitaan</h2>
 <p>
-    Please visit the following link to confirm your email and activate your account:
+    Klikkaa oheista linkkiä vahvistaaksesi sähköpostisi ja aktivoidaksesi käyttäjätilisi:
     <a href="${link}">${link}</a>
 </p>
 </body>
