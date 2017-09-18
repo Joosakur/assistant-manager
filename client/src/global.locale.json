@@ -9,6 +9,34 @@
     "signOut": ["Kirjaudu ulos", "Sign Out"],
     "loggedIn": ["Kirjautunut käyttäjänä", "Logged in as"]
   },
+  "signUp": {
+    "title": ["Rekisteröidy käyttäjäksi","Sign Up"],
+    "subtitle": ["Täytä tietosi (huom. tietojen muokkaaminen ei ole vielä tällä hetkellä mahdollista, joten olethan tarkkana.)", "Please fill out your details."],
+    "email": ["Sähköposti", "Email"],
+    "password": ["Salasana", "Password"],
+    "firstName": ["Etunimi","First Name"],
+    "lastName": ["Sukunimi","Last Name"],
+    "birthday": ["Syntymäaika","Birthday"],
+    "city": ["Kotikunta", "City"],
+    "cbox1a": ["Kuulun", "I am a member of"],
+    "cbox1b": ["HETA-liittoon", "HETA union"],
+    "cbox2a": ["Hyväksyn palvelun", "I agree to the"],
+    "cbox2b": ["käyttöehdot", "Terms and Conditions"],
+    "submit": ["Liity mukaan!", "Sign Up Now!"],
+    "verifying": {
+      "title": ["Kiitos kun rekisteröidyit!", "Thank you for registering!"],
+      "subtitle": ["Odottaa sähköpostin varmennusta","Email verification pending"],
+      "p1": [
+        "Sähköpostisi täytyy vielä varmentaa. Tarkista sähköpostisi ja klikkaa saamaasi vahvistuslinkkiä ennen sisäänkirjautumista.",
+        "Your email still needs to be verified. Please check your email and visit the verification link before signing in."
+      ]
+    },
+    "verified": {
+      "title": ["Sähköpostisi on varmennettu ja tilisi on aktivoitu!","Email verified and account is active!"],
+      "subtitle": ["Voit nyt kirjautua sisään","You can now sign in"],
+      "proceedBtn": ["Jatka kirjautumiseen","Proceed to Sign In"]
+    }
+  },
   "signIn": {
     "email": ["Sähköposti", "Email"],
     "password": ["Salasana", "Password"],
@@ -45,9 +73,9 @@
     "edit": {
       "titleNew": ["Lisää uusi avustaja","Add New Assistant"],
       "titleEdit": ["Muokkaa avustajaa","Edit Assistant"],
-      "firstName": ["Etunimi","First name"],
-      "lastName": ["Sukunimi","Last name"],
-      "nickName": ["Lempinimi","Nick name"],
+      "firstName": ["Etunimi","First Name"],
+      "lastName": ["Sukunimi","Last Name"],
+      "nickName": ["Lempinimi","Nick Name"],
       "birthday": ["Syntymäaika","Birthday"],
       "backgroundColor": ["Taustaväri","Background color"],
       "textInvert": ["Valkoinen teksti","Invert text color"],

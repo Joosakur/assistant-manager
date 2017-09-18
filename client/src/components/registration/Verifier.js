@@ -16,7 +16,7 @@ class Verifier extends React.Component {
   }
 
   render() {
-    let {loading, error} = this.props;
+    let {loading, error, msg} = this.props;
     return (
       <div>
         {loading && (
@@ -37,10 +37,12 @@ class Verifier extends React.Component {
           <Message positive floating icon size="big">
             <Icon name="checkmark"/>
             <Message.Content>
-              <Message.Header>Email verified and account is active!</Message.Header>
-              <p>You can now sign-in</p>
+              <Message.Header>${msg["signUp.verified.title"]}</Message.Header>
+              <p>${msg["signUp.verified.subtitle"]}</p>
             </Message.Content>
-            <Button as={Link} to={SELF.login} primary floated="right">Proceed to sign-in <Icon name="arrow right"/></Button>
+            <Button as={Link} to={SELF.login} primary floated="right">
+              ${msg["signUp.verified.proceedBtn"]+" "}<Icon name="arrow right"/>
+            </Button>
           </Message>
         )}
 
@@ -53,7 +55,8 @@ class Verifier extends React.Component {
 Verifier.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  onMount: PropTypes.func.isRequired
+  onMount: PropTypes.func.isRequired,
+  msg: PropTypes.object.isRequired
 };
 
 export default Verifier;

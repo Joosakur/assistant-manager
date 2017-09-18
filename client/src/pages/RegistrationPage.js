@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RegistrationContainer from '../containers/RegistrationContainer';
 import HeaderContainer from "../containers/HeaderContainer";
 import Container from "semantic-ui-react/dist/es/elements/Container/Container";
 import {Divider} from "semantic-ui-react";
+import { localize } from 'react-localize-redux';
 
 class RegistrationPage extends React.Component {
 
@@ -12,8 +14,8 @@ class RegistrationPage extends React.Component {
         <HeaderContainer/>
         <Container fluid id="main-container">
           <Container className="page-container narrow">
-            <h1>Sign Up</h1>
-            <h4>Please fill out your details.</h4>
+            <h1>{this.props.translate('signUp.title')}</h1>
+            <h4>{this.props.translate('signUp.subtitle')}</h4>
             <Divider hidden/>
             <RegistrationContainer/>
           </Container>
@@ -23,4 +25,8 @@ class RegistrationPage extends React.Component {
   }
 }
 
-export default RegistrationPage;
+RegistrationPage.propTypes = {
+  translate: PropTypes.func.isRequired
+};
+
+export default localize(RegistrationPage, "locale");

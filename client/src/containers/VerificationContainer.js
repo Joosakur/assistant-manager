@@ -1,11 +1,15 @@
 import {connect} from 'react-redux';
 import {postVerification} from "../thunks/verificationThunk";
 import Verifier from "../components/registration/Verifier";
+import {getTranslate} from "react-localize-redux";
 
 const mapStateToProps = (state) => {
   return {
     loading: state.verification.loading,
-    error: state.verification.error
+    error: state.verification.error,
+    msg: {...getTranslate(state.locale)([
+      "signUp.verified.title","signUp.verified.subtitle","signUp.verified.proceedBtn"
+    ])}
   };
 };
 
