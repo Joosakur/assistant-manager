@@ -18,16 +18,16 @@ export const date = format => value =>
 export const dateBefore = (format, before) => value => {
   let invalid = date(format)(value);
   if(invalid) return invalid;
-  return value && !moment(value, format, true).isBefore(before) ? `Should be before ${before.format(format)}` : undefined
+  return value && !moment(value, format, true).isBefore(before) ? `Should be before ${before.format(format)}` : undefined;
 };
 export const dateAfter = (format, after) => value => {
   let invalid = date(format)(value);
   if(invalid) return invalid;
-  return value && !moment(value, format, true).isAfter(after) ? `Should be after ${after.format(format)}` : undefined
+  return value && !moment(value, format, true).isAfter(after) ? `Should be after ${after.format(format)}` : undefined;
 };
 export const dateBetween = (format, before, after) => value => {
   let invalid = date(format)(value);
   if(invalid) return invalid;
-  return value && !moment(value, format, true).isBetween(before,after) ? `Should be between ${before.format(format)} and ${after.format(format)}` : undefined
+  return value && !moment(value, format, true).isBetween(before,after) ? `Should be between ${before.format(format)} and ${after.format(format)}` : undefined;
 };
 

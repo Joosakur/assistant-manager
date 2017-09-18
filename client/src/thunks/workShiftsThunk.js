@@ -140,26 +140,5 @@ export function pasteDay(dateToPaste) {
         console.error(e);
         toastr.error("Copying failed");
       });
-
-    /*let workShifts = getState().entities.workShiftsByStartDate [dateToCopy.format("DD.MM.YYYY")];
-
-    workShifts && workShifts.map(id => {
-      return getState().entities.workShifts [id]
-    }).forEach((workShift) => {
-      let wStart = moment(workShift.start);
-      let wEnd = moment(workShift.end);
-      let start = moment(dateToPaste).hours(wStart.hours()).minutes(wStart.minutes());
-      let end = moment(dateToPaste).hours(wEnd.hours()).minutes(wEnd.minutes());
-      if(wStart.dayOfYear() !== wEnd.dayOfYear())
-        end.add(1, "days");
-
-      dispatch(sendWorkShift({
-        assistantId: workShift.assistantId,
-        start: start.format("YYYY-MM-DDTHH:mm:ss"),
-        end: end.format("YYYY-MM-DDTHH:mm:ss"),
-        sick: workShift.sick
-      }));
-    });
-    */
-  }
+  };
 }

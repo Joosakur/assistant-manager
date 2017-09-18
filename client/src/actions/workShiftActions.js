@@ -45,6 +45,6 @@ export function deleteWorkShiftError() {
 }
 
 export function copyDay(date) {
-  return {type: types.COPY_DAY, date}
+  return {type: types.COPY_DAY, date};
 }
 

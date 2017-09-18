@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Icon, Menu} from "semantic-ui-react";
 
-const UserHeader = ({onLogout, userData: {firstName, lastName}}) => {
+const UserHeader = ({onLogout, userData: {firstName, lastName}, translate}) => {
   return (
       <Menu.Menu position="right">
-        <Menu.Item header>Logged in as {firstName+" "+lastName}</Menu.Item>
-        <Menu.Item onClick={onLogout}><Icon name="sign out"/>Sign Out</Menu.Item>
+        <Menu.Item header>{translate('nav.loggedIn')} {" "+firstName+" "+lastName}</Menu.Item>
+        <Menu.Item onClick={onLogout}><Icon name="sign out"/> {translate('nav.signOut')}</Menu.Item>
       </Menu.Menu>
   );
 };
@@ -16,7 +16,8 @@ UserHeader.propTypes = {
   userData: PropTypes.shape({
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 export default UserHeader;

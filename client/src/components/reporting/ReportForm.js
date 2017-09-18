@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Form, Grid, Icon, Modal} from "semantic-ui-react";
+import {Button, Form, Grid} from "semantic-ui-react";
 import {reduxForm, Field} from 'redux-form';
 import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
 import FormDropdownField from "../common/FormDropdownField";
-import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel";
-import FormToggle from "../common/FormToggle";
 import moment from "moment";
 import {dateBetween, required} from "../../utils/validationConstraints";
 
@@ -36,16 +34,19 @@ class ReportForm extends React.Component {
       <Form id="WorkShiftForm" onSubmit={this.props.handleSubmit}>
         <Grid columns="equal">
           <Grid.Column computer="5" tablet="16" mobile="16">
-            <Field name="assistant" component={FormDropdownField} label="Assistant" options={this.state.assistantArray}
+            <Field name="assistant" component={FormDropdownField}
+                   label={this.props.msg['reporting.assistant']}
+                   options={this.state.assistantArray}
                    onChangeExtra={(value) => {
                      let assistantById = this.props.assistants.filter(a => a.id === value);
                      if(assistantById.length === 1)
-                       this.props.onAssistantChange(assistantById[0])
+                       this.props.onAssistantChange(assistantById[0]);
                    }}
                    validate={[required]}/>
           </Grid.Column>
           <Grid.Column computer="3" tablet="16" mobile="16">
-            <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"
+            <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
+                   label={this.props.msg['reporting.startDate']}
                    isValidDate={(date) => {
                      return date.isBetween(moment('2017-01-01'), moment());}
                    }
@@ -53,7 +54,8 @@ class ReportForm extends React.Component {
             />
           </Grid.Column>
           <Grid.Column computer="3" tablet="16" mobile="16">
-            <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text" label="End date"
+            <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text"
+                   label={this.props.msg['reporting.endDate']}
                    isValidDate={(date) => {
                      return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'));}
                    }
@@ -64,21 +66,23 @@ class ReportForm extends React.Component {
             {this.props.downloadable ? (
               <div
                 onClick={() => {
-                this.props.resetForm();
+                console.log("reset");
                 this.props.onStartDownload();
               }}>
                 <Button
                   as="a" href={this.props.downloadLink}
                   floated="right" primary size="large" style={{width: "250px"}}
                   >
-                  Download Spreadsheet
+                  {this.props.msg['reporting.downloadBtn']}
                 </Button>
               </div>
             ) : (
               <Button type="submit" floated="right" primary size="large"
                       disabled={this.props.submitting || this.props.polling}
                       loading={this.props.submitting || this.props.polling}
-                      style={{width: "250px"}}>Start Export</Button>
+                      style={{width: "250px"}}>
+                {this.props.msg['reporting.startBtn']}
+              </Button>
             )}
           </Grid.Column>
         </Grid>
@@ -98,7 +102,7 @@ ReportForm.propTypes = {
   downloadLink: PropTypes.string,
   onAssistantChange: PropTypes.func.isRequired,
   onStartDownload: PropTypes.func.isRequired,
-  resetForm: PropTypes.func.isRequired
+  msg: PropTypes.object.isRequired
 };
 
 export default reduxForm({

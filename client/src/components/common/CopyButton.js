@@ -28,7 +28,8 @@ class CopyButton extends React.Component {
 }
 
 CopyButton.propTypes = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired
 };
 
 export default CopyButton;

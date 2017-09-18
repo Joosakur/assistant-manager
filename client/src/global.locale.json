@@ -1,0 +1,91 @@
+{
+  "nav": {
+    "home": ["Koti", "Home"],
+    "assistants": ["Avustajani", "Assistants"],
+    "schedule": ["Työvuorot", "Work Schedule"],
+    "reporting": ["Tuntilistat", "Reporting"],
+    "signIn": ["Kirjaudu", "Sign In"],
+    "signUp": ["Rekisteröidy", "Sign Up"],
+    "signOut": ["Kirjaudu ulos", "Sign Out"],
+    "loggedIn": ["Kirjautunut käyttäjänä", "Logged in as"]
+  },
+  "signIn": {
+    "email": ["Sähköposti", "Email"],
+    "password": ["Salasana", "Password"],
+    "submit": ["Kirjaudu sisään", "Sign In Now"]
+  },
+  "home": {
+    "title": ["Assistant Manager", "Assistant Manager"],
+    "p1": [
+      "Web-sovellus henkilökohtaisten avustajien työvuorojen suunnitteluun, kirjanpitoon ja raportointiin.",
+      "Web-application for planning, tracking and reporting personal assistant working hours."]
+  },
+  "assistants": {
+    "title": ["Avustajani","My assistant"],
+    "buttons": {
+      "new": ["Lisää uusi", "Add new"],
+      "share": ["Jaa työvuorot", "Share Schedule to"],
+      "edit": ["Muokkaa", "Edit"]
+    },
+    "share": {
+      "title": [
+        "Jaa linkki avustajalle",
+        "Share link to assistant"
+      ],
+      "p1": [
+        "Avustajasi voi katsoa työvuoronsa tämän linkin kautta: ",
+        "Your assistant may check his work schedule via this link: "
+      ],
+      "p2": [
+        "Avustajan omat vuorot näkyvät valitulla värillä. Muiden avustajien vuorot näkyvät harmaina. Arkistoitujen avustajien vuoroja ja sairaspoissaoloja ei näytetä.",
+        "Assistant's own work shifts are shown with the chosen color. Other assistant's shift are also shown as dimmed, excluding archived assistants and sick leaves."
+      ],
+      "copyBtn": ["Kopioi leikepöydälle", "Copy to Clipboard"]
+    },
+    "edit": {
+      "titleNew": ["Lisää uusi avustaja","Add New Assistant"],
+      "titleEdit": ["Muokkaa avustajaa","Edit Assistant"],
+      "firstName": ["Etunimi","First name"],
+      "lastName": ["Sukunimi","Last name"],
+      "nickName": ["Lempinimi","Nick name"],
+      "birthday": ["Syntymäaika","Birthday"],
+      "backgroundColor": ["Taustaväri","Background color"],
+      "textInvert": ["Valkoinen teksti","Invert text color"],
+      "cancel": ["Peruuta","Cancel"],
+      "save": ["Tallenna","Save"]
+    }
+  },
+  "schedule": {
+    "title": ["Työvuorot","Work Schedule"],
+    "newBtn": ["Lisää uusi","Add New"],
+    "edit": {
+      "titleNew": ["Lisää uusi työvuoro","Add New Assistant"],
+      "titleEdit": ["Muokkaa työvuoroa","Edit Assistant"],
+      "assistant": ["Avustaja","Assistant"],
+      "startDate": ["Aloituspäivä","Start Date"],
+      "startTime": ["Aloitusaika","Start Time"],
+      "endTime": ["Lopetusaika","End Time"],
+      "sick": ["Sairaspoissaolo?","Was sick?"],
+      "delete": ["Poista","Delete"],
+      "cancel": ["Peruuta","Cancel"],
+      "save": ["Tallenna","Save"]
+    }
+  },
+  "reporting": {
+    "title": ["Tuntilistat", "Reporting"],
+    "subtitle": ["Lataa tuntilista kaupungin palkanlaskentaa varten", "Export assistant work time reports for your City's payment service"],
+    "assistant": ["Avustaja", "Assistant"],
+    "startDate": ["Alkupäivämäärä", "Start Date"],
+    "endDate": ["Loppupäivämäärä", "End Date"],
+    "startBtn": ["Muodosta tuntilista", "Start Export"],
+    "downloadBtn": ["Lataa laskentataulukko", "Download Spreadsheet"],
+    "p1": [
+      "Toiminto tuottaa tuntilistan .ods laskentataulukkona, jonka voit avaa esimerkiksi riittävän uudella Microsoft Excelillä tai ilmaisella OpenOffice Calc -ohjelmalla.",
+      "The report can be downloaded as .ods type spreadsheet, which can be opened for example with a recent enough version of Microsoft Excel or with free OpenOffice Calc."
+    ],
+    "p2": [
+      "Huom! Assistant Manager on vielä Alpha-vaiheessa, joten tuntilistan sisältö kannattaa vielä tarkistaa etenkin pyhäkorvausten ja muiden poikkeusten osalta, ja tehdä tarvittavat korjaukset ennen tulostamista.",
+      "Please note! Assistant Manager is still in Alpha stage, so it is highly advisable to check the contents of the report especially for holiday bonuses and other exceptions, and to make the necessary corrections before printing it."
+    ]
+  }
+}

@@ -18,7 +18,7 @@ class AssistantModalForm extends React.Component {
     return (
       <Modal dimmer="inverted" size="small" open={this.props.open} onClose={this.props.onClose}>
         <Modal.Header style={{height: "70px"}}>
-          {this.props.target ? <span>Edit</span> : <span>Create new</span>}
+          {this.props.target ? <span>{this.props.msg['assistants.edit.titleEdit']}</span> : <span>{this.props.msg['assistants.edit.titleNew']}</span>}
           <Label style={{float: "right", width: "150px", overflow: 'hidden', whiteSpace: 'no-wrap',
             backgroundColor: this.props.backgroundColor, color: this.props.whiteText ? '#ffffff' : '#000000'}} size="large">
             <Icon name="user" size="large"/> {this.props.shortName}
@@ -28,34 +28,54 @@ class AssistantModalForm extends React.Component {
           <Form id="AssistantForm" onSubmit={this.props.handleSubmit}>
             <Grid columns="equal">
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="firstName" component={FormFieldWithErrorLabel} type="text" label="First name" placeholder="First name" isRequired
+                <Field name="firstName" component={FormFieldWithErrorLabel} type="text"
+                       label={this.props.msg['assistants.edit.firstName']}
+                       placeholder={this.props.msg['assistants.edit.firstName']}
+                       isRequired
                        validate={[required, maxLength(20)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label="Last name" placeholder="Last name" isRequired
+                <Field name="lastName" component={FormFieldWithErrorLabel} type="text"
+                       label={this.props.msg['assistants.edit.lastName']}
+                       placeholder={this.props.msg['assistants.edit.lastName']}
+                       isRequired
                        validate={[required, maxLength(30)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="nickName" component={FormFieldWithErrorLabel} type="text" label="Nick name" placeholder="Nick name"
+                <Field name="nickName" component={FormFieldWithErrorLabel} type="text"
+                       label={this.props.msg['assistants.edit.nickName']}
+                       placeholder={this.props.msg['assistants.edit.nickName']}
                        validate={[maxLength(12)]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="birthday" component={FormFieldWithErrorLabel} type="text" label="Birthday" placeholder="31.12.1980" isRequired
+                <Field name="birthday" component={FormFieldWithErrorLabel} type="text"
+                       label={this.props.msg['assistants.edit.birthday']}
+                       placeholder="31.12.1980"
+                       isRequired
                        validate={[required, dateBefore('D.M.YYYY', moment().add(-16, 'years'))]}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <Field name="backgroundColor" component={FormColorPickerWithLabel} label="Background color"/>
+                <Field name="backgroundColor" component={FormColorPickerWithLabel}
+                       label={this.props.msg['assistants.edit.backgroundColor']}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16" verticalAlign="top">
-                <Field name="whiteText" component={FormToggle} label="Invert text color" icon="font"/>
+                <Field name="whiteText" component={FormToggle}
+                       label={this.props.msg['assistants.edit.textInvert']}
+                       icon="font"/>
               </Grid.Column>
             </Grid>
             <Field component="input" type="hidden" name="target"/>
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary onClick={this.props.onClose} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
-          <Button form="AssistantForm" type="submit" loading={this.props.submitting} disabled={this.props.pristine && this.props.submitting} positive>Save</Button>
+          <Button secondary onClick={this.props.onClose} loading={this.props.submitting}
+                  disabled={this.props.submitting}>
+            {this.props.msg['assistants.edit.cancel']}
+          </Button>
+          <Button form="AssistantForm" type="submit" loading={this.props.submitting}
+                  disabled={this.props.pristine && this.props.submitting} positive>
+            {this.props.msg['assistants.edit.save']}
+          </Button>
         </Modal.Actions>
       </Modal>
     );
@@ -68,9 +88,11 @@ AssistantModalForm.propTypes = {
   onClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  pristine: PropTypes.bool,
   shortName: PropTypes.string,
   whiteText: PropTypes.bool,
-  backgroundColor: PropTypes.string
+  backgroundColor: PropTypes.string,
+  msg: PropTypes.object.isRequired
 };
 
 export default reduxForm({

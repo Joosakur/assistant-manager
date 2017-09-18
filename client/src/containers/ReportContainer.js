@@ -2,14 +2,15 @@ import {connect} from 'react-redux';
 import {ownPropsToArray} from "../utils/jsUtils";
 import moment from "moment";
 import ReportForm from "../components/reporting/ReportForm";
-import {actions} from "redux-form";
+import {actions, reset} from "redux-form";
 import {postReport} from "../thunks/reportingThunk";
 import {resetReport} from "../actions/reportActions";
+import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {
 
   let assistants = ownPropsToArray(state.entities.assistants);
-  assistants.sort((a1,a2) => a1.firstName+" "+a1.lastName < a2.firstName+" "+a2.lastName ? -1 : 1)
+  assistants.sort((a1,a2) => a1.firstName+" "+a1.lastName < a2.firstName+" "+a2.lastName ? -1 : 1);
 
   return {
     polling: state.reporting.polling,
@@ -22,7 +23,10 @@ const mapStateToProps = state => {
       assistant: assistants.length > 0 ? assistants[0].id : undefined,
       startDate: moment().add(-1, "months").format("DD.MM.YYYY"),
       endDate: moment().format("DD.MM.YYYY")
-    }
+    },
+    msg: {...getTranslate(state.locale)([
+      'reporting.assistant','reporting.startDate','reporting.endDate','reporting.startBtn','reporting.downloadBtn'
+    ])}
   };
 };
 
@@ -38,10 +42,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     onStartDownload: () => {
       dispatch(resetReport());
+      dispatch(reset('ReportForm'));
     }
   };
 };
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportForm);

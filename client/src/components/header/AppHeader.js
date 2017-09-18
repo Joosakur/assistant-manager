@@ -14,11 +14,11 @@ class AppHeader extends React.Component {
   render() {
     return (
       <Menu id="header" fixed="top" inverted size="large">
-        <Menu.Item as={IndexLink} to={SELF.home} activeClassName="active"><Icon name="home"/><div className="hide-mobile"> Home</div></Menu.Item>
-        {this.props.authenticated && <Menu.Item as={Link} to={SELF.assistants} activeClassName="active"><Icon name="address book"/> Assistants</Menu.Item>}
-        {this.props.authenticated && <Menu.Item as={Link} to={SELF.schedule} activeClassName="active"><Icon name="calendar"/> Work Schedule</Menu.Item>}
-        {this.props.authenticated && <Menu.Item as={Link} to={SELF.reporting} activeClassName="active"><Icon name="text file outline"/> Reporting</Menu.Item>}
-        {this.props.authenticated ? <UserHeader onLogout={this.props.onLogout} userData={this.props.userData}/> : <NoUserHeader/>}
+        <Menu.Item as={IndexLink} to={SELF.home} activeClassName="active"><Icon name="home"/><div className="hide-mobile"> {this.props.translate('nav.home')}</div></Menu.Item>
+        {this.props.authenticated && <Menu.Item as={Link} to={SELF.assistants} activeClassName="active"><Icon name="address book"/> {this.props.translate('nav.assistants')}</Menu.Item>}
+        {this.props.authenticated && <Menu.Item as={Link} to={SELF.schedule} activeClassName="active"><Icon name="calendar"/> {this.props.translate('nav.schedule')}</Menu.Item>}
+        {this.props.authenticated && <Menu.Item as={Link} to={SELF.reporting} activeClassName="active"><Icon name="text file outline"/> {this.props.translate('nav.reporting')}</Menu.Item>}
+        {this.props.authenticated ? <UserHeader onLogout={this.props.onLogout} userData={this.props.userData} translate={this.props.translate}/> : <NoUserHeader translate={this.props.translate}/>}
       </Menu>
     );
   }
@@ -30,7 +30,8 @@ AppHeader.propTypes = {
   userData: PropTypes.shape({
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired
-  })
+  }),
+  translate: PropTypes.func.isRequired
 };
 
 export default AppHeader;

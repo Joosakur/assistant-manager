@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { browserHistory } from 'react-router';
 import { AppContainer } from 'react-hot-loader';
 import Root from './components/Root';
-
+import { initialize, addTranslation } from 'react-localize-redux';
 import configureStore from './store/configureStore';
 require('./favicon.ico');
 import './styles/styles.scss';
@@ -15,6 +15,12 @@ const store = configureStore();
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
+
+
+const languages = ['fi', 'en'];
+store.dispatch(initialize(languages));
+const translations = require('./global.locale.json');
+store.dispatch(addTranslation(translations));
 
 render(
   <AppContainer>

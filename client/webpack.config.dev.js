@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import path from 'path';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
@@ -52,7 +53,12 @@ export default {
         context: '/',
         postcss: () => [autoprefixer],
       }
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: 'TOC/terms-and-conditions-v1.pdf'
+      }
+    ])
   ],
   module: {
     rules: [

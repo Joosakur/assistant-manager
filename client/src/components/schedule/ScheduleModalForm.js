@@ -35,15 +35,21 @@ class ScheduleModalForm extends React.Component {
   render() {
     return (
       <Modal dimmer="inverted" size="small" open={this.props.open} onClose={this.props.onClose}>
-        <Modal.Header>{this.props.target ? <span>Edit</span> : <span>Create new</span>}</Modal.Header>
+        <Modal.Header>{this.props.target ?
+          <span>{this.props.msg['schedule.edit.titleEdit']}</span> :
+          <span>{this.props.msg['schedule.edit.titleNew']}</span>}
+        </Modal.Header>
         <Modal.Content>
           <Form id="WorkShiftForm" onSubmit={this.props.handleSubmit}>
             <Grid columns="equal">
               <Grid.Column computer="8" tablet="16" mobile="16">
-                <Field name="assistant" component={FormDropdownField} label="Assistant" options={this.state.assistantArray}/>
+                <Field name="assistant" component={FormDropdownField}
+                       label={this.props.msg['schedule.edit.assistant']}
+                       options={this.state.assistantArray}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="16" mobile="16">
-                <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text" label="Start date"
+                <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
+                       label={this.props.msg['schedule.edit.startDate']}
                        isValidDate={(date) => {
                          return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'));}
                        }
@@ -51,22 +57,33 @@ class ScheduleModalForm extends React.Component {
                 />
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <FormTimeGroupWithErrorLabel name="startTime" label="Start time"/>
+                <FormTimeGroupWithErrorLabel name="startTime" label={this.props.msg['schedule.edit.startTime']}/>
               </Grid.Column>
               <Grid.Column computer="8" tablet="8" mobile="16">
-                <FormTimeGroupWithErrorLabel name="endTime" label="End time"/>
+                <FormTimeGroupWithErrorLabel name="endTime" label={this.props.msg['schedule.edit.endTime']}/>
               </Grid.Column>
               <Grid.Column computer="16" tablet="16" mobile="16" verticalAlign="bottom">
-                <Field name="sick" component={FormToggle} label="Was sick?" icon={<Icon name="plus" circular size="small" className="icon-sick"/>} />
+                <Field name="sick" component={FormToggle} label={this.props.msg['schedule.edit.sick']}
+                       icon={<Icon name="plus" circular size="small" className="icon-sick"/>} />
               </Grid.Column>
             </Grid>
             <Field component="input" type="hidden" name="target"/>
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          {this.props.target && <Button negative floated="left" onClick={() => this.props.onDelete(this.props.target)} loading={this.props.submitting} disabled={this.props.submitting}>Delete</Button>}
-          <Button secondary onClick={() => (this.props.reset() & this.props.onClose())} loading={this.props.submitting} disabled={this.props.submitting}>Cancel</Button>
-          <Button form="WorkShiftForm" type="submit" loading={this.props.submitting} disabled={this.props.submitting} positive>Save</Button>
+          {this.props.target && <Button negative floated="left"
+                                        onClick={() => this.props.onDelete(this.props.target)}
+                                        loading={this.props.submitting} disabled={this.props.submitting}>
+            {this.props.msg['schedule.edit.delete']}
+          </Button>}
+          <Button secondary onClick={() => (this.props.reset() & this.props.onClose())}
+                  loading={this.props.submitting} disabled={this.props.submitting}>
+            {this.props.msg['schedule.edit.cancel']}
+          </Button>
+          <Button form="WorkShiftForm" type="submit"
+                  loading={this.props.submitting} disabled={this.props.submitting} positive>
+            {this.props.msg['schedule.edit.save']}
+          </Button>
         </Modal.Actions>
       </Modal>
     );
@@ -81,7 +98,9 @@ ScheduleModalForm.propTypes = {
   onDelete: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
-  submitting: PropTypes.bool.isRequired
+  submitting: PropTypes.bool.isRequired,
+  msg: PropTypes.object.isRequired,
+  reset: PropTypes.func.isRequired
 };
 
 export default reduxForm({

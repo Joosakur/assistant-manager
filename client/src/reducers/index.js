@@ -1,6 +1,7 @@
 import {routerReducer} from 'react-router-redux';
 import {reducer as toastrReducer} from 'react-redux-toastr';
 import { reducer as formReducer } from 'redux-form';
+import { localeReducer } from 'react-localize-redux';
 import assistantReducer from './assistantReducer';
 import registrationReducer from './registrationReducer';
 import loginReducer from "./loginReducer";
@@ -12,7 +13,7 @@ import reportingReducer from "./reportingReducer";
 
 const rootReducer = (state = {}, action) => {
   if(action.type === RESET_STATE)
-    state = Object.assign({}, {routing: state.routing});
+    state = Object.assign({}, {routing: state.routing, locale: state.locale});
 
   return {
     entities: entityReducer(state.entities, action),
@@ -24,7 +25,8 @@ const rootReducer = (state = {}, action) => {
     reporting: reportingReducer(state.reporting, action),
     routing: routerReducer(state.routing, action),
     toastr: toastrReducer(state.toastr, action),
-    form: formReducer(state.form, action)
+    form: formReducer(state.form, action),
+    locale: localeReducer(state.locale, action)
   };
 };
 

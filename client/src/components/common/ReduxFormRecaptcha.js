@@ -4,7 +4,7 @@ import Recaptcha from 'react-recaptcha';
 import {Icon, Message} from "semantic-ui-react";
 
 
-const ReduxFormRecaptcha = ({input, explicit, meta: {error}}) => {
+const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
   console.debug("rendering recaptcha");
   return (
     <div className="recaptcha-group">
@@ -15,6 +15,7 @@ const ReduxFormRecaptcha = ({input, explicit, meta: {error}}) => {
           verifyCallback={response => {
             input.onChange(response);
           }}
+          hl={country && "fi"}
         />
       </div>
       {error && (

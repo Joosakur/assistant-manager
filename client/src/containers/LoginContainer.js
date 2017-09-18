@@ -1,10 +1,12 @@
 import {connect} from 'react-redux';
 import LoginForm from "../components/login/LoginForm";
 import {postLogin} from "../thunks/loginThunk";
+import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {
   return {
-    loading: state.login.loading
+    loading: state.login.loading,
+    translate: getTranslate(state.locale)
   };
 };
 

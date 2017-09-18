@@ -59,7 +59,7 @@ function loadUserData(token) {
         amplify.store('token', null);
         dispatch(postLoginError());
       });
-  }
+  };
 }
 
 export function logout() {

@@ -1,4 +1,4 @@
-import {API, SELF} from '../constants/urls';
+import {API} from '../constants/urls';
 import {toastr} from 'react-redux-toastr';
 import {formErrorFromApiError} from '../utils/errorUtils';
 import {SubmissionError} from 'redux-form';
@@ -16,19 +16,19 @@ function startPolling(id) {
 
     function poll() {
       retries--;
-      if(retries == 0) {
-        dispatch(getReportError("Export timed out"))
+      if(retries === 0) {
+        dispatch(getReportError("Export timed out"));
         return;
       }
 
       axios.get(API.origin+API.reporting+"/"+id, {headers: {'Authorization': getState().login.token}})
         .then(response => {
           console.log(response);
-          var status = response.data.status;
+          let status = response.data.status;
           if(status === "ERROR")
-            dispatch(getReportError("Export failed"))
+            dispatch(getReportError("Export failed"));
           else if(status === "COMPLETED")
-            dispatch(getReportSuccess(response.data.downloadLink))
+            dispatch(getReportSuccess(response.data.downloadLink));
           else if(status === "RECEIVED")
             setTimeout(poll, pollDelay);
         })

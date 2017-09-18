@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Form, Button, Divider, Checkbox} from 'semantic-ui-react';
+import {Form, Button, Divider} from 'semantic-ui-react';
 import {reduxForm, Field} from 'redux-form';
 import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel";
 import {dateBefore, email, maxLength, minLength, required} from "../../utils/validationConstraints";
 import ReduxFormRecaptcha from "../common/ReduxFormRecaptcha";
 import moment from "moment";
-import FormToggle from "../common/FormToggle";
 import FormCheckbox from "../common/FormCheckbox";
 import FormDropdownField from "../common/FormDropdownField";
 
-const cities = ['Helsinki','Espoo','Vantaa','Lande'];
+const cities = ['Helsinki','Espoo','Vantaa','Muu Suomi'];
 const getCityOptions = () => {
-  return cities.map(city => {return {key: city, text: city, value: city};})
+  return cities.map(city => {return {key: city, text: city, value: city};});
 };
 
 const RegistrationForm = (props) => {
@@ -37,7 +36,7 @@ const RegistrationForm = (props) => {
              label={<span>Kuulun <a href="http://www.heta-liitto.fi/" target="_blank"> heta-liittoon</a>.</span>}
       />
       <Field name="agreement" component={FormCheckbox}
-             label={<span>Hyväksyn palvelun <a href="/terms" target="_blank">käyttöehdot</a>.</span>}
+             label={<span>Hyväksyn palvelun <a href="/terms-and-conditions-v1.pdf" target="_blank">käyttöehdot</a>.</span>}
              isRequired
              validate={required}/>
 

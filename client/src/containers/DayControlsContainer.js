@@ -25,7 +25,11 @@ class DayControlsContainer extends React.Component {
 }
 
 DayControlsContainer.propTypes = {
-  //foobar: PropTypes.string.isRequired
+  copy: PropTypes.func.isRequired,
+  paste: PropTypes.func.isRequired,
+  thisCopied: PropTypes.bool,
+  anyCopied: PropTypes.bool,
+  hasEvents: PropTypes.bool
 };
 
 function mapStateToProps(state, ownProps) {
@@ -37,7 +41,7 @@ function mapStateToProps(state, ownProps) {
     thisCopied: copied && date.isSame(copied),
     anyCopied: !!copied,
     hasEvents: events && events.length > 0
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {

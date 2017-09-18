@@ -1,12 +1,12 @@
 import {connect} from 'react-redux';
 import {startWorkShiftEdit} from "../actions/workShiftActions";
 import Schedule from "../components/schedule/Schedule";
-import moment from "moment";
-import {getWorkShifts} from "../thunks/workShiftsThunk";
+import {getTranslate} from 'react-localize-redux';
 
 function mapStateToProps(state) {
   return {
-    loading: state.schedule.loading
+    loading: state.schedule.loading,
+    translate: getTranslate(state.locale)
   };
 }
 

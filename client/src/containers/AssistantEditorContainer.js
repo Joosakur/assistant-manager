@@ -4,6 +4,7 @@ import {sendAssistantEdit} from "../thunks/assistantsThunk";
 import AssistantModalForm from "../components/assistants/AssistantModalForm";
 import {formValueSelector} from "redux-form";
 import moment from "moment";
+import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {
   let targetId = state.assistants.target;
@@ -34,7 +35,12 @@ const mapStateToProps = state => {
     },
     shortName,
     backgroundColor,
-    whiteText
+    whiteText,
+    msg: {...getTranslate(state.locale)([
+      'assistants.edit.titleNew', 'assistants.edit.titleEdit', 'assistants.edit.firstName', 'assistants.edit.lastName',
+      'assistants.edit.nickName', 'assistants.edit.birthday', 'assistants.edit.backgroundColor',
+      'assistants.edit.textInvert', 'assistants.edit.cancel', 'assistants.edit.save'
+    ])}
   };
 };
 

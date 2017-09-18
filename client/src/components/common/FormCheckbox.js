@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, Form, Icon, Input, Label} from 'semantic-ui-react';
+import {Checkbox, Form, Icon, Label} from 'semantic-ui-react';
 
 const FormCheckbox = (props) => {
   let {input, label, isRequired, meta: {touched, error}} = props;

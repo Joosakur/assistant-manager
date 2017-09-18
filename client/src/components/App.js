@@ -29,7 +29,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect()(App);

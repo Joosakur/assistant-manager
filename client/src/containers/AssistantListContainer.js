@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 import {ownPropsToArray} from "../utils/jsUtils";
 import AssistantCardGroup from "../components/assistants/AssistantCardGroup";
 import {startAssistantEdit} from "../actions/assistantActions";
+import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {
   let assistants = ownPropsToArray(state.entities.assistants)
@@ -17,7 +18,8 @@ const mapStateToProps = state => {
 
   return {
     loading: state.assistants.loading,
-    assistants: assistants
+    assistants: assistants,
+    translate: getTranslate(state.locale)
   };
 };
 

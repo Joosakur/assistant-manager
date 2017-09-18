@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {getAssistants} from "../thunks/assistantsThunk";
 import {connect} from 'react-redux';
-import AssistantListContainer from "../containers/AssistantListContainer";
-import {Button, Container, Divider, Header, Icon} from "semantic-ui-react";
+import {Container, Divider, Header, Icon, Message} from "semantic-ui-react";
 import HeaderContainer from "../containers/HeaderContainer";
-import {startAssistantEdit} from "../actions/assistantActions";
-import AssistantEditorContainer from "../containers/AssistantEditorContainer";
 import ReportContainer from "../containers/ReportContainer";
+import { getTranslate } from 'react-localize-redux';
+
 
 class ReportingPage extends React.Component {
 
@@ -28,12 +27,20 @@ class ReportingPage extends React.Component {
             <Header floated="left" as="h1">
               <Icon name="text file"/>
               <Header.Content>
-                Reporting
-                <Header.Subheader>Export assistant work time reports for City's payment service</Header.Subheader>
+                {this.props.translate('reporting.title')}
+                <Header.Subheader>{this.props.translate('reporting.subtitle')}</Header.Subheader>
               </Header.Content>
             </Header>
             <Divider hidden section clearing/>
+            <p>
+              {this.props.translate('reporting.p1')}
+            </p>
+            <Divider hidden clearing/>
             <ReportContainer/>
+            <Divider hidden section clearing/>
+            <Message warning>
+              {this.props.translate('reporting.p2')}
+            </Message>
           </Container>
         </Container>
       </div>
@@ -41,8 +48,15 @@ class ReportingPage extends React.Component {
   }
 }
 
-ReportingPage.propTypes = {
-  dispatch: PropTypes.func.isRequired
+const mapStateToProps = (state) => {
+  return {
+    translate: getTranslate(state.locale)
+  };
 };
 
-export default connect()(ReportingPage);
+ReportingPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired
+};
+
+export default connect(mapStateToProps)(ReportingPage);
