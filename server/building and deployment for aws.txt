@@ -1,0 +1,22 @@
+
+1)
+Open docker terminal and run:
+aws ecr get-login --no-include-email --region eu-west-1
+
+2)
+Invoke the printed command
+
+3)
+Go to server project root and run
+mvn clean install
+docker build -t assistant-manager-server .
+docker tag assistant-manager-server:latest 807483958633.dkr.ecr.eu-west-1.amazonaws.com/assistant-manager-server:latest
+docker push 807483958633.dkr.ecr.eu-west-1.amazonaws.com/assistant-manager-server:latest
+docker tag assistant-manager-server:latest 807483958633.dkr.ecr.eu-west-1.amazonaws.com/assistant-manager-server:x.x.x
+docker push 807483958633.dkr.ecr.eu-west-1.amazonaws.com/assistant-manager-server:x.x.x
+
+4)
+Create a task revision for the new version and change service to use it
+
+5)
+Shutdown old tasks
