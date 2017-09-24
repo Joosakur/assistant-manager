@@ -60,12 +60,14 @@ export function sendAssistantEdit(form) {
     let body = {
       firstName: form.firstName,
       lastName: form.lastName,
-      nickName: form.nickName,
       birthday: moment(form.birthday, "D.M.YYYY").format("YYYY-MM-DD"),
       active: true,
       backgroundColor: form.backgroundColor,
       textColor: form.whiteText ? "#ffffff" : "#000000"
     };
+    if(form.nickName && form.nickName.length>0) {
+      body.nickName = form.nickName;
+    }
 
     let url = API.origin+API.assistants;
     let method = 'post';

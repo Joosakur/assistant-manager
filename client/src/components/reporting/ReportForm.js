@@ -57,9 +57,9 @@ class ReportForm extends React.Component {
             <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text"
                    label={this.props.msg['reporting.endDate']}
                    isValidDate={(date) => {
-                     return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'));}
+                     return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'));}
                    }
-                   validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment())]}
+                   validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, "days"))]}
             />
           </Grid.Column>
           <Grid.Column computer="5" tablet="16" mobile="16" verticalAlign="bottom">

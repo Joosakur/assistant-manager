@@ -29,7 +29,7 @@ const RegistrationForm = ({handleSubmit, error, loading, msg}) => {
       <Field name="lastName" component={FormFieldWithErrorLabel} type="text" label={msg['signUp.lastName']}
              isRequired validate={[required, maxLength(30)]}/>
       <Field name="birthday" component={FormFieldWithErrorLabel} type="text" label={msg['signUp.birthday']}
-             placeholder="31.12.1980" isRequired validate={[required, dateBefore('D.M.YYYY', moment().add(-13, 'years'))]}/>
+             placeholder="31.12.1980" isRequired validate={[required, dateBefore('D.M.YYYY', moment().add(-18, 'years'))]}/>
       <Field name="city" component={FormDropdownField} label={msg['signUp.city']}
              options={cityOptions}/>
       <Field name="hetaMember" component={FormCheckbox}

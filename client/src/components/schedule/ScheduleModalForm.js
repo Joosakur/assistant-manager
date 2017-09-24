@@ -27,6 +27,11 @@ class ScheduleModalForm extends React.Component {
     let assistantArray = assistants ? assistants
       .filter(a => a.active)
       .map(a => {return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id};})
+      .sort((a1, a2) => {
+        if(a1.text < a2.text)
+          return -1;
+        return 1;
+      })
     : [];
     assistantArray.unshift({key: "Unassigned", value: "Unassigned", text: "Unassigned"});
     return assistantArray;
