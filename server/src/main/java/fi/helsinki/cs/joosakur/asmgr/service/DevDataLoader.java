@@ -18,8 +18,8 @@ import java.time.LocalTime;
 import java.time.Month;
 
 @Component
-@Profile({"test"})
-public class TestDataLoader implements CommandLineRunner {
+@Profile({"dev"})
+public class DevDataLoader implements CommandLineRunner {
 
     private final EmployerService employerService;
     private final AssistantRepository assistantRepository;
@@ -27,8 +27,13 @@ public class TestDataLoader implements CommandLineRunner {
 
     private final HourListBuilder hourListBuilder;
 
+    /**
+     * When using persistent data, this should be set to false after the first run.
+     */
+    private static final boolean ENABLED = false;
+
     @Autowired
-    public TestDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilder hourListBuilder) {
+    public DevDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilder hourListBuilder) {
         this.employerService = employerService;
         this.assistantRepository = assistantRepository;
         this.workShiftRepository = workShiftRepository;
@@ -37,6 +42,9 @@ public class TestDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+        if(!ENABLED)
+            return;
+
         Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Helsinki", true);
         employer = employerService.create(employer, true);
 

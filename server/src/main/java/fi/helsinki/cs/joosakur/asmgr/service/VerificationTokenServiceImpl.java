@@ -5,6 +5,8 @@ import fi.helsinki.cs.joosakur.asmgr.entity.VerificationToken;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
 import fi.helsinki.cs.joosakur.asmgr.repository.VerificationTokenRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,7 +17,10 @@ import java.util.UUID;
 @Service
 public class VerificationTokenServiceImpl implements VerificationTokenService {
 
+    private static final Logger logger = LoggerFactory.getLogger(VerificationTokenServiceImpl.class);
+
     private final VerificationTokenRepository repository;
+
 
     public VerificationTokenServiceImpl(VerificationTokenRepository repository) {
         this.repository = repository;
@@ -24,12 +29,15 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     @Transactional
     public VerificationToken create(VerificationToken.Target target, Employer employer, Duration expires) {
+        logger.debug("Creating verification token of type {} for employer {}", target, employer.getId());
         VerificationToken token = new VerificationToken();
         token.setTarget(target);
         token.setEmployer(employer);
         if(expires != null)
             token.setExpires(LocalDateTime.now().plus(expires));
-        return repository.save(token);
+        token = repository.save(token);
+        logger.info("Verification token of type {} saved for employer {}", target, employer.getId());
+        return token;
     }
 
     @Override
@@ -50,6 +58,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
             throw new NotFoundException("Token not found");
         token.setUsed(true);
         repository.save(token);
+        logger.info("Verification token {} consumed", id);
     }
 
 

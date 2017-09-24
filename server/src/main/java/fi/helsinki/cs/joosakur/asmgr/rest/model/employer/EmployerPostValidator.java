@@ -33,6 +33,9 @@ public class EmployerPostValidator implements Validator {
         return equals;
     }
 
+    /**
+     * Validates Employer Post request and specifically handles recaptcha verification.
+     */
     @Override
     public void validate(Object target, Errors errors) {
         String captcha = ((EmployerPost)target).getCaptcha();
@@ -50,7 +53,6 @@ public class EmployerPostValidator implements Validator {
         try {
             CloseableHttpResponse response = client.execute(request);
             String body = EntityUtils.toString(response.getEntity());
-            System.out.println(body);
 
             boolean success = new Gson().fromJson(body, JsonElement.class)
                     .getAsJsonObject()
@@ -59,9 +61,8 @@ public class EmployerPostValidator implements Validator {
 
             if(!success)
                 errors.rejectValue("captcha", "captcha.failed","Robot check failed");
-
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Could not check recaptcha", e);
         }
 
     }

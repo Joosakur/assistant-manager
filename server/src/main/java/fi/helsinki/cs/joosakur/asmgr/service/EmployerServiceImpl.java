@@ -7,18 +7,21 @@ import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
 import fi.helsinki.cs.joosakur.asmgr.repository.EmployerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class EmployerServiceImpl implements EmployerService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmployerServiceImpl.class);
 
     private final EmployerRepository repository;
 
@@ -40,8 +43,9 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public Employer create(Employer employer, boolean autoEnabled) {
+        logger.debug("Starting employer creation for email {}}", employer.getEmail());
         if(employer.getId() != null)
             throw new IllegalArgumentException("Can not give id on create.");
         employer.setPassword(passwordEncoder.encode(employer.getPassword()));
@@ -49,9 +53,9 @@ public class EmployerServiceImpl implements EmployerService {
         employer = repository.save(employer);
 
         if(!autoEnabled) {
+            logger.debug("Generating account verification link for employer {}", employer.getEmail());
             VerificationToken token = tokenService.create(VerificationToken.Target.NEW_ACCOUNT, employer, null);
-            String tokenB64 = Base64.getEncoder().encodeToString(token.getId().toString().getBytes());
-            String link = appConfig.getGuiOrigin()+"/verify-account?token="+tokenB64;
+            String link = appConfig.getGuiOrigin()+"/verify-account?token="+token.getId();
             Map<String, String> model = new HashMap<>();
             model.put("firstName", employer.getFirstName());
             model.put("link", link);
@@ -63,8 +67,10 @@ public class EmployerServiceImpl implements EmployerService {
                     "verify-email.ftl",
                     model
             );
+            logger.info("Account verification email sent to {}", employer.getId(), employer.getEmail());
         }
 
+        logger.info("Employer {} saved with id {}", employer.getEmail(), employer.getId());
         return employer;
     }
 
@@ -75,7 +81,10 @@ public class EmployerServiceImpl implements EmployerService {
             throw new IllegalArgumentException("Must give id on update.");
         Employer old = find(employer.getId());
         employer.setPassword(old.getPassword());
-        return repository.save(employer);
+        employer = repository.save(employer);
+
+        logger.info("Employer {} updated", employer.getId());
+        return employer;
     }
 
     @Override
@@ -85,10 +94,11 @@ public class EmployerServiceImpl implements EmployerService {
         if(!passwordEncoder.matches(employer.getPassword(), oldPassword))
             throw new AuthorizationException("Old password did not match");
         employer.setPassword(passwordEncoder.encode(newPassword));
-        return repository.save(employer);
+        employer = repository.save(employer);
+
+        logger.info("Employer {} password changed", employer.getId());
+        return employer;
     }
-
-
 
     @Override
     public Employer find(UUID id) throws NotFoundException {
@@ -112,34 +122,32 @@ public class EmployerServiceImpl implements EmployerService {
     @Transactional
     public void delete(UUID id) throws NotFoundException {
         repository.delete(find(id));
+        logger.info("Employer {} deleted", id.toString());
     }
 
     @Override
     @Transactional
-    public void verifyAccount(String tokenB64) throws AuthorizationException, ResourceExpiredException {
+    public void verifyAccount(String tokenString) throws AuthorizationException, ResourceExpiredException {
         UUID tokenId;
         try {
-            tokenId = UUID.fromString(new String(Base64.getDecoder().decode(tokenB64)));
+            tokenId = UUID.fromString(tokenString);
+            VerificationToken token = tokenService.find(tokenId);
+            Employer employer = token.getEmployer();
+            if(!employer.isEnabled()) {
+                employer.setEnabled(true);
+                repository.save(employer);
+            }
+
         }
-        catch (Throwable e) {
-            throw new AuthorizationException("Invalid token");
+        catch (IllegalArgumentException | NotFoundException e) {
+            throw new AuthorizationException("Invalid token "+tokenString);
         }
-        VerificationToken token;
-        try {
-            token = tokenService.find(tokenId);
-        } catch (NotFoundException e) {
-            throw new AuthorizationException(e.getMessage());
-        }
-        Employer employer = token.getEmployer();
-        if(!employer.isEnabled()) {
-            employer.setEnabled(true);
-            repository.save(employer);
-        }
+
         try {
             tokenService.consume(tokenId);
         } catch (NotFoundException e) {
-            e.printStackTrace();
-            //doesn't really matter
+            //weird, but doesn't really matter
+            logger.debug("Tried to consume a non existing token {}", tokenId.toString());
         }
     }
 }

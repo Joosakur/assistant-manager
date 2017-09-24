@@ -16,6 +16,8 @@ public interface WorkShiftService {
     WorkShift find(UUID id) throws NotFoundException;
     List<WorkShift> listByEmployerAndTime(Employer employer, LocalDate from, LocalDate to);
 
+    List<WorkShift> listByEmployerAndStartDate(Employer employer, LocalDate startDate);
+
     List<WorkShift> listByAssistantAndTime(Assistant assistant, LocalDate from, LocalDate to);
 
     void delete(UUID id) throws NotFoundException;

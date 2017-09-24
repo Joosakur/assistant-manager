@@ -5,6 +5,8 @@ import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.repository.WorkShiftRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.UUID;
 @Service
 public class WorkShiftServiceImpl implements WorkShiftService {
 
+    private static final Logger logger = LoggerFactory.getLogger(WorkShiftServiceImpl.class);
+
     private final WorkShiftRepository repository;
 
     @Autowired
@@ -31,7 +35,10 @@ public class WorkShiftServiceImpl implements WorkShiftService {
     public WorkShift create(WorkShift workShift) {
         if(workShift.getId() != null)
             throw new IllegalArgumentException("Can not give id on create.");
-        return repository.save(workShift);
+        workShift = repository.save(workShift);
+
+        logger.info("Created work shift {}", workShift.getId());
+        return workShift;
     }
 
     @Override
@@ -39,7 +46,9 @@ public class WorkShiftServiceImpl implements WorkShiftService {
     public WorkShift update(WorkShift workShift) throws NotFoundException {
         if(workShift.getId() == null)
             throw new IllegalArgumentException("Must give id on update.");
-        return repository.save(workShift);
+        workShift = repository.save(workShift);
+        logger.info("Work shift {} updated", workShift.getId());
+        return workShift;
     }
 
 
@@ -54,14 +63,22 @@ public class WorkShiftServiceImpl implements WorkShiftService {
 
     @Override
     public List<WorkShift> listByEmployerAndTime(Employer employer, LocalDate from, LocalDate to) {
-        return repository.findByEmployerAndEndsAfterAndStartsBefore(employer,
+        return repository.findByEmployerAndStartsAfterAndEndsBefore(employer,
                 from.atStartOfDay(),
                 LocalDateTime.of(to, LocalTime.MAX));
     }
 
+
+    @Override
+    public List<WorkShift> listByEmployerAndStartDate(Employer employer, LocalDate startDate) {
+        return repository.findByEmployerAndStartsBetween(employer,
+                startDate.atStartOfDay(),
+                LocalDateTime.of(startDate, LocalTime.MAX));
+    }
+
     @Override
     public List<WorkShift> listByAssistantAndTime(Assistant assistant, LocalDate from, LocalDate to) {
-        return repository.findByAssistantAndEndsAfterAndStartsBefore(assistant,
+        return repository.findByAssistantAndStartsAfterAndEndsBefore(assistant,
                 from.atStartOfDay(),
                 LocalDateTime.of(to, LocalTime.MAX));
     }
@@ -70,13 +87,16 @@ public class WorkShiftServiceImpl implements WorkShiftService {
     @Transactional
     public void delete(UUID id) throws NotFoundException {
         repository.delete(find(id));
+        logger.info("Deleted work shift {}", id);
     }
 
     @Override
     @Transactional
     public List<WorkShift> copyDay(Employer employer, LocalDate from, LocalDate to) {
-        List<WorkShift> workShifts = listByEmployerAndTime(employer, from, from);
+        List<WorkShift> workShifts = listByEmployerAndStartDate(employer, from);
         List<WorkShift> copies = new ArrayList<>();
+
+        logger.info("Copying {} work shifts of employer {} from date {} to {}", workShifts.size(), employer.getId(), from, to);
 
         for (WorkShift workShift : workShifts) {
             WorkShift copy = new WorkShift();
@@ -89,6 +109,8 @@ public class WorkShiftServiceImpl implements WorkShiftService {
             copy.setSick(workShift.isSick());
             copies.add(create(copy));
         }
+
+        logger.info("Copying work shifts for employer {} was successful", employer.getId());
 
         return copies;
     }

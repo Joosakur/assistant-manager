@@ -20,7 +20,6 @@ public class SpringConfig {
         executor.setQueueCapacity(500);
         executor.setThreadNamePrefix("HourListExporter-");
         executor.initialize();
-        System.out.println("executor initialized");
         return executor;
     }
 

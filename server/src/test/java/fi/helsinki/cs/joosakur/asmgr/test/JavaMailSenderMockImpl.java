@@ -1,4 +1,4 @@
-package fi.helsinki.cs.joosakur.asmgr.service;
+package fi.helsinki.cs.joosakur.asmgr.test;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailException;

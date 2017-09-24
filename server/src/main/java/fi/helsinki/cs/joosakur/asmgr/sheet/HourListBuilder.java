@@ -7,6 +7,8 @@ import fi.helsinki.cs.joosakur.asmgr.service.WorkShiftService;
 import org.apache.commons.io.FileUtils;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import java.util.stream.Stream;
 @Service
 public class HourListBuilder {
 
+    private static final Logger logger = LoggerFactory.getLogger(HourListBuilder.class);
+
     private final String templateFilename = "hour-list-template.ods";
     private final DateTimeFormatter socialNumberFormatter = DateTimeFormatter.ofPattern("ddMMyy-");
     private final File templateFile;
@@ -40,33 +44,22 @@ public class HourListBuilder {
         this.workShiftService = workShiftService;
         this.resourceLoader = resourceLoader;
 
-        try {
-            InputStream inputStream = resourceLoader.getResource("classpath:"+ templateFilename).getInputStream();
-            templateFile = new File(templateFilename);
-            FileUtils.touch(templateFile);
-            FileUtils.copyInputStreamToFile(inputStream, templateFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        }
-
+        InputStream inputStream = resourceLoader.getResource("classpath:"+ templateFilename).getInputStream();
+        templateFile = new File(templateFilename);
+        FileUtils.touch(templateFile);
+        FileUtils.copyInputStreamToFile(inputStream, templateFile);
     }
 
     public HourList build(Employer employer, Assistant assistant, LocalDate startDate, LocalDate endDate) throws IOException {
-        try {
-            List<WorkShift> workShifts = workShiftService.listByAssistantAndTime(assistant, startDate, endDate);
-            HourList hourList = new HourList(getTemplateSheet());
-            hourList.setEmployerName(employer.getFirstName()+" "+employer.getLastName());
-            hourList.setAssistantName(assistant.getFirstName()+" "+assistant.getLastName());
-            hourList.setAssistantSocialNumberStart(assistant.getBirthday().format(socialNumberFormatter));
-            hourList.setHourListRows(calculateHourListRows(workShifts, startDate, endDate));
-            return hourList;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-
+        logger.debug("Building hour list for assistant {} from date {} to date {}", assistant.getId(), startDate, endDate);
+        List<WorkShift> workShifts = workShiftService.listByAssistantAndTime(assistant, startDate.minusDays(1), endDate.plusDays(1));
+        HourList hourList = new HourList(getTemplateSheet());
+        hourList.setEmployerName(employer.getFirstName()+" "+employer.getLastName());
+        hourList.setAssistantName(assistant.getFirstName()+" "+assistant.getLastName());
+        hourList.setAssistantSocialNumberStart(assistant.getBirthday().format(socialNumberFormatter));
+        hourList.setHourListRows(calculateHourListRows(workShifts, startDate, endDate));
+        logger.info("Hour list building successful");
+        return hourList;
     }
 
 
@@ -96,8 +89,7 @@ public class HourListBuilder {
     private Function<WorkShift, Stream<HourListSpan>> splitWorkShiftsIntoSpans = workShift -> {
         LocalDateTime start = workShift.getStarts().truncatedTo(ChronoUnit.MINUTES);
         LocalDateTime end = workShift.getEnds().truncatedTo(ChronoUnit.MINUTES);
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        System.out.println("workshift is from "+start.format(f)+" to "+end.format(f));
+        logger.trace("Work shift is from {} to {}", start, end);
         boolean sick = workShift.isSick();
         List<HourListSpan> spans = new ArrayList<>();
 
@@ -105,15 +97,17 @@ public class HourListBuilder {
         while (start.getDayOfYear() != end.getDayOfYear()) {
             Time spanStart = new Time(start);
             Time spanEnd = new Time(24);
-            System.out.println("Not on same date, creating span on "+start.toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                    +" from "+spanStart.toString()+" to "+spanEnd.toString());
+            logger.trace("Not on same date, creating span on {} from {} to {}",
+                    start.toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    spanStart.toString(), spanEnd.toString());
             spans.add(new HourListSpan(start.toLocalDate(), sick, new TimeSpan(spanStart, spanEnd)));
             start = start.plusDays(1).withHour(0).withMinute(0);
         }
         Time spanStart = new Time(start);
         Time spanEnd = new Time(end);
-        System.out.println("On same date, creating span on "+start.toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                +" from "+spanStart.toString()+" to "+spanEnd.toString());
+        logger.trace("On same date, creating span on {} from {} to {}",
+                start.toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                spanStart.toString(), spanEnd.toString());
         spans.add(new HourListSpan(start.toLocalDate(), sick, new TimeSpan(spanStart, spanEnd)));
         return spans.stream();
     };

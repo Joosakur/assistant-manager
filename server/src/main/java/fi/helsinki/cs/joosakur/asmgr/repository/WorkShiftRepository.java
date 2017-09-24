@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WorkShiftRepository extends JpaRepository<WorkShift, UUID> {
-
-    List<WorkShift> findByEmployer(Employer employer);
-    List<WorkShift> findByEmployerAndEndsAfterAndStartsBefore(Employer employer, LocalDateTime from, LocalDateTime to);
-    List<WorkShift> findByAssistantAndEndsAfterAndStartsBefore(Assistant assistant, LocalDateTime from, LocalDateTime to);
+    List<WorkShift> findByEmployerAndStartsAfterAndEndsBefore(Employer employer, LocalDateTime from, LocalDateTime to);
+    List<WorkShift> findByEmployerAndStartsBetween(Employer employer, LocalDateTime from, LocalDateTime to);
+    List<WorkShift> findByAssistantAndStartsAfterAndEndsBefore(Assistant assistant, LocalDateTime from, LocalDateTime to);
 
 }

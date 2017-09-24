@@ -4,6 +4,8 @@ import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
 import fi.helsinki.cs.joosakur.asmgr.repository.AssistantRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.UUID;
 
 @Service
 public class AssistantServiceImpl implements AssistantService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AssistantServiceImpl.class);
 
     private final AssistantRepository repository;
 
@@ -26,7 +30,9 @@ public class AssistantServiceImpl implements AssistantService {
     public Assistant create(Assistant assistant) {
         if(assistant.getId() != null)
             throw new IllegalArgumentException("Can not give id on create.");
-        return repository.save(assistant);
+        assistant = repository.save(assistant);
+        logger.info("Employer {} created an assistant {}.", assistant.getEmployer().getId(), assistant.getId());
+        return assistant;
     }
 
     @Override
@@ -34,7 +40,10 @@ public class AssistantServiceImpl implements AssistantService {
     public Assistant update(Assistant assistant) throws NotFoundException {
         if(assistant.getId() == null)
             throw new IllegalArgumentException("Must give id on update.");
-        return repository.save(assistant);
+        assistant = repository.save(assistant);
+
+        logger.info("Assistant {} was updated.", assistant.getId());
+        return assistant;
     }
 
 
@@ -56,5 +65,6 @@ public class AssistantServiceImpl implements AssistantService {
     @Transactional
     public void delete(UUID id) throws NotFoundException {
         repository.delete(find(id));
+        logger.info("Assistant {} was deleted.", id.toString());
     }
 }

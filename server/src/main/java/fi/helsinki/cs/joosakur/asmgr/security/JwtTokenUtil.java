@@ -3,11 +3,13 @@ package fi.helsinki.cs.joosakur.asmgr.security;
 import fi.helsinki.cs.joosakur.asmgr.common.utils.TimeProvider;
 import fi.helsinki.cs.joosakur.asmgr.config.properties.AppConfig;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +21,12 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
     private static final long serialVersionUID = -3301605591108950415L;
 
     static final String CLAIM_KEY_USERNAME = Claims.SUBJECT;
     static final String CLAIM_KEY_AUDIENCE = "audience";
     static final String CLAIM_KEY_CREATED = "created";
-    static final String CLAIM_KEY_EXPIRED = Claims.EXPIRATION;
 
     static final String AUDIENCE_UNKNOWN = "unknown";
     static final String AUDIENCE_WEB = "web";
@@ -38,61 +40,37 @@ public class JwtTokenUtil implements Serializable {
     private AppConfig appConfig;
 
     public String getUsernameFromToken(String token) {
-        String username;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
-        return username;
+        final Claims claims = getClaimsFromToken(token);
+        return claims.getSubject();
     }
 
     public Date getCreatedDateFromToken(String token) {
-        Date created;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            created = new Date((Long) claims.get(CLAIM_KEY_CREATED));
-        } catch (Exception e) {
-            created = null;
-        }
-        return created;
+        final Claims claims = getClaimsFromToken(token);
+        return new Date((Long) claims.get(CLAIM_KEY_CREATED));
     }
 
-    public Date getExpirationDateFromToken(String token) {
-        Date expiration;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            expiration = claims.getExpiration();
-        } catch (Exception e) {
-            expiration = null;
-        }
-        return expiration;
+    public Date getExpirationDateFromToken(String token) throws AuthenticationException {
+        final Claims claims = getClaimsFromToken(token);
+        return claims.getExpiration();
     }
 
-    public String getAudienceFromToken(String token) {
-        String audience;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            audience = (String) claims.get(CLAIM_KEY_AUDIENCE);
-        } catch (Exception e) {
-            audience = null;
-        }
-        return audience;
+    public String getAudienceFromToken(String token) throws AuthenticationException {
+        final Claims claims = getClaimsFromToken(token);
+        return (String) claims.get(CLAIM_KEY_AUDIENCE);
     }
 
-    private Claims getClaimsFromToken(String token) {
-        Claims claims;
+    private Claims getClaimsFromToken(String token) throws AuthenticationException {
         try {
-            claims = Jwts.parser()
+            return Jwts.parser()
                     .setSigningKey(appConfig.getJwt().getSecret())
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (Exception e) {
-            //todo: logging, especially if SignatureException
-            claims = null;
+        } catch (ExpiredJwtException e) {
+            throw new InsufficientAuthenticationException("Token has expired");
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException e) {
+            logger.warn("Possible attack, token was not valid jwt: {}", token);
+            throw new InsufficientAuthenticationException("Token could not be parsed");
         }
-        return claims;
     }
 
     private Boolean isTokenExpired(String token) {
@@ -110,11 +88,6 @@ public class JwtTokenUtil implements Serializable {
             audience = AUDIENCE_MOBILE;
         }
         return audience;
-    }
-
-    private Boolean ignoreTokenExpiration(String token) {
-        String audience = getAudienceFromToken(token);
-        return (AUDIENCE_TABLET.equals(audience) || AUDIENCE_MOBILE.equals(audience));
     }
 
     public String generateToken(UserDetails userDetails, Device device) {
@@ -140,26 +113,9 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    public Boolean canTokenBeRefreshed(String token) {
-        return (!isTokenExpired(token) || ignoreTokenExpiration(token));
-    }
-
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            claims.put(CLAIM_KEY_CREATED, timeProvider.now());
-            refreshedToken = doGenerateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
-    }
-
     public Boolean validateToken(String token, UserDetails userDetails) {
         Employer user = (Employer) userDetails;
         final String username = getUsernameFromToken(token);
-        return (
-                username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 }

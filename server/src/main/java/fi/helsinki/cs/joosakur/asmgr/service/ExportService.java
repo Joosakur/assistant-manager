@@ -15,5 +15,5 @@ public interface ExportService {
 
     void onExportComplete(UUID id, String downloadUrl) throws NotFoundException;
 
-    void onExportError(UUID id, String error) throws NotFoundException;
+    void onExportError(UUID id, Throwable exception) throws NotFoundException;
 }
