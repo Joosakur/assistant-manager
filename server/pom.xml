@@ -6,7 +6,7 @@
 
     <groupId>fi.helsinki.cs.joosakur.asmgr</groupId>
     <artifactId>assistant-manager-server</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.2</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
