@@ -105,6 +105,13 @@
     "assistant": ["Avustaja", "Assistant"],
     "startDate": ["Alkupäivämäärä", "Start Date"],
     "endDate": ["Loppupäivämäärä", "End Date"],
+    "year": ["Vuosi", "Year"],
+    "month": ["Kuukausi","Month"],
+    "range": ["Väli", "Range"],
+    "range0": ["Koko kuukausi", "Whole month"],
+    "range1": ["Alkupuoli", "First half"],
+    "range2": ["Loppupuoli", "Second half"],
+
     "startBtn": ["Muodosta tuntilista", "Start Export"],
     "downloadBtn": ["Lataa laskentataulukko", "Download Spreadsheet"],
     "p1": [

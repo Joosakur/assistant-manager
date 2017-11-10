@@ -13,3 +13,5 @@ log/
 target/
 webapps/
 
+# misc
+/server/test-output/

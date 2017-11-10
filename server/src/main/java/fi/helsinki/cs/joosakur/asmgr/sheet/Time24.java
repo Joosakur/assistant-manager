@@ -6,11 +6,11 @@ import java.time.LocalTime;
 /**
  * This class will be used instead of java.time.LocalTime. The main difference is that this class supports time 24:00.
  */
-public class Time implements Comparable<Time>, Cloneable {
+public class Time24 implements Comparable<Time24>, Cloneable {
     private final int hours;
     private final int minutes;
 
-    public Time(int hours, int minutes) {
+    public Time24(int hours, int minutes) {
         if(hours<0 || hours>24 || minutes < 0 || minutes>59 || (hours==24 && minutes>0))
             throw new IllegalArgumentException("Illegal time: "+hours+":"+minutes);
 
@@ -18,25 +18,25 @@ public class Time implements Comparable<Time>, Cloneable {
         this.minutes = minutes;
     }
 
-    public Time(int hours) {
+    public Time24(int hours) {
         this(hours, 0);
     }
 
-    public Time(LocalTime localTime) {
+    public Time24(LocalTime localTime) {
         this(localTime.getHour(), localTime.getMinute());
     }
 
-    public Time(LocalDateTime localDateTime) {
+    public Time24(LocalDateTime localDateTime) {
         this(localDateTime.toLocalTime());
     }
 
 
 
-    public boolean isBefore(Time time) {
+    public boolean isBefore(Time24 time) {
         return hours < time.hours || (hours == time.hours && minutes < time.minutes);
     }
 
-    public boolean isAfter(Time time) {
+    public boolean isAfter(Time24 time) {
         return hours > time.hours || (hours == time.hours && minutes > time.minutes);
     }
 
@@ -47,8 +47,8 @@ public class Time implements Comparable<Time>, Cloneable {
     }
 
     @Override
-    public Time clone() {
-        return new Time(this.hours, this.minutes);
+    public Time24 clone() {
+        return new Time24(this.hours, this.minutes);
     }
 
     public int getHour() {
@@ -72,14 +72,14 @@ public class Time implements Comparable<Time>, Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Time time = (Time) o;
+        Time24 time = (Time24) o;
 
         if (hours != time.hours) return false;
         return minutes == time.minutes;
     }
 
     @Override
-    public int compareTo(Time o) {
+    public int compareTo(Time24 o) {
         if(this.isBefore(o))
             return -1;
         if(this.isAfter(o))

@@ -46,10 +46,30 @@ export function postReport(report) {
   return function (dispatch, getState) {
     dispatch(postReportBegin());
 
+    let startDate, endDate;
+
+    if(report.year && report.month) {
+      //first day of the month
+      startDate = moment().year(report.year).month(report.month).date(1);
+      //last day of the month = first day of the next month minus one day
+      endDate = moment().year(report.year).month(report.month).date(1).add(1,"months").add(-1, "days");
+
+      if(report.range === "1") {
+        endDate = endDate.date(15);
+      }
+      else if(report.range === "2") {
+        startDate = startDate.date(16);
+      }
+    }
+    else {
+      startDate = moment(report.startDate, "D.M.YYYY").format("YYYY-MM-DD");
+      endDate = moment(report.endDate, "D.M.YYYY").format("YYYY-MM-DD");
+    }
+
     let body = {
       assistantId: report.assistant,
-      from: moment(report.startDate, "D.M.YYYY").format("YYYY-MM-DD"),
-      to: moment(report.endDate, "D.M.YYYY").format("YYYY-MM-DD")
+      from: startDate,
+      to: endDate
     };
 
     return axios.post(API.origin+API.reporting, body, {headers: {'Authorization': getState().login.token}})

@@ -5,7 +5,7 @@ import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
 import fi.helsinki.cs.joosakur.asmgr.repository.AssistantRepository;
 import fi.helsinki.cs.joosakur.asmgr.repository.WorkShiftRepository;
-import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilder;
+import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 
 @Component
@@ -25,7 +24,7 @@ public class DevDataLoader implements CommandLineRunner {
     private final AssistantRepository assistantRepository;
     private final WorkShiftRepository workShiftRepository;
 
-    private final HourListBuilder hourListBuilder;
+    private final HourListBuilderService hourListBuilder;
 
     /**
      * When using persistent data, this should be set to false after the first run.
@@ -33,7 +32,7 @@ public class DevDataLoader implements CommandLineRunner {
     private static final boolean ENABLED = false;
 
     @Autowired
-    public DevDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilder hourListBuilder) {
+    public DevDataLoader(EmployerService employerService, AssistantRepository assistantRepository, WorkShiftRepository workShiftRepository, HourListBuilderService hourListBuilder) {
         this.employerService = employerService;
         this.assistantRepository = assistantRepository;
         this.workShiftRepository = workShiftRepository;
@@ -45,9 +44,24 @@ public class DevDataLoader implements CommandLineRunner {
         if(!ENABLED)
             return;
 
-        Employer employer = new Employer("joza.k.90@gmail.com", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Helsinki", true);
+        Employer employer = new Employer("joosa@helsinki.fi", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Helsinki", true);
         employer = employerService.create(employer, true);
+        populateDataForEmployer(employer);
 
+        Employer employer2 = new Employer("joosa@espoo.fi", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Espoo", true);
+        employer2 = employerService.create(employer2, true);
+        populateDataForEmployer(employer2);
+
+        Employer employer3 = new Employer("joosa@vantaa.fi", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Vantaa", true);
+        employer3 = employerService.create(employer3, true);
+        populateDataForEmployer(employer3);
+
+        Employer employer4 = new Employer("joosa@generic.fi", "oeoeoeoe", "Joosa", "Kurvinen", LocalDate.of(1990, Month.JANUARY, 7), "Muu Suomi", false);
+        employer4 = employerService.create(employer4, true);
+        populateDataForEmployer(employer4);
+    }
+
+    public void populateDataForEmployer(Employer employer) {
         Assistant assistant = new Assistant(employer, "abc@gmail.com", "Matti", "Koivisto", LocalDate.of(1988, 3, 12));
         assistant.setBackgroundColor(Color.yellow);
         assistantRepository.save(assistant);
@@ -60,8 +74,8 @@ public class DevDataLoader implements CommandLineRunner {
         assistant3.setTextColor(Color.white);
         assistantRepository.save(assistant3);
 
-        LocalDateTime from = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime to = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime from = LocalDateTime.now().minusDays(10).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime to = from.withSecond(0);
 
         WorkShift workShift = new WorkShift(employer, assistant, from.withHour(9), to.withHour(17));
         workShift.setSick(true);
@@ -91,9 +105,5 @@ public class DevDataLoader implements CommandLineRunner {
             from = from.plusDays(1);
             to = to.plusDays(1);
         }
-
-        LocalDateTime rangeFrom = LocalDate.now().atStartOfDay();
-        LocalDateTime rangeTo = LocalDate.now().plusDays(10).atTime(LocalTime.MAX);
-        //hourListBuilder.build(employer, assistant3, rangeFrom.toLocalDate(), rangeTo.toLocalDate()).saveAs("/asmgr/test.ods");
     }
 }

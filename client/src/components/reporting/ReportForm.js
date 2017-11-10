@@ -12,28 +12,55 @@ class ReportForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      assistantArray: this.getAssistantOptions(props.assistants)
+      assistantArray: ReportForm.getAssistantOptions(props.assistants),
+      yearsArray: ReportForm.getYearOptions(),
+      monthsArray: ReportForm.getMonthOptions(),
+      rangesArray: this.getRangeOptions(),
+      rangeStyle: props.city === "Espoo" ? 2 : 1
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    let nextState = Object.assign({}, this.state, {assistantArray: this.getAssistantOptions(nextProps.assistants)});
+    let nextState = Object.assign({}, this.state, {assistantArray: ReportForm.getAssistantOptions(nextProps.assistants)});
     this.setState(nextState);
   }
 
-  getAssistantOptions(assistants) {
-    let assistantArray = assistants ? assistants
+  static getAssistantOptions(assistants) {
+    if(!assistants)
+      return [];
+
+    return assistants
         .filter(a => a.active)
-        .map(a => {return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id};})
-      : [];
-    return assistantArray;
+        .map(a => {
+          return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id};
+        });
+  }
+
+  static getYearOptions() {
+    let years = [];
+    for (let y = moment().year()+1; y > 2010; y--) {
+      years.push(""+y);
+    }
+
+    return years.map(y => {return {key:y, text:y, value:y}});
+  }
+
+  static getMonthOptions() {
+    let months = [];
+    for(let i=1; i<=13; i++)
+      months.push(""+i);
+    return months.map(m => {return {key: m, text: (parseInt(m)+1)+"", value: m}});
+  }
+
+  getRangeOptions() {
+    return ["0","1","2"].map(r => {return {key: r, text: this.props.msg ['reporting.range'+r], value: r}});
   }
 
   render() {
     return (
       <Form id="WorkShiftForm" onSubmit={this.props.handleSubmit}>
         <Grid columns="equal">
-          <Grid.Column computer="5" tablet="16" mobile="16">
+          <Grid.Column computer="4" tablet="16" mobile="16">
             <Field name="assistant" component={FormDropdownField}
                    label={this.props.msg['reporting.assistant']}
                    options={this.state.assistantArray}
@@ -44,24 +71,57 @@ class ReportForm extends React.Component {
                    }}
                    validate={[required]}/>
           </Grid.Column>
-          <Grid.Column computer="3" tablet="16" mobile="16">
-            <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
-                   label={this.props.msg['reporting.startDate']}
-                   isValidDate={(date) => {
-                     return date.isBetween(moment('2017-01-01'), moment());}
-                   }
-                   validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment())]}
-            />
-          </Grid.Column>
-          <Grid.Column computer="3" tablet="16" mobile="16">
-            <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text"
-                   label={this.props.msg['reporting.endDate']}
-                   isValidDate={(date) => {
-                     return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'));}
-                   }
-                   validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, "days"))]}
-            />
-          </Grid.Column>
+          {this.state.rangeStyle === 1 && (
+            <Grid.Column computer="3" tablet="16" mobile="16">
+              <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
+                     label={this.props.msg['reporting.startDate']}
+                     isValidDate={(date) => {
+                       return date.isBetween(moment('2017-01-01'), moment());}
+                     }
+                     validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment())]}
+              />
+            </Grid.Column>
+          )}
+          {this.state.rangeStyle === 1 && (
+            <Grid.Column computer="3" tablet="16" mobile="16">
+              <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text"
+                     label={this.props.msg['reporting.endDate']}
+                     isValidDate={(date) => {
+                       return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'));}
+                     }
+                     validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, "days"))]}
+              />
+            </Grid.Column>
+          )}
+          {this.state.rangeStyle === 2 && (
+            <Grid.Column computer="2" tablet="16" mobile="16">
+              <Field name="year" component={FormDropdownField}
+                     label={this.props.msg['reporting.year']}
+                     options={this.state.yearsArray}
+                     validate={[required]}
+              />
+            </Grid.Column>
+          )}
+          {this.state.rangeStyle === 2 && (
+            <Grid.Column computer="2" tablet="16" mobile="16">
+              <Field name="month" component={FormDropdownField}
+                     label={this.props.msg['reporting.month']}
+                     options={this.state.monthsArray}
+                     validate={[required]}
+              />
+            </Grid.Column>
+          )}
+          {this.state.rangeStyle === 2 && (
+            <Grid.Column computer="3" tablet="16" mobile="16">
+              <Field name="range" component={FormDropdownField}
+                     label={this.props.msg['reporting.range']}
+                     options={this.state.rangesArray}
+                     validate={[required]}
+              />
+            </Grid.Column>
+          )}
+
+
           <Grid.Column computer="5" tablet="16" mobile="16" verticalAlign="bottom">
             {this.props.downloadable ? (
               <div

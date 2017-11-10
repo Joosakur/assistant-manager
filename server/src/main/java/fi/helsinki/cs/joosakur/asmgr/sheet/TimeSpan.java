@@ -8,11 +8,11 @@ import java.util.Optional;
  * This class represents an immutable range of time during one day and its duration.
  */
 public class TimeSpan {
-    private final Time startTime;
-    private final Time endTime;
+    private final Time24 startTime;
+    private final Time24 endTime;
     private final Duration duration;
 
-    public TimeSpan(Time startTime, Time endTime) {
+    public TimeSpan(Time24 startTime, Time24 endTime) {
         if(startTime.isAfter(endTime))
             throw new IllegalArgumentException("Time goes backwards");
         this.startTime = startTime;
@@ -54,11 +54,11 @@ public class TimeSpan {
 
 
 
-    public Time getStartTime() {
+    public Time24 getStartTime() {
         return startTime;
     }
 
-    public Time getEndTime() {
+    public Time24 getEndTime() {
         return endTime;
     }
 

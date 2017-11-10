@@ -4,8 +4,8 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import fi.helsinki.cs.joosakur.asmgr.config.properties.AppConfig;
 import fi.helsinki.cs.joosakur.asmgr.entity.Export;
-import fi.helsinki.cs.joosakur.asmgr.sheet.HourList;
-import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilder;
+import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilderService;
+import fi.helsinki.cs.joosakur.asmgr.sheet.hourlists.HourList;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class HourListServiceImpl implements HourListService {
     public static final int PRESIGNED_DOWNLOAD_EXPIRATION_MINUTES = 10;
 
     @Autowired
-    private HourListBuilder hourListBuilder;
+    private HourListBuilderService hourListBuilder;
 
     @Autowired
     private AmazonS3 amazonS3;
@@ -41,8 +41,7 @@ public class HourListServiceImpl implements HourListService {
     public CompletableFuture<String> handleExport(Export export) throws IOException {
         logger.debug("Handling export {}", export.getId());
 
-        HourList build = hourListBuilder.build(export.getEmployer(), export.getAssistant(),
-                export.getFrom(), export.getTo());
+        HourList build = hourListBuilder.build(export.getAssistant(), export.getFrom(), export.getTo());
         logger.trace("Hour list built");
 
         String tempFileName = "/asmgr/" + export.getId() + ".ods";
