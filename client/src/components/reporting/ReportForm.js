@@ -47,9 +47,9 @@ class ReportForm extends React.Component {
 
   static getMonthOptions() {
     let months = [];
-    for(let i=1; i<=13; i++)
-      months.push(""+i);
-    return months.map(m => {return {key: m, text: (parseInt(m)+1)+"", value: m}});
+    for(let i=1; i<=12; i++)
+      months.push(i);
+    return months.map(m => {return {key: m+"", text: m+"", value: (m-1)+""}});
   }
 
   getRangeOptions() {
