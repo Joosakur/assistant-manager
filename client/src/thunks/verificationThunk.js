@@ -1,7 +1,7 @@
 import {API} from '../constants/urls';
 import {generalErrorFromApiError} from '../utils/errorUtils';
 import axios from 'axios';
-import {postVerificationBegin, postVerificationError, postVerificationSuccess} from "../actions/verificationActions";
+import {postVerificationBegin, postVerificationError, postVerificationSuccess} from "../actions/api/verificationActions";
 
 export function postVerification(token) {
   return function (dispatch) {

@@ -1,5 +1,5 @@
 import * as types from "../constants/actionTypes";
-import initialState from "./initialState";
+import initialState from "../initialState";
 
 export default function reportingReducer(state = initialState.reporting, action) {
   switch (action.type) {

@@ -4,7 +4,7 @@ import moment from "moment";
 import ReportForm from "../components/reporting/ReportForm";
 import {actions, reset} from "redux-form";
 import {postReport} from "../thunks/reportingThunk";
-import {resetReport} from "../actions/reportActions";
+import {resetReport} from "../actions/api/reportActions";
 import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {

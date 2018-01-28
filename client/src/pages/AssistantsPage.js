@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import AssistantListContainer from "../containers/AssistantListContainer";
 import {Button, Container, Divider, Header, Icon} from "semantic-ui-react";
 import HeaderContainer from "../containers/HeaderContainer";
-import {startAssistantEdit} from "../actions/assistantActions";
+import {startAssistantEdit} from "../actions/api/assistantActions";
 import AssistantEditorContainer from "../containers/AssistantEditorContainer";
 import { getTranslate } from 'react-localize-redux';
 

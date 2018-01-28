@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {ownPropsToArray} from "../utils/jsUtils";
 import AssistantCardGroup from "../components/assistants/AssistantCardGroup";
-import {startAssistantEdit} from "../actions/assistantActions";
+import {startAssistantEdit} from "../actions/api/assistantActions";
 import { getTranslate } from 'react-localize-redux';
 
 const mapStateToProps = state => {

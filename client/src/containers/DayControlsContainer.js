@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import DayControls from "../components/schedule/DayControls";
 import moment from "moment";
-import {copyDay} from "../actions/workShiftActions";
+import {copyDay} from "../actions/api/workShiftActions";
 import {pasteDay} from "../thunks/workShiftsThunk";
 
 class DayControlsContainer extends React.Component {

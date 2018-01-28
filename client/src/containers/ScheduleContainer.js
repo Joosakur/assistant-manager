@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {startWorkShiftEdit} from "../actions/workShiftActions";
+import {startWorkShiftEdit} from "../actions/api/workShiftActions";
 import Schedule from "../components/schedule/Schedule";
 import {getTranslate} from 'react-localize-redux';
 

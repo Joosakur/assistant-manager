@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {endAssistantEdit} from "../actions/assistantActions";
+import {endAssistantEdit} from "../actions/api/assistantActions";
 import {sendAssistantEdit} from "../thunks/assistantsThunk";
 import AssistantModalForm from "../components/assistants/AssistantModalForm";
 import {formValueSelector} from "redux-form";

@@ -6,7 +6,7 @@ import axios from 'axios';
 import {
   getReportError, getReportSuccess, postReportBegin, postReportError,
   postReportSuccess
-} from "../actions/reportActions";
+} from "../actions/api/reportActions";
 import moment from "moment";
 
 function startPolling(id) {

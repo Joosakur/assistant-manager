@@ -7,7 +7,8 @@ export const API = {
   assistants: "/assistants",
   workShifts: "/work-shifts",
   reporting: "/work-shifts/exports",
-};
+}
+
 export const SELF = {
   origin: __SELF_ORIGIN__, // eslint-disable-line no-undef
   home: "/",
@@ -20,4 +21,4 @@ export const SELF = {
   scheduleShare: "/schedule/share",
   reporting: "/reporting",
   terms: "/terms"
-};
+}

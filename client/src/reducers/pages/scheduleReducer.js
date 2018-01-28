@@ -1,5 +1,5 @@
 import * as types from "../constants/actionTypes";
-import initialState from "./initialState";
+import initialState from "../initialState";
 
 export default function scheduleReducer(state = initialState.schedule, action) {
   switch (action.type) {

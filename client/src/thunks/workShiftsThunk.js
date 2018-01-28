@@ -8,9 +8,9 @@ import {
   deleteWorkShiftError,
   deleteWorkShiftSuccess,
   endWorkShiftEdit,
-  getWorkShiftsBegin, getWorkShiftsError, getWorkShiftsSuccess,
+  getWorkShiftsBegin, getWorkShiftsError, listWorkShiftsSuccess,
   submitWorkShiftBegin, submitWorkShiftError, submitWorkShiftSuccess
-} from "../actions/workShiftActions";
+} from "../actions/api/workShiftActions";
 import SubmissionError from "redux-form/es/SubmissionError";
 import moment from "moment";
 
@@ -27,7 +27,7 @@ export function getWorkShifts(fromDate, toDate, assistantId) {
       params: {'from': fromDate, 'to': toDate, assistantId}
     })
       .then((response) => {
-        dispatch(getWorkShiftsSuccess(response.data));
+        dispatch(listWorkShiftsSuccess(response.data));
       })
       .catch(e => {
         let error = generalErrorFromApiError(e);

@@ -1,33 +1,33 @@
-import {routerReducer} from 'react-router-redux';
-import {reducer as toastrReducer} from 'react-redux-toastr';
-import { reducer as formReducer } from 'redux-form';
-import { localeReducer } from 'react-localize-redux';
-import assistantReducer from './assistantReducer';
-import registrationReducer from './registrationReducer';
-import loginReducer from "./loginReducer";
-import {RESET_STATE} from "../constants/actionTypes";
-import entityReducer from "./entityReducer";
-import scheduleReducer from "./scheduleReducer";
-import verificationReducer from "./verificationReducer";
-import reportingReducer from "./reportingReducer";
+import { combineReducers } from 'redux'
+import { routerReducer as router } from 'react-router-redux'
+import {reducer as toastr } from 'react-redux-toastr'
+import { reducer as forms } from 'redux-form'
+//import { localeReducer as locale } from 'react-localize-redux'
 
-const rootReducer = (state = {}, action) => {
-  if(action.type === RESET_STATE)
-    state = Object.assign({}, {routing: state.routing, locale: state.locale});
+import entities from "./entities"
+// import assistants from './pages/assistantReducer'
+// import registration from './pages/registrationReducer'
+// import login from "./pages/loginReducer"
+// import schedule from "./pages/scheduleReducer"
+// import verification from "./pages/verificationReducer"
+// import reports from "./pages/reportingReducer"
 
-  return {
-    entities: entityReducer(state.entities, action),
-    assistants: assistantReducer(state.assistants, action),
-    schedule: scheduleReducer(state.schedule, action),
-    registration: registrationReducer(state.registration, action),
-    verification: verificationReducer(state.verification, action),
-    login: loginReducer(state.login, action),
-    reporting: reportingReducer(state.reporting, action),
-    routing: routerReducer(state.routing, action),
-    toastr: toastrReducer(state.toastr, action),
-    form: formReducer(state.form, action),
-    locale: localeReducer(state.locale, action)
-  };
-};
+const mockReducer = state => state || {}
 
-export default rootReducer;
+export default combineReducers({
+  entities,
+
+  // page reducers
+  registration: mockReducer,
+  verification: mockReducer,
+  login: mockReducer,
+  assistants: mockReducer,
+  schedule: mockReducer,
+  reports: mockReducer,
+
+  // 3rd party
+   router,
+   toastr,
+   forms,
+   //locale
+})

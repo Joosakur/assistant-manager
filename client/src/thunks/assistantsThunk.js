@@ -4,9 +4,9 @@ import {toastr} from 'react-redux-toastr';
 import axios from 'axios';
 import {
   endAssistantEdit,
-  getAssistantsBegin, getAssistantsError, getAssistantsSuccess,
+  getAssistantsBegin, getAssistantsError, listAssistantsSuccess,
   submitAssistantBegin, submitAssistantError, submitAssistantSuccess
-} from "../actions/assistantActions";
+} from "../actions/api/assistantActions";
 import {formErrorFromApiError, generalErrorFromApiError} from "../utils/errorUtils";
 import SubmissionError from "redux-form/es/SubmissionError";
 import moment from "moment";
@@ -22,7 +22,7 @@ export function getAssistants() {
 
     return axios.get(API.origin+API.assistants, {headers: {'Authorization': getState().login.token}})
       .then((response) => {
-        dispatch(getAssistantsSuccess(response.data));
+        dispatch(listAssistantsSuccess(response.data));
       })
       .catch(e => {
         let error = generalErrorFromApiError(e);
@@ -40,7 +40,7 @@ export function getCoworkers(assistantId) {
       headers: {'Authorization': getState().login.token}
     })
       .then((response) => {
-        dispatch(getAssistantsSuccess(response.data));
+        dispatch(listAssistantsSuccess(response.data));
       })
       .catch(e => {
         let error = generalErrorFromApiError(e);

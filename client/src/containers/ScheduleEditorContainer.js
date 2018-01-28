@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import ScheduleModalForm from "../components/schedule/ScheduleModalForm";
-import {endWorkShiftEdit} from "../actions/workShiftActions";
+import {endWorkShiftEdit} from "../actions/api/workShiftActions";
 import {ownPropsToArray} from "../utils/jsUtils";
 import moment from "moment";
 import {deleteWorkShift, sendWorkShiftForm} from "../thunks/workShiftsThunk";

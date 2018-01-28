@@ -1,5 +1,5 @@
 import {API, SELF} from '../constants/urls';
-import {postRegistrationBegin, postRegistrationSuccess, postRegistrationError} from '../actions/registrationActions';
+import {postRegistrationBegin, postRegistrationSuccess, postRegistrationError} from '../actions/api/registrationActions';
 import {push} from 'react-router-redux';
 import {toastr} from 'react-redux-toastr';
 import {formErrorFromApiError} from '../utils/errorUtils';

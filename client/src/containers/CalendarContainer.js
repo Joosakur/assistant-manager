@@ -3,7 +3,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import WorkEvent from "../components/schedule/WorkEvent";
 import {getWorkShifts} from "../thunks/workShiftsThunk";
-import {startWorkShiftEdit} from "../actions/workShiftActions";
+import {startWorkShiftEdit} from "../actions/api/workShiftActions";
 import DayControlsContainer from "./DayControlsContainer";
 
 const getEvent = (workShift, assistant) =>
