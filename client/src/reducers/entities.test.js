@@ -5,7 +5,10 @@ import rootReducer from './index'
 import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from "../actions/api/assistantActions"
 import {selAssistantById, selAssistantsArray} from "../selectors/entities/assistants"
 import {selWorkShiftIdsByAssistant, selWorkShiftsByAssistantIndex} from "../selectors/entities/indexes"
-import {createWorkShiftSuccess, listWorkShiftsSuccess, updateWorkShiftSuccess} from "../actions/api/workShiftActions"
+import {
+  createWorkShiftSuccess, deleteWorkShiftSuccess, listWorkShiftsSuccess,
+  updateWorkShiftSuccess
+} from "../actions/api/workShiftActions"
 import {selWorkShiftById, selWorkShiftsArray} from "../selectors/entities/workShifts"
 
 describe('entities reducer', () => {
@@ -223,10 +226,25 @@ describe('entities reducer', () => {
         expect(workShiftsOfAssistant2).toContain('ws004')
       })
 
-
     })
 
+    describe('deleteWorkShiftSuccess', () => {
 
+      it('deletes the work shift from the map', () => {
+        const action = deleteWorkShiftSuccess('ws002')
+        const afterState = rootReducer(beforeState, action)
+        expect(selWorkShiftsArray(afterState)).toHaveLength(3)
+        expect(selWorkShiftById('ws002')(afterState)).toBeUndefined()
+      })
+
+      it('deletes the work shift id from work shifts by assistant index', () => {
+        const action = deleteWorkShiftSuccess('ws002')
+        const afterState = rootReducer(beforeState, action)
+
+        const workShiftsOfAssistant1 = selWorkShiftIdsByAssistant('a001')(afterState)
+        expect(workShiftsOfAssistant1).toEqual(['ws001'])
+      })
+    })
 
   })
 

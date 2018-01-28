@@ -1,6 +1,9 @@
 import {handleActions} from "redux-actions"
 import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from "../actions/api/assistantActions"
-import {createWorkShiftSuccess, listWorkShiftsSuccess, updateWorkShiftSuccess} from "../actions/api/workShiftActions"
+import {
+  createWorkShiftSuccess, deleteWorkShiftSuccess, listWorkShiftsSuccess,
+  updateWorkShiftSuccess
+} from "../actions/api/workShiftActions"
 
 const reduceCreateAssistantSuccess = (state, {payload: assistant}) => ({
   ...state,
@@ -97,6 +100,19 @@ const reduceUpdateWorkShiftSuccess = (state, {payload: workShift}) => {
   return { ...state, workShifts, workShiftsByAssistant }
 }
 
+const reduceDeleteWorkShiftSuccess = (state, {payload: workShiftId}) => {
+  const workShifts = { ...state.workShifts }
+  delete workShifts[workShiftId]
+
+  const assistantId = state.workShifts[workShiftId].assistantId
+  const workShiftsByAssistant = { ...state.workShiftsByAssistant }
+  if (assistantId) {
+    workShiftsByAssistant[assistantId] = workShiftsByAssistant[assistantId].filter(id => id !== workShiftId)
+  }
+
+  return { ...state, workShifts, workShiftsByAssistant }
+}
+
 const entitiesReducer = handleActions({
   // == assistants ==
   [createAssistantSuccess]: reduceCreateAssistantSuccess,
@@ -106,7 +122,8 @@ const entitiesReducer = handleActions({
   // == work shifts ==
   [createWorkShiftSuccess]: reduceCreateWorkShiftSuccess,
   [listWorkShiftsSuccess]: reduceListWorkShiftsSuccess,
-  [updateWorkShiftSuccess]: reduceUpdateWorkShiftSuccess
+  [updateWorkShiftSuccess]: reduceUpdateWorkShiftSuccess,
+  [deleteWorkShiftSuccess]: reduceDeleteWorkShiftSuccess
 //
 }, {
   assistants: {}

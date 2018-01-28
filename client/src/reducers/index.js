@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
 import {reducer as toastr } from 'react-redux-toastr'
 import { reducer as forms } from 'redux-form'
-//import { localeReducer as locale } from 'react-localize-redux'
+import { localeReducer as locale } from 'react-localize-redux'
 
 import entities from "./entities"
 // import assistants from './pages/assistantReducer'
@@ -29,5 +29,5 @@ export default combineReducers({
    router,
    toastr,
    forms,
-   //locale
+   locale
 })

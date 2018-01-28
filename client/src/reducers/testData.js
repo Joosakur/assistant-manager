@@ -78,7 +78,15 @@ const testState = {
   router: {},
   toastr: {},
   forms: {},
-  locale: {}
+  locale: {
+    languages: [],
+    translations: {},
+    options: {
+      renderInnerHtml: true,
+      showMissingTranslationMsg: true,
+      missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }'
+    }
+  }
 }
 
 export {
