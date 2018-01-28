@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Recaptcha from 'react-recaptcha';
-import {Icon, Message} from "semantic-ui-react";
+import React from 'react'
+import PropTypes from 'prop-types'
+import Recaptcha from 'react-recaptcha'
+import {Icon, Message} from "semantic-ui-react"
 
 
 const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
-  console.debug("rendering recaptcha");
+  console.debug("rendering recaptcha")
   return (
     <div className="recaptcha-group">
       <div className="recaptcha">
@@ -13,7 +13,7 @@ const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
           sitekey={__RECAPTCHA_SITE_KEY__}  // eslint-disable-line no-undef
           render={explicit ? "explicit" : undefined}
           verifyCallback={response => {
-            input.onChange(response);
+            input.onChange(response)
           }}
           hl={country && "fi"}
         />
@@ -29,8 +29,8 @@ const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
 
     </div>
 
-  );
-};
+  )
+}
 
 ReduxFormRecaptcha.propTypes = {
   input: PropTypes.object.isRequired,
@@ -38,7 +38,7 @@ ReduxFormRecaptcha.propTypes = {
   meta: PropTypes.shape({
     error: PropTypes.string
   })
-};
+}
 
-export default ReduxFormRecaptcha;
+export default ReduxFormRecaptcha
 

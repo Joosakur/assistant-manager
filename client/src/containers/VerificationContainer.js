@@ -1,7 +1,7 @@
-import {connect} from 'react-redux';
-import {postVerification} from "../thunks/verificationThunk";
-import Verifier from "../components/registration/Verifier";
-import {getTranslate} from "react-localize-redux";
+import {connect} from 'react-redux'
+import {postVerification} from "../thunks/verificationThunk"
+import Verifier from "../components/registration/Verifier"
+import {getTranslate} from "react-localize-redux"
 
 const mapStateToProps = (state) => {
   return {
@@ -10,14 +10,14 @@ const mapStateToProps = (state) => {
     msg: {...getTranslate(state.locale)([
       "signUp.verified.title","signUp.verified.subtitle","signUp.verified.proceedBtn"
     ])}
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onMount: () => dispatch(postVerification(ownProps.token))
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Verifier);
+export default connect(mapStateToProps, mapDispatchToProps)(Verifier)
 

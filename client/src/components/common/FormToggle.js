@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Form, Icon, Radio} from 'semantic-ui-react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form, Icon, Radio} from 'semantic-ui-react'
 
 const FormToggle = (props) => {
-  let {input, label, icon} = props;
+  let {input, label, icon} = props
 
   if(typeof icon === 'string')
-    icon = <Icon size="large" name={icon}/>;
+    icon = <Icon size="large" name={icon}/>
 
   return (
     <Form.Field>
@@ -14,13 +14,13 @@ const FormToggle = (props) => {
              toggle
              checked={input.value}
              onChange={(event, data) => {
-               event.preventDefault();
-               input.onChange(data.checked);
+               event.preventDefault()
+               input.onChange(data.checked)
              }}
              label={<label>{icon}{label}</label>}/>
     </Form.Field>
-  );
-};
+  )
+}
 
 FormToggle.propTypes = {
   input: PropTypes.shape({
@@ -29,6 +29,6 @@ FormToggle.propTypes = {
   }).isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-};
+}
 
-export default FormToggle;
+export default FormToggle

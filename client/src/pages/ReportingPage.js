@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {getAssistants} from "../thunks/assistantsThunk";
-import {connect} from 'react-redux';
-import {Container, Divider, Header, Icon, Message} from "semantic-ui-react";
-import HeaderContainer from "../containers/HeaderContainer";
-import ReportContainer from "../containers/ReportContainer";
-import { getTranslate } from 'react-localize-redux';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {getAssistants} from "../thunks/assistantsThunk"
+import {connect} from 'react-redux'
+import {Container, Divider, Header, Icon, Message} from "semantic-ui-react"
+import HeaderContainer from "../containers/HeaderContainer"
+import ReportContainer from "../containers/ReportContainer"
+import { getTranslate } from 'react-localize-redux'
 
 
 class ReportingPage extends React.Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
   }
 
   componentDidMount() {
-    this.props.dispatch(getAssistants());
+    this.props.dispatch(getAssistants())
   }
 
   render() {
@@ -44,19 +44,19 @@ class ReportingPage extends React.Component {
           </Container>
         </Container>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     translate: getTranslate(state.locale)
-  };
-};
+  }
+}
 
 ReportingPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   translate: PropTypes.func.isRequired
-};
+}
 
-export default connect(mapStateToProps)(ReportingPage);
+export default connect(mapStateToProps)(ReportingPage)

@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Form, Label} from 'semantic-ui-react';
-import moment from 'moment';
-import Datetime from "react-datetime";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form, Label} from 'semantic-ui-react'
+import moment from 'moment'
+import Datetime from "react-datetime"
 
 
 const FormDateFieldWithErrorLabel = (props) => {
-  let {input, label, placeholder, isValidDate, meta: {error}} = props;
+  let {input, label, placeholder, isValidDate, meta: {error}} = props
   return (
     <Form.Field error={error}>
       <label style={{float: 'left'}}>{label}</label>
@@ -23,8 +23,8 @@ const FormDateFieldWithErrorLabel = (props) => {
         }}
       />
     </Form.Field>
-  );
-};
+  )
+}
 
 FormDateFieldWithErrorLabel.propTypes = {
   input: PropTypes.object.isRequired,
@@ -34,6 +34,6 @@ FormDateFieldWithErrorLabel.propTypes = {
   meta: PropTypes.shape({
     error: PropTypes.string
   })
-};
+}
 
-export default FormDateFieldWithErrorLabel;
+export default FormDateFieldWithErrorLabel

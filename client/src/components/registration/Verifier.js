@@ -1,22 +1,22 @@
-import React from 'react';
-import {Button, Icon, Loader, Message, Segment} from "semantic-ui-react";
-import PropTypes from 'prop-types';
-import {Link} from "react-router";
-import {SELF} from "../../constants/urls";
+import React from 'react'
+import {Button, Icon, Loader, Message, Segment} from "semantic-ui-react"
+import PropTypes from 'prop-types'
+import {Link} from "react-router"
+import {SELF} from "../../constants/urls"
 
 
 class Verifier extends React.Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
   }
 
   componentDidMount() {
-    this.props.onMount();
+    this.props.onMount()
   }
 
   render() {
-    let {loading, error, msg} = this.props;
+    let {loading, error, msg} = this.props
     return (
       <div>
         {loading && (
@@ -47,7 +47,7 @@ class Verifier extends React.Component {
         )}
 
       </div>
-    );
+    )
   }
 
 }
@@ -57,7 +57,7 @@ Verifier.propTypes = {
   error: PropTypes.string,
   onMount: PropTypes.func.isRequired,
   msg: PropTypes.object.isRequired
-};
+}
 
-export default Verifier;
+export default Verifier
 

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import HeaderContainer from "../containers/HeaderContainer";
-import Container from "semantic-ui-react/dist/es/elements/Container/Container";
-import {Divider, Icon, Message} from "semantic-ui-react";
-import {localize} from "react-localize-redux";
+import React from 'react'
+import PropTypes from 'prop-types'
+import HeaderContainer from "../containers/HeaderContainer"
+import Container from "semantic-ui-react/dist/es/elements/Container/Container"
+import {Divider, Icon, Message} from "semantic-ui-react"
+import {localize} from "react-localize-redux"
 
 class RegisteredPage extends React.Component {
 
@@ -25,12 +25,12 @@ class RegisteredPage extends React.Component {
           </Container>
         </Container>
       </div>
-    );
+    )
   }
 }
 
 RegisteredPage.propTypes = {
   translate: PropTypes.func.isRequired
-};
+}
 
-export default localize(RegisteredPage, 'locale');
+export default localize(RegisteredPage, 'locale')

@@ -1,7 +1,7 @@
-import React from 'react';
-import LoginContainer from "../containers/LoginContainer";
-import HeaderContainer from "../containers/HeaderContainer";
-import {Container} from "semantic-ui-react";
+import React from 'react'
+import LoginContainer from "../containers/LoginContainer"
+import HeaderContainer from "../containers/HeaderContainer"
+import {Container} from "semantic-ui-react"
 
 class LoginPage extends React.Component {
 
@@ -15,8 +15,8 @@ class LoginPage extends React.Component {
           </Container>
         </Container>
       </div>
-    );
+    )
   }
 }
 
-export default LoginPage;
+export default LoginPage

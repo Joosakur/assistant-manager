@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import moment from "moment";
-import {Icon} from "semantic-ui-react";
+import React from 'react'
+import PropTypes from 'prop-types'
+import moment from "moment"
+import {Icon} from "semantic-ui-react"
 
 const WorkEvent = ({event:{start, end, sick, assistant: {name}}}) => {
-  start = moment(start);
-  end = moment(end);
-  let startTime = start.minutes() > 0 ? start.format('HH:mm') : start.format('HH');
-  let endTime = end.minutes() > 0 ? end.format('HH:mm') : end.format('HH');
+  start = moment(start)
+  end = moment(end)
+  let startTime = start.minutes() > 0 ? start.format('HH:mm') : start.format('HH')
+  let endTime = end.minutes() > 0 ? end.format('HH:mm') : end.format('HH')
 
 
   return (
@@ -20,8 +20,8 @@ const WorkEvent = ({event:{start, end, sick, assistant: {name}}}) => {
       </div>
       <div className="event-data-item event-data-item-time">{startTime}-{endTime}</div>
     </div>
-  );
-};
+  )
+}
 
 WorkEvent.propTypes = {
   event: PropTypes.shape({
@@ -35,7 +35,7 @@ WorkEvent.propTypes = {
       textColor: PropTypes.string.isRequired
     })
   }).isRequired
-};
+}
 
-export default WorkEvent;
+export default WorkEvent
 

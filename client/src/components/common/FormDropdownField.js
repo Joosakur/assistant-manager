@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Form} from 'semantic-ui-react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form} from 'semantic-ui-react'
 
 const FormDropdownField = (props) => {
-  let {input, label, options, onChangeExtra} = props;
+  let {input, label, options, onChangeExtra} = props
   return (
     <Form.Field>
       <label style={{float: 'left'}}>{label}</label>
@@ -11,14 +11,14 @@ const FormDropdownField = (props) => {
                 options={options}
                 value={input.value}
                 onChange={(param,data) => {
-                  input.onChange(data.value);
-                  onChangeExtra && onChangeExtra(data.value);
+                  input.onChange(data.value)
+                  onChangeExtra && onChangeExtra(data.value)
                 }}
                 placeholder={label}
                 fluid/>
     </Form.Field>
-  );
-};
+  )
+}
 
 FormDropdownField.propTypes = {
   input: PropTypes.shape({
@@ -28,6 +28,6 @@ FormDropdownField.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   onChangeExtra: PropTypes.func,
-};
+}
 
-export default FormDropdownField;
+export default FormDropdownField

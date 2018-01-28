@@ -1,31 +1,31 @@
 export const formErrorFromApiError = e => {
-  let error = {};
+  let error = {}
   if(!e.response.data)
-    error = {_error: "Connection error"};
+    error = {_error: "Connection error"}
   else {
-    let fieldErrors = e.response.data.fieldErrors;
+    let fieldErrors = e.response.data.fieldErrors
     if(fieldErrors) {
       for(let fieldError of fieldErrors) {
-        error[fieldError.field] = fieldError.message;
+        error[fieldError.field] = fieldError.message
       }
-      error._error = "Validation failed";
+      error._error = "Validation failed"
     }
 
-    let msg = e.response.data.message;
+    let msg = e.response.data.message
     if(msg)
-      error._error = msg;
+      error._error = msg
   }
-  return error;
-};
+  return error
+}
 
 export const generalErrorFromApiError = e => {
   if(!e.response) {
-    return "Oops, something went wrong..";
+    return "Oops, something went wrong.."
   }
   if(!e.response.data)
-    return "Connection error";
+    return "Connection error"
 
-  let msg = e.response.data.message;
-  return msg ? msg : "Unknown error";
-};
+  let msg = e.response.data.message
+  return msg ? msg : "Unknown error"
+}
 

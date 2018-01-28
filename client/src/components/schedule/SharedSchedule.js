@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Container, Divider, Header, Icon, Segment} from "semantic-ui-react";
-import CalendarContainer from "../../containers/CalendarContainer";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Container, Divider, Header, Icon, Segment} from "semantic-ui-react"
+import CalendarContainer from "../../containers/CalendarContainer"
 
 const SharedSchedule = ({loading, assistantId}) => {
   return (
@@ -12,13 +12,13 @@ const SharedSchedule = ({loading, assistantId}) => {
           <CalendarContainer assistantId={assistantId}/>
         </Segment>
       </Container>
-  );
-};
+  )
+}
 
 SharedSchedule.propTypes = {
   loading: PropTypes.bool,
   assistantId: PropTypes.string.isRequired
-};
+}
 
-export default SharedSchedule;
+export default SharedSchedule
 

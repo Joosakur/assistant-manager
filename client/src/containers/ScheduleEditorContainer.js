@@ -1,15 +1,15 @@
-import {connect} from 'react-redux';
-import ScheduleModalForm from "../components/schedule/ScheduleModalForm";
-import {endWorkShiftEdit} from "../actions/api/workShiftActions";
-import {ownPropsToArray} from "../utils/jsUtils";
-import moment from "moment";
-import {deleteWorkShift, sendWorkShiftForm} from "../thunks/workShiftsThunk";
+import {connect} from 'react-redux'
+import ScheduleModalForm from "../components/schedule/ScheduleModalForm"
+import {endWorkShiftEdit} from "../actions/api/workShiftActions"
+import {ownPropsToArray} from "../utils/jsUtils"
+import moment from "moment"
+import {deleteWorkShift, sendWorkShiftForm} from "../thunks/workShiftsThunk"
 
 const mapStateToProps = state => {
-  let targetId = state.schedule.target;
-  let target;
+  let targetId = state.schedule.target
+  let target
   if(targetId)
-    target = state.entities.workShifts[targetId];
+    target = state.entities.workShifts[targetId]
 
   return {
     open: state.schedule.editing,
@@ -27,19 +27,19 @@ const mapStateToProps = state => {
       endTimeMinutes: target ? moment(target.end).format("mm") : "00",
       sick: target ? target.sick : false
     }
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => dispatch(endWorkShiftEdit()),
     onSubmit: (values) => dispatch(sendWorkShiftForm(values)),
     onDelete: (id) => {
-      dispatch(deleteWorkShift(id));
+      dispatch(deleteWorkShift(id))
     }
-  };
-};
+  }
+}
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleModalForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleModalForm)

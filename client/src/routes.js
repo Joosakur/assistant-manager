@@ -1,23 +1,23 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
-import { routerActions } from 'react-router-redux';
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
+import { routerActions } from 'react-router-redux'
 
-import App from './components/App';
-import HomePage from './pages/HomePage';
-import AssistantsPage from './pages/AssistantsPage';
-import RegistrationPage from './pages/RegistrationPage';
-import {SELF} from './constants/urls';
-import LoginPage from "./pages/LoginPage";
-import {connectedRouterRedirect} from "redux-auth-wrapper/history3/redirect";
-import locationHelperBuilder from 'redux-auth-wrapper/history3/locationHelper';
-import SchedulePage from "./pages/SchedulePage";
-import AuthLoader from "./components/login/AuthLoader";
-import SharedSchedulePage from "./pages/SharedSchedulePage";
-import RegisteredPage from "./pages/RegisteredPage";
-import VerificationPage from "./pages/VerificationPage";
-import ReportingPage from "./pages/ReportingPage";
+import App from './components/App'
+import HomePage from './pages/HomePage'
+import AssistantsPage from './pages/AssistantsPage'
+import RegistrationPage from './pages/RegistrationPage'
+import {SELF} from './constants/urls'
+import LoginPage from "./pages/LoginPage"
+import {connectedRouterRedirect} from "redux-auth-wrapper/history3/redirect"
+import locationHelperBuilder from 'redux-auth-wrapper/history3/locationHelper'
+import SchedulePage from "./pages/SchedulePage"
+import AuthLoader from "./components/login/AuthLoader"
+import SharedSchedulePage from "./pages/SharedSchedulePage"
+import RegisteredPage from "./pages/RegisteredPage"
+import VerificationPage from "./pages/VerificationPage"
+import ReportingPage from "./pages/ReportingPage"
 
-const locationHelper = locationHelperBuilder({});
+const locationHelper = locationHelperBuilder({})
 
 const userIsAuthenticated = connectedRouterRedirect({
   // The url to redirect user to if they fail
@@ -31,7 +31,7 @@ const userIsAuthenticated = connectedRouterRedirect({
   wrapperDisplayName: 'UserIsAuthenticated',
   //redirect via redux-router
   redirectAction: routerActions.replace,
-});
+})
 
 const userIsNotAuthenticated = connectedRouterRedirect({
   // This sends the user either to the query param route if we have one, or to the landing page if none is specified and the user is already logged in
@@ -46,7 +46,7 @@ const userIsNotAuthenticated = connectedRouterRedirect({
   wrapperDisplayName: 'UserIsNotAuthenticated',
   //redirect via redux-router
   redirectAction: routerActions.replace,
-});
+})
 
 export default (
   <Route path={SELF.home} component={App}>
@@ -60,4 +60,4 @@ export default (
     <Route path={SELF.scheduleShare+"/:shareId"} component={SharedSchedulePage}/>
     <Route path={SELF.reporting} component={userIsAuthenticated(ReportingPage)}/>
   </Route>
-);
+)

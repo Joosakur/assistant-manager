@@ -1,59 +1,59 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button, Form, Grid} from "semantic-ui-react";
-import {reduxForm, Field} from 'redux-form';
-import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
-import FormDropdownField from "../common/FormDropdownField";
-import moment from "moment";
-import {dateBetween, required} from "../../utils/validationConstraints";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Button, Form, Grid} from "semantic-ui-react"
+import {reduxForm, Field} from 'redux-form'
+import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel"
+import FormDropdownField from "../common/FormDropdownField"
+import moment from "moment"
+import {dateBetween, required} from "../../utils/validationConstraints"
 
 class ReportForm extends React.Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
     this.state = {
       assistantArray: ReportForm.getAssistantOptions(props.assistants),
       yearsArray: ReportForm.getYearOptions(),
       monthsArray: ReportForm.getMonthOptions(),
       rangesArray: this.getRangeOptions(),
       rangeStyle: props.city === "Espoo" ? 2 : 1
-    };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    let nextState = Object.assign({}, this.state, {assistantArray: ReportForm.getAssistantOptions(nextProps.assistants)});
-    this.setState(nextState);
+    let nextState = Object.assign({}, this.state, {assistantArray: ReportForm.getAssistantOptions(nextProps.assistants)})
+    this.setState(nextState)
   }
 
   static getAssistantOptions(assistants) {
     if(!assistants)
-      return [];
+      return []
 
     return assistants
         .filter(a => a.active)
         .map(a => {
-          return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id};
-        });
+          return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id}
+        })
   }
 
   static getYearOptions() {
-    let years = [];
+    let years = []
     for (let y = moment().year()+1; y > 2010; y--) {
-      years.push(""+y);
+      years.push(""+y)
     }
 
-    return years.map(y => {return {key:y, text:y, value:y}});
+    return years.map(y => {return {key:y, text:y, value:y}})
   }
 
   static getMonthOptions() {
-    let months = [];
+    let months = []
     for(let i=1; i<=12; i++)
-      months.push(i);
-    return months.map(m => {return {key: m+"", text: m+"", value: (m-1)+""}});
+      months.push(i)
+    return months.map(m => {return {key: m+"", text: m+"", value: (m-1)+""}})
   }
 
   getRangeOptions() {
-    return ["0","1","2"].map(r => {return {key: r, text: this.props.msg ['reporting.range'+r], value: r}});
+    return ["0","1","2"].map(r => {return {key: r, text: this.props.msg ['reporting.range'+r], value: r}})
   }
 
   render() {
@@ -65,9 +65,9 @@ class ReportForm extends React.Component {
                    label={this.props.msg['reporting.assistant']}
                    options={this.state.assistantArray}
                    onChangeExtra={(value) => {
-                     let assistantById = this.props.assistants.filter(a => a.id === value);
+                     let assistantById = this.props.assistants.filter(a => a.id === value)
                      if(assistantById.length === 1)
-                       this.props.onAssistantChange(assistantById[0]);
+                       this.props.onAssistantChange(assistantById[0])
                    }}
                    validate={[required]}/>
           </Grid.Column>
@@ -76,7 +76,7 @@ class ReportForm extends React.Component {
               <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
                      label={this.props.msg['reporting.startDate']}
                      isValidDate={(date) => {
-                       return date.isBetween(moment('2017-01-01'), moment());}
+                       return date.isBetween(moment('2017-01-01'), moment())}
                      }
                      validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment())]}
               />
@@ -87,7 +87,7 @@ class ReportForm extends React.Component {
               <Field name="endDate" component={FormDateFieldWithErrorLabel} type="text"
                      label={this.props.msg['reporting.endDate']}
                      isValidDate={(date) => {
-                       return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'));}
+                       return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'))}
                      }
                      validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, "days"))]}
               />
@@ -126,8 +126,8 @@ class ReportForm extends React.Component {
             {this.props.downloadable ? (
               <div
                 onClick={() => {
-                console.log("reset");
-                this.props.onStartDownload();
+                console.log("reset")
+                this.props.onStartDownload()
               }}>
                 <Button
                   as="a" href={this.props.downloadLink}
@@ -148,7 +148,7 @@ class ReportForm extends React.Component {
         </Grid>
         <Field component="input" type="hidden" name="target"/>
       </Form>
-    );
+    )
   }
 }
 
@@ -163,8 +163,8 @@ ReportForm.propTypes = {
   onAssistantChange: PropTypes.func.isRequired,
   onStartDownload: PropTypes.func.isRequired,
   msg: PropTypes.object.isRequired
-};
+}
 
 export default reduxForm({
   form: 'ReportForm'
-})(ReportForm);
+})(ReportForm)

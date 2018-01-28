@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {IndexLink, Link} from "react-router";
-import {Icon, Menu} from "semantic-ui-react";
-import UserHeader from './UserHeader';
-import NoUserHeader from './NoUserHeader';
-import {SELF} from "../../constants/urls";
+import React from "react"
+import PropTypes from "prop-types"
+import {IndexLink, Link} from "react-router"
+import {Icon, Menu} from "semantic-ui-react"
+import UserHeader from './UserHeader'
+import NoUserHeader from './NoUserHeader'
+import {SELF} from "../../constants/urls"
 
 class AppHeader extends React.Component {
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
   }
 
   render() {
@@ -20,7 +20,7 @@ class AppHeader extends React.Component {
         {this.props.authenticated && <Menu.Item as={Link} to={SELF.reporting} activeClassName="active"><Icon name="text file outline"/> {this.props.translate('nav.reporting')}</Menu.Item>}
         {this.props.authenticated ? <UserHeader onLogout={this.props.onLogout} userData={this.props.userData} translate={this.props.translate}/> : <NoUserHeader translate={this.props.translate}/>}
       </Menu>
-    );
+    )
   }
 }
 
@@ -32,6 +32,6 @@ AppHeader.propTypes = {
     lastName: PropTypes.string.isRequired
   }),
   translate: PropTypes.func.isRequired
-};
+}
 
-export default AppHeader;
+export default AppHeader

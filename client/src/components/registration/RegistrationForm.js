@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Form, Button, Divider} from 'semantic-ui-react';
-import {reduxForm, Field} from 'redux-form';
-import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel";
-import {dateBefore, email, maxLength, minLength, required} from "../../utils/validationConstraints";
-import ReduxFormRecaptcha from "../common/ReduxFormRecaptcha";
-import moment from "moment";
-import FormCheckbox from "../common/FormCheckbox";
-import FormDropdownField from "../common/FormDropdownField";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form, Button, Divider} from 'semantic-ui-react'
+import {reduxForm, Field} from 'redux-form'
+import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel"
+import {dateBefore, email, maxLength, minLength, required} from "../../utils/validationConstraints"
+import ReduxFormRecaptcha from "../common/ReduxFormRecaptcha"
+import moment from "moment"
+import FormCheckbox from "../common/FormCheckbox"
+import FormDropdownField from "../common/FormDropdownField"
 
-const cities = ['Helsinki','Espoo','Vantaa','Muu Suomi'];
+const cities = ['Helsinki','Espoo','Vantaa','Muu Suomi']
 const getCityOptions = () => {
-  return cities.map(city => {return {key: city, text: city, value: city};});
-};
+  return cities.map(city => {return {key: city, text: city, value: city}})
+}
 
 const RegistrationForm = ({handleSubmit, error, loading, msg}) => {
 
-  const cityOptions = getCityOptions();
+  const cityOptions = getCityOptions()
 
   return (
     <Form error={!!error} onSubmit={handleSubmit} >
@@ -43,19 +43,19 @@ const RegistrationForm = ({handleSubmit, error, loading, msg}) => {
       <Divider hidden/>
       <Button type="submit" disabled={loading} positive size="huge" fluid>{msg['signUp.submit']}</Button>
     </Form>
-  );
-};
+  )
+}
 
 RegistrationForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
   msg: PropTypes.object.isRequired
-};
+}
 
 export default reduxForm({
   form: 'RegistrationForm',
   fields: ['email','password','firstName','lastName','captcha'],
   asyncBlurFields: ['email'],
-})(RegistrationForm);
+})(RegistrationForm)
 

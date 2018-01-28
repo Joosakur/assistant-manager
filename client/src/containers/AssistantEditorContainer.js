@@ -1,23 +1,23 @@
-import {connect} from 'react-redux';
-import {endAssistantEdit} from "../actions/api/assistantActions";
-import {sendAssistantEdit} from "../thunks/assistantsThunk";
-import AssistantModalForm from "../components/assistants/AssistantModalForm";
-import {formValueSelector} from "redux-form";
-import moment from "moment";
-import { getTranslate } from 'react-localize-redux';
+import {connect} from 'react-redux'
+import {endAssistantEdit} from "../actions/api/assistantActions"
+import {sendAssistantEdit} from "../thunks/assistantsThunk"
+import AssistantModalForm from "../components/assistants/AssistantModalForm"
+import {formValueSelector} from "redux-form"
+import moment from "moment"
+import { getTranslate } from 'react-localize-redux'
 
 const mapStateToProps = state => {
-  let targetId = state.assistants.target;
-  let target;
+  let targetId = state.assistants.target
+  let target
   if(targetId)
-    target = state.entities.assistants[targetId];
+    target = state.entities.assistants[targetId]
 
-  const selector = formValueSelector("AssistantForm");
+  const selector = formValueSelector("AssistantForm")
 
-  const {firstName, lastName, nickName, backgroundColor, whiteText} = selector(state, 'firstName', 'lastName', 'nickName', 'backgroundColor', 'whiteText');
-  let shortName = nickName ? nickName : firstName;
+  const {firstName, lastName, nickName, backgroundColor, whiteText} = selector(state, 'firstName', 'lastName', 'nickName', 'backgroundColor', 'whiteText')
+  let shortName = nickName ? nickName : firstName
   if(!nickName && lastName)
-    shortName += " " + lastName [0];
+    shortName += " " + lastName [0]
 
   return {
     open: state.assistants.editing,
@@ -41,14 +41,14 @@ const mapStateToProps = state => {
       'assistants.edit.nickName', 'assistants.edit.birthday', 'assistants.edit.backgroundColor',
       'assistants.edit.textInvert', 'assistants.edit.cancel', 'assistants.edit.save'
     ])}
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => dispatch(endAssistantEdit()),
     onSubmit: (values) => dispatch(sendAssistantEdit(values))
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(AssistantModalForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AssistantModalForm)

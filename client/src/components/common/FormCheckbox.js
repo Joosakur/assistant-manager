@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Checkbox, Form, Icon, Label} from 'semantic-ui-react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Checkbox, Form, Icon, Label} from 'semantic-ui-react'
 
 const FormCheckbox = (props) => {
-  let {input, label, isRequired, meta: {touched, error}} = props;
+  let {input, label, isRequired, meta: {touched, error}} = props
   return (
     <Form.Field error={error && touched}>
       <div style={{display: 'flex', alignItems: 'center'}}>
         <Checkbox
           checked={input.checked}
           onChange={(event, data) => {
-            event.preventDefault();
-            input.onChange(data.checked);
+            event.preventDefault()
+            input.onChange(data.checked)
           }}
           style={{marginRight: '6px'}}
         />
@@ -21,8 +21,8 @@ const FormCheckbox = (props) => {
 
 
     </Form.Field>
-  );
-};
+  )
+}
 
 FormCheckbox.propTypes = {
   input: PropTypes.shape({
@@ -35,6 +35,6 @@ FormCheckbox.propTypes = {
     touched: PropTypes.bool,
     error: PropTypes.string
   })
-};
+}
 
-export default FormCheckbox;
+export default FormCheckbox

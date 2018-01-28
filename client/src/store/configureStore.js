@@ -1,8 +1,8 @@
-import {createStore, compose, applyMiddleware} from 'redux';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
-import rootReducer from '../reducers';
-import {routerMiddleware} from 'react-router-redux';
-import {browserHistory} from "react-router";
+import {createStore, compose, applyMiddleware} from 'redux'
+import reduxImmutableStateInvariant from 'redux-immutable-state-invariant'
+import rootReducer from '../reducers'
+import {routerMiddleware} from 'react-router-redux'
+import {browserHistory} from "react-router"
 
 
 function configureStoreProd(initialState) {
@@ -14,12 +14,12 @@ function configureStoreProd(initialState) {
     thunk,
 
     routerMiddleware(browserHistory),
-  ];
+  ]
 
   return createStore(rootReducer, initialState, compose(
     applyMiddleware(...middlewares)
     )
-  );
+  )
 }
 
 function configureStoreDev(initialState) {
@@ -34,25 +34,25 @@ function configureStoreDev(initialState) {
     thunk,
 
     routerMiddleware(browserHistory),
-  ];
+  ]
 
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose // add support for Redux dev tools
   const store = createStore(rootReducer, initialState, composeEnhancers(
     applyMiddleware(...middlewares)
     )
-  );
+  )
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers').default; // eslint-disable-line global-require
-      store.replaceReducer(nextReducer);
-    });
+      const nextReducer = require('../reducers').default // eslint-disable-line global-require
+      store.replaceReducer(nextReducer)
+    })
   }
 
-  return store;
+  return store
 }
 
-const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
+const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev
 
-export default configureStore;
+export default configureStore

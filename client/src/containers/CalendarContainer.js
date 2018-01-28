@@ -1,10 +1,10 @@
-import {connect} from 'react-redux';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
-import WorkEvent from "../components/schedule/WorkEvent";
-import {getWorkShifts} from "../thunks/workShiftsThunk";
-import {startWorkShiftEdit} from "../actions/api/workShiftActions";
-import DayControlsContainer from "./DayControlsContainer";
+import {connect} from 'react-redux'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+import WorkEvent from "../components/schedule/WorkEvent"
+import {getWorkShifts} from "../thunks/workShiftsThunk"
+import {startWorkShiftEdit} from "../actions/api/workShiftActions"
+import DayControlsContainer from "./DayControlsContainer"
 
 const getEvent = (workShift, assistant) =>
 {
@@ -13,10 +13,10 @@ const getEvent = (workShift, assistant) =>
    * Events which start and end on different days don't show up nicely by default. We shall instead render them to end
    * during same day.
    */
-  let calStart = moment(workShift.start);
-  let calEnd = moment(workShift.end);
+  let calStart = moment(workShift.start)
+  let calEnd = moment(workShift.end)
   if(calEnd.dayOfYear() > calStart.dayOfYear() || calEnd.year() > calStart.year())
-    calEnd.year(calStart.year()).dayOfYear(calStart.dayOfYear()).hours(23).minutes(59);
+    calEnd.year(calStart.year()).dayOfYear(calStart.dayOfYear()).hours(23).minutes(59)
 
   let event = {
     id: workShift.id,
@@ -25,7 +25,7 @@ const getEvent = (workShift, assistant) =>
     calStart,
     calEnd,
     sick: workShift.sick
-  };
+  }
 
   if(assistant)
     event.assistant = {
@@ -33,48 +33,48 @@ const getEvent = (workShift, assistant) =>
       name: assistant.nickName || (assistant.firstName + " " + assistant.lastName[0]),
       textColor: assistant.textColor,
       backgroundColor: assistant.backgroundColor
-    };
+    }
   else
     event.assistant = {
       name: "None",
       textColor: "#440000",
       backgroundColor: "#e4c9dd"
-    };
+    }
 
-  return event;
-};
+  return event
+}
 
 const eventStyling = (assistantId) => (event) => { //start, end, isSelected
   return {style: {
     backgroundColor: assistantId && event.assistant.id !== assistantId ? "#aaaaaa" : event.assistant.backgroundColor,
     color: assistantId && event.assistant.id !== assistantId ? "#000000" : event.assistant.textColor,
     opacity: assistantId && event.assistant.id !== assistantId ? 0.5 : 1
-  }};
-};
+  }}
+}
 
 const mapStateToProps = (state, ownProps) => {
 
   let events = Object.getOwnPropertyNames(state.entities.workShifts).map((id) => {
-    let workShift = state.entities.workShifts [id];
+    let workShift = state.entities.workShifts [id]
     if(!workShift)
-      return null;
-    let assistant = state.entities.assistants[workShift.assistantId];
+      return null
+    let assistant = state.entities.assistants[workShift.assistantId]
     if(workShift.assistantId && !assistant) {
-      console.warn("Oops, assistant of a work shift not found"); // eslint-disable-line no-console
-      return null;
+      console.warn("Oops, assistant of a work shift not found") // eslint-disable-line no-console
+      return null
     } else {
-      return getEvent(workShift, assistant);
+      return getEvent(workShift, assistant)
     }
   }).filter((event) => event !== null)
     .sort((a,b) => {
-      a = moment(a.start);
-      b = moment(b.start);
+      a = moment(a.start)
+      b = moment(b.start)
       if(a.isBefore(b))
-        return -1;
+        return -1
       if(b.isBefore(a))
-        return 1;
-      return 0;
-    });
+        return 1
+      return 0
+    })
 
   return {
     loading: state.login.loading,
@@ -88,21 +88,21 @@ const mapStateToProps = (state, ownProps) => {
       dateCellWrapper: DayControlsContainer
     },
     eventPropGetter: eventStyling(ownProps.assistantId)
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onNavigate: (date) => {
-      let from = moment(date).date(1).add(-7, 'days').hours(0).minutes(0).second(0).millisecond(0).format();
-      let to = moment(date).add(1, 'month').date(1).add(7, 'days').hours(0).minutes(0).second(0).millisecond(0).format();
-      dispatch(getWorkShifts(from, to, ownProps.assistantId));
+      let from = moment(date).date(1).add(-7, 'days').hours(0).minutes(0).second(0).millisecond(0).format()
+      let to = moment(date).add(1, 'month').date(1).add(7, 'days').hours(0).minutes(0).second(0).millisecond(0).format()
+      dispatch(getWorkShifts(from, to, ownProps.assistantId))
     },
     onSelectEvent: (event, e) => {
-      e.preventDefault();
-      dispatch(startWorkShiftEdit(event.id));
+      e.preventDefault()
+      dispatch(startWorkShiftEdit(event.id))
     }
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(BigCalendar);
+export default connect(mapStateToProps, mapDispatchToProps)(BigCalendar)

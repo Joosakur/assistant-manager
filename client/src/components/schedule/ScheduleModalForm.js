@@ -1,40 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button, Form, Grid, Icon, Modal} from "semantic-ui-react";
-import {reduxForm, Field} from 'redux-form';
-import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel";
-import FormDropdownField from "../common/FormDropdownField";
-import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel";
-import FormToggle from "../common/FormToggle";
-import moment from "moment";
-import {dateBetween, required} from "../../utils/validationConstraints";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Button, Form, Grid, Icon, Modal} from "semantic-ui-react"
+import {reduxForm, Field} from 'redux-form'
+import FormDateFieldWithErrorLabel from "../common/FormDateFieldWithErrorLabel"
+import FormDropdownField from "../common/FormDropdownField"
+import FormTimeGroupWithErrorLabel from "../common/FormTimeGroupFieldWithErrorLabel"
+import FormToggle from "../common/FormToggle"
+import moment from "moment"
+import {dateBetween, required} from "../../utils/validationConstraints"
 
 class ScheduleModalForm extends React.Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
     this.state = {
       assistantArray: this.getAssistantOptions(props.assistants)
-    };
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    let nextState = Object.assign({}, this.state, {assistantArray: this.getAssistantOptions(nextProps.assistants)});
-    this.setState(nextState);
+    let nextState = Object.assign({}, this.state, {assistantArray: this.getAssistantOptions(nextProps.assistants)})
+    this.setState(nextState)
   }
 
   getAssistantOptions(assistants) {
     let assistantArray = assistants ? assistants
       .filter(a => a.active)
-      .map(a => {return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id};})
+      .map(a => {return {key: a.id, text: a.firstName + " " + a.lastName, value: a.id}})
       .sort((a1, a2) => {
         if(a1.text < a2.text)
-          return -1;
-        return 1;
+          return -1
+        return 1
       })
-    : [];
-    assistantArray.unshift({key: "Unassigned", value: "Unassigned", text: "Unassigned"});
-    return assistantArray;
+    : []
+    assistantArray.unshift({key: "Unassigned", value: "Unassigned", text: "Unassigned"})
+    return assistantArray
   }
 
   render() {
@@ -56,7 +56,7 @@ class ScheduleModalForm extends React.Component {
                 <Field name="startDate" component={FormDateFieldWithErrorLabel} type="text"
                        label={this.props.msg['schedule.edit.startDate']}
                        isValidDate={(date) => {
-                         return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'));}
+                         return date.isBetween(moment('2017-01-01'), moment().add(1, 'years'))}
                        }
                        validate={[required, dateBetween('D.M.YYYY',moment('2017-01-01'), moment().add(1, 'years'))]}
                 />
@@ -91,7 +91,7 @@ class ScheduleModalForm extends React.Component {
           </Button>
         </Modal.Actions>
       </Modal>
-    );
+    )
   }
 }
 
@@ -106,8 +106,8 @@ ScheduleModalForm.propTypes = {
   submitting: PropTypes.bool.isRequired,
   msg: PropTypes.object.isRequired,
   reset: PropTypes.func.isRequired
-};
+}
 
 export default reduxForm({
   form: 'WorkShiftForm'
-})(ScheduleModalForm);
+})(ScheduleModalForm)

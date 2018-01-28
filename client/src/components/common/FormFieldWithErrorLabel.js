@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Form, Input, Label} from 'semantic-ui-react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form, Input, Label} from 'semantic-ui-react'
 
 const FormFieldWithErrorLabel = (props) => {
-  let {input, label, placeholder, isRequired, type, meta: {touched, error}} = props;
+  let {input, label, placeholder, isRequired, type, meta: {touched, error}} = props
   return (
     <Form.Field error={error && touched}>
       <label style={{float: 'left'}}>{label}</label>
@@ -16,8 +16,8 @@ const FormFieldWithErrorLabel = (props) => {
              label={isRequired ? { icon: 'asterisk'} : undefined}
              labelPosition={isRequired ? 'right corner' : undefined}/>
     </Form.Field>
-  );
-};
+  )
+}
 
 FormFieldWithErrorLabel.propTypes = {
   input: PropTypes.object,
@@ -29,6 +29,6 @@ FormFieldWithErrorLabel.propTypes = {
     touched: PropTypes.bool,
     error: PropTypes.string
   })
-};
+}
 
-export default FormFieldWithErrorLabel;
+export default FormFieldWithErrorLabel

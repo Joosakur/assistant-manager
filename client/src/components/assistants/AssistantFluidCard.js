@@ -1,20 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button, Card, Header, Icon, Popup, Segment} from "semantic-ui-react";
-import {SELF} from "../../constants/urls";
-import CopyButton from "../common/CopyButton";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Button, Card, Header, Icon, Popup, Segment} from "semantic-ui-react"
+import {SELF} from "../../constants/urls"
+import CopyButton from "../common/CopyButton"
 
 class AssistantFluidCard extends React.Component {
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
   }
 
   render() {
-    let {assistant: {id, firstName, lastName, backgroundColor}, onEdit, translate} = this.props;
+    let {assistant: {id, firstName, lastName, backgroundColor}, onEdit, translate} = this.props
     if(!backgroundColor)
-      backgroundColor = "#333333";
-    let archived = false;
-    let shareLink = SELF.origin+SELF.scheduleShare+"/"+id;
+      backgroundColor = "#333333"
+    let archived = false
+    let shareLink = SELF.origin+SELF.scheduleShare+"/"+id
 
     return (
       <Card fluid color="green">
@@ -58,7 +58,7 @@ class AssistantFluidCard extends React.Component {
           </Header>
         </Card.Content>
       </Card>
-    );
+    )
   }
 }
 
@@ -72,6 +72,6 @@ AssistantFluidCard.propTypes = {
   }).isRequired,
   onEdit: PropTypes.func.isRequired,
   translate: PropTypes.func.isRequired
-};
+}
 
-export default AssistantFluidCard;
+export default AssistantFluidCard

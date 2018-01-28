@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button, Form, Grid, Icon, Label, Modal} from "semantic-ui-react";
-import {reduxForm, Field} from 'redux-form';
-import FormToggle from "../common/FormToggle";
-import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel";
-import FormColorPickerWithLabel from "../common/FormColorPickerWithLabel";
-import {dateBefore, maxLength, required} from "../../utils/validationConstraints";
-import moment from "moment";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Button, Form, Grid, Icon, Label, Modal} from "semantic-ui-react"
+import {reduxForm, Field} from 'redux-form'
+import FormToggle from "../common/FormToggle"
+import FormFieldWithErrorLabel from "../common/FormFieldWithErrorLabel"
+import FormColorPickerWithLabel from "../common/FormColorPickerWithLabel"
+import {dateBefore, maxLength, required} from "../../utils/validationConstraints"
+import moment from "moment"
 
 class AssistantModalForm extends React.Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
   }
 
   render() {
@@ -78,7 +78,7 @@ class AssistantModalForm extends React.Component {
           </Button>
         </Modal.Actions>
       </Modal>
-    );
+    )
   }
 }
 
@@ -93,8 +93,8 @@ AssistantModalForm.propTypes = {
   whiteText: PropTypes.bool,
   backgroundColor: PropTypes.string,
   msg: PropTypes.object.isRequired
-};
+}
 
 export default reduxForm({
   form: 'AssistantForm'
-})(AssistantModalForm);
+})(AssistantModalForm)

@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Button} from "semantic-ui-react";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Button} from "semantic-ui-react"
 
 const DayControls = ({copy, paste, copyActive, copyEnabled, pasteEnabled}) => {
     return (
@@ -10,8 +10,8 @@ const DayControls = ({copy, paste, copyActive, copyEnabled, pasteEnabled}) => {
           <Button icon="paste" size="mini" basic className="day-control-btn"
                   onClick={paste} disabled={!pasteEnabled}/>
         </div>
-    );
-};
+    )
+}
 
 DayControls.propTypes = {
   copy: PropTypes.func.isRequired,
@@ -19,7 +19,7 @@ DayControls.propTypes = {
   copyActive: PropTypes.bool,
   copyEnabled: PropTypes.bool,
   pasteEnabled: PropTypes.bool
-};
+}
 
-export default DayControls;
+export default DayControls
 

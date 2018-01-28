@@ -1,8 +1,8 @@
-import {API, SELF} from '../constants/urls';
-import {push} from 'react-router-redux';
-import {toastr} from 'react-redux-toastr';
-import axios from 'axios';
-import {formErrorFromApiError, generalErrorFromApiError} from "../utils/errorUtils";
+import {API, SELF} from '../constants/urls'
+import {push} from 'react-router-redux'
+import {toastr} from 'react-redux-toastr'
+import axios from 'axios'
+import {formErrorFromApiError, generalErrorFromApiError} from "../utils/errorUtils"
 import {
   deleteWorkShiftBegin,
   deleteWorkShiftError,
@@ -10,16 +10,16 @@ import {
   endWorkShiftEdit,
   getWorkShiftsBegin, getWorkShiftsError, listWorkShiftsSuccess,
   submitWorkShiftBegin, submitWorkShiftError, submitWorkShiftSuccess
-} from "../actions/api/workShiftActions";
-import SubmissionError from "redux-form/es/SubmissionError";
-import moment from "moment";
+} from "../actions/api/workShiftActions"
+import SubmissionError from "redux-form/es/SubmissionError"
+import moment from "moment"
 
 export function getWorkShifts(fromDate, toDate, assistantId) {
   return function (dispatch, getState) {
-    dispatch(getWorkShiftsBegin());
+    dispatch(getWorkShiftsBegin())
     if(!assistantId && !getState().login.authenticated) {
-      dispatch(push(SELF.login));
-      toastr.error("Error", "Please login");
+      dispatch(push(SELF.login))
+      toastr.error("Error", "Please login")
     }
 
     return axios.get(API.origin+API.workShifts, {
@@ -27,19 +27,19 @@ export function getWorkShifts(fromDate, toDate, assistantId) {
       params: {'from': fromDate, 'to': toDate, assistantId}
     })
       .then((response) => {
-        dispatch(listWorkShiftsSuccess(response.data));
+        dispatch(listWorkShiftsSuccess(response.data))
       })
       .catch(e => {
-        let error = generalErrorFromApiError(e);
-        dispatch(getWorkShiftsError());
-        toastr.error("Error", error);
-      });
-  };
+        let error = generalErrorFromApiError(e)
+        dispatch(getWorkShiftsError())
+        toastr.error("Error", error)
+      })
+  }
 }
 
 export function deleteWorkShift(id) {
   return function (dispatch, getState) {
-    dispatch(deleteWorkShiftBegin());
+    dispatch(deleteWorkShiftBegin())
 
     return axios({
       url: API.origin+API.workShifts+"/"+id,
@@ -47,26 +47,26 @@ export function deleteWorkShift(id) {
       headers: {'Authorization': getState().login.token}
     })
       .then(() => {
-        dispatch(deleteWorkShiftSuccess(id));
-        dispatch(endWorkShiftEdit());
-        toastr.success('Deleted');
+        dispatch(deleteWorkShiftSuccess(id))
+        dispatch(endWorkShiftEdit())
+        toastr.success('Deleted')
       })
       .catch(e => {
-        let error = formErrorFromApiError(e);
-        dispatch(deleteWorkShiftError(error));
-        toastr.error("Error", error._error);
-      });
-  };
+        let error = formErrorFromApiError(e)
+        dispatch(deleteWorkShiftError(error))
+        toastr.error("Error", error._error)
+      })
+  }
 }
 
 function sendWorkShift(body, target) {
   return function (dispatch, getState) {
-    dispatch(submitWorkShiftBegin());
-    let url = API.origin+API.workShifts;
-    let method = 'post';
+    dispatch(submitWorkShiftBegin())
+    let url = API.origin+API.workShifts
+    let method = 'post'
     if(target) {
-      url += "/"+target;
-      method = 'put';
+      url += "/"+target
+      method = 'put'
     }
     return axios({
       url,
@@ -76,35 +76,35 @@ function sendWorkShift(body, target) {
       withCredentials: true
     })
       .then((response) => {
-        dispatch(submitWorkShiftSuccess(response.data));
-        dispatch(endWorkShiftEdit());
-        toastr.success('Saved');
+        dispatch(submitWorkShiftSuccess(response.data))
+        dispatch(endWorkShiftEdit())
+        toastr.success('Saved')
       })
       .catch(e => {
-        let error = formErrorFromApiError(e);
-        dispatch(submitWorkShiftError(error));
-        toastr.error("Error", error._error);
-        throw new SubmissionError(error);
-      });
-  };
+        let error = formErrorFromApiError(e)
+        dispatch(submitWorkShiftError(error))
+        toastr.error("Error", error._error)
+        throw new SubmissionError(error)
+      })
+  }
 }
 
 export function sendWorkShiftForm(form) {
-  let start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes);
-  let end = moment(form.startDate, "D.M.YYYY");
-  let startTimeHours = parseInt(form.startTimeHours);
-  let startTimeMinutes = parseInt(form.startTimeMinutes);
-  let endTimeHours = parseInt(form.endTimeHours);
-  let endTimeMinutes = parseInt(form.endTimeMinutes);
+  let start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes)
+  let end = moment(form.startDate, "D.M.YYYY")
+  let startTimeHours = parseInt(form.startTimeHours)
+  let startTimeMinutes = parseInt(form.startTimeMinutes)
+  let endTimeHours = parseInt(form.endTimeHours)
+  let endTimeMinutes = parseInt(form.endTimeMinutes)
 
   if(endTimeHours === 24 && endTimeMinutes === 0) {
-    end.add(1, "days").hours(0).minutes(0);
+    end.add(1, "days").hours(0).minutes(0)
   }
   else {
-    end.hours(endTimeHours).minutes(endTimeMinutes);
+    end.hours(endTimeHours).minutes(endTimeMinutes)
     if(endTimeHours < startTimeHours ||
       (endTimeHours === startTimeHours && endTimeMinutes < startTimeMinutes))
-      end.add(1, "days");
+      end.add(1, "days")
   }
 
   let body = {
@@ -112,14 +112,14 @@ export function sendWorkShiftForm(form) {
     start: start.format("YYYY-MM-DDTHH:mm:ss"),
     end: end.format("YYYY-MM-DDTHH:mm:ss"),
     sick: form.sick
-  };
+  }
 
-  return sendWorkShift(body, form.target);
+  return sendWorkShift(body, form.target)
 }
 
 export function pasteDay(dateToPaste) {
   return function (dispatch, getState) {
-    let dateToCopy = moment(getState().schedule.copiedDay);
+    let dateToCopy = moment(getState().schedule.copiedDay)
     return axios({
       url: API.origin + API.workShifts + "/copy-day",
       method: 'post',
@@ -132,13 +132,13 @@ export function pasteDay(dateToPaste) {
     })
       .then((response) => {
         response.data.forEach((workShift) => {
-          dispatch(submitWorkShiftSuccess(workShift));
-        });
-        toastr.success('Saved');
+          dispatch(submitWorkShiftSuccess(workShift))
+        })
+        toastr.success('Saved')
       })
       .catch((e) => {
-        console.error(e);
-        toastr.error("Copying failed");
-      });
-  };
+        console.error(e)
+        toastr.error("Copying failed")
+      })
+  }
 }

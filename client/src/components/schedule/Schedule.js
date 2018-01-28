@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ScheduleEditorContainer from "../../containers/ScheduleEditorContainer";
-import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from "semantic-ui-react";
-import CalendarContainer from "../../containers/CalendarContainer";
+import React from 'react'
+import PropTypes from 'prop-types'
+import ScheduleEditorContainer from "../../containers/ScheduleEditorContainer"
+import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from "semantic-ui-react"
+import CalendarContainer from "../../containers/CalendarContainer"
 
 const Schedule = ({onCreateNew, loading, translate}) => {
   return (
@@ -23,14 +23,14 @@ const Schedule = ({onCreateNew, loading, translate}) => {
         </Segment>
       </Container>
     </Sidebar.Pushable>
-  );
-};
+  )
+}
 
 Schedule.propTypes = {
   onCreateNew: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   translate: PropTypes.func.isRequired
-};
+}
 
-export default Schedule;
+export default Schedule
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Grid} from 'semantic-ui-react';
-import {Field} from "redux-form";
-import FormFieldWithErrorLabel from "./FormFieldWithErrorLabel";
-import {maxValue, minValue, number, required} from "../../utils/validationConstraints";
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Grid} from 'semantic-ui-react'
+import {Field} from "redux-form"
+import FormFieldWithErrorLabel from "./FormFieldWithErrorLabel"
+import {maxValue, minValue, number, required} from "../../utils/validationConstraints"
 
 const FormTimeGroupWithErrorLabel = (props) => {
-  let {name, label} = props;
+  let {name, label} = props
   return (
     <Grid columns="equal">
       <Grid.Row verticalAlign="bottom">
@@ -21,12 +21,12 @@ const FormTimeGroupWithErrorLabel = (props) => {
       </Grid.Row>
     </Grid>
 
-  );
-};
+  )
+}
 
 FormTimeGroupWithErrorLabel.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired
-};
+}
 
-export default FormTimeGroupWithErrorLabel;
+export default FormTimeGroupWithErrorLabel

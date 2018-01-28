@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import HeaderContainer from "../containers/HeaderContainer";
-import Container from "semantic-ui-react/dist/es/elements/Container/Container";
-import VerificationContainer from "../containers/VerificationContainer";
+import React from 'react'
+import PropTypes from 'prop-types'
+import HeaderContainer from "../containers/HeaderContainer"
+import Container from "semantic-ui-react/dist/es/elements/Container/Container"
+import VerificationContainer from "../containers/VerificationContainer"
 class VerificationPage extends React.Component {
 
   render() {
@@ -15,12 +15,12 @@ class VerificationPage extends React.Component {
           </Container>
         </Container>
       </div>
-    );
+    )
   }
 }
 
 VerificationPage.propTypes = {
   location: PropTypes.object.isRequired
-};
+}
 
-export default VerificationPage;
+export default VerificationPage
