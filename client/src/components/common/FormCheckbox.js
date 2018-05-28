@@ -15,8 +15,8 @@ const FormCheckbox = (props) => {
           }}
           style={{marginRight: '6px'}}
         />
-        <div>{label} {isRequired && <sup><Icon name="asterisk" size="small"/></sup>}</div>
-        {error && touched && <Label pointing="left" basic horizontal color="red">{error}</Label>}
+        <div>{label} {isRequired && <sup><Icon name='asterisk' size='small'/></sup>}</div>
+        {error && touched && <Label pointing='left' basic horizontal color='red'>{error}</Label>}
       </div>
 
 

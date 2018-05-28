@@ -36,7 +36,7 @@
     "no-underscore-dangle": 0,
     "no-alert": 0,
     "no-lone-blocks": 0,
-    "jsx-quotes": 1,
+    "jsx-quotes": ["error", "prefer-single"],
     "react/display-name": [
       1,
       {
@@ -81,5 +81,14 @@
     "react/self-closing-comp": 1,
     "react/sort-comp": 1
   },
-  "globals": {}
+  "globals": {
+    "require": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "expect": true,
+    "describe": true,
+    "it": true
+  }
 }

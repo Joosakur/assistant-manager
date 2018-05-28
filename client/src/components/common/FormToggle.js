@@ -6,13 +6,13 @@ const FormToggle = (props) => {
   let {input, label, icon} = props
 
   if(typeof icon === 'string')
-    icon = <Icon size="large" name={icon}/>
+    icon = <Icon size='large' name={icon}/>
 
   return (
     <Form.Field>
       <Radio
              toggle
-             checked={input.value}
+             checked={!!input.value}
              onChange={(event, data) => {
                event.preventDefault()
                input.onChange(data.checked)
@@ -24,7 +24,7 @@ const FormToggle = (props) => {
 
 FormToggle.propTypes = {
   input: PropTypes.shape({
-    value: PropTypes.bool.isRequired,
+    value: PropTypes.isRequired,
     onChange: PropTypes.func.isRequired
   }).isRequired,
   label: PropTypes.string.isRequired,

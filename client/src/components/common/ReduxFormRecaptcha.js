@@ -7,8 +7,8 @@ import {Icon, Message} from "semantic-ui-react"
 const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
   console.debug("rendering recaptcha")
   return (
-    <div className="recaptcha-group">
-      <div className="recaptcha">
+    <div className='recaptcha-group'>
+      <div className='recaptcha'>
         <Recaptcha
           sitekey={__RECAPTCHA_SITE_KEY__}  // eslint-disable-line no-undef
           render={explicit ? "explicit" : undefined}
@@ -19,8 +19,8 @@ const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
         />
       </div>
       {error && (
-        <Message visible error icon className="recaptcha-msg">
-          <Icon name="android"/>
+        <Message visible error icon className='recaptcha-msg'>
+          <Icon name='android'/>
           <Message.Content>
             <Message.Header>Please make sure you are not a robot</Message.Header>
           </Message.Content>

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from "moment"
-import {Icon} from "semantic-ui-react"
+import moment from 'moment'
+import {Icon} from 'semantic-ui-react'
 
 const WorkEvent = ({event:{start, end, sick, assistant: {name}}}) => {
   start = moment(start)
@@ -11,14 +11,14 @@ const WorkEvent = ({event:{start, end, sick, assistant: {name}}}) => {
 
 
   return (
-    <div className="event-data-container">
-      <div className="event-data-item event-data-item-name">
+    <div className='event-data-container'>
+      <div className='event-data-item event-data-item-name'>
         {name}
         {sick && (
-          <Icon name="plus" circular size="tiny" className="icon-sick"/>
+          <Icon name='plus' circular size='tiny' className='icon-sick'/>
         )}
       </div>
-      <div className="event-data-item event-data-item-time">{startTime}-{endTime}</div>
+      <div className='event-data-item event-data-item-time'>{startTime}-{endTime}</div>
     </div>
   )
 }

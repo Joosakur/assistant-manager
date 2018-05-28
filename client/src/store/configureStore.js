@@ -1,46 +1,37 @@
-import {createStore, compose, applyMiddleware} from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant'
+import { routerMiddleware } from 'react-router-redux'
+import createSagaMiddleware from 'redux-saga'
+
 import rootReducer from '../reducers'
-import {routerMiddleware} from 'react-router-redux'
-import {browserHistory} from "react-router"
+import rootSaga from '../sagas'
 
+const sagaMiddleware = createSagaMiddleware()
 
-function configureStoreProd(initialState) {
+function configureStoreProd(history) {
   const middlewares = [
-    // Add other middleware on this line...
-
-    // thunk middleware can also accept an extra argument to be passed to each thunk action
-    // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
-
-    routerMiddleware(browserHistory),
+    routerMiddleware(history),
+    sagaMiddleware
   ]
 
-  return createStore(rootReducer, initialState, compose(
-    applyMiddleware(...middlewares)
-    )
-  )
+  const store = createStore(rootReducer, compose(applyMiddleware(...middlewares)))
+  sagaMiddleware.run(rootSaga)
+  return store
 }
 
-function configureStoreDev(initialState) {
+function configureStoreDev(history) {
   const middlewares = [
-    // Add other middleware on this line...
-
-    // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
     reduxImmutableStateInvariant(),
-
-    // thunk middleware can also accept an extra argument to be passed to each thunk action
-    // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
-
-    routerMiddleware(browserHistory),
+    routerMiddleware(history),
+    sagaMiddleware
   ]
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose // add support for Redux dev tools
-  const store = createStore(rootReducer, initialState, composeEnhancers(
+  const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(...middlewares)
     )
   )
+  sagaMiddleware.run(rootSaga)
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

@@ -10,7 +10,7 @@ const FormDateFieldWithErrorLabel = (props) => {
   return (
     <Form.Field error={error}>
       <label style={{float: 'left'}}>{label}</label>
-      {error && <Label pointing="left" basic horizontal color="red">{error}</Label>}
+      {error && <Label pointing='left' basic horizontal color='red'>{error}</Label>}
       <Datetime
         value = {input.value}
         onChange={(value) => input.onChange(typeof value === "string" ? value : value.format('DD.MM.YYYY'))}

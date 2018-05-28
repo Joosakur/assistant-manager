@@ -1,12 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ScheduleEditorContainer from "../../containers/ScheduleEditorContainer"
-import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from "semantic-ui-react"
-import CalendarContainer from "../../containers/CalendarContainer"
+import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from 'semantic-ui-react'
+
+// import ScheduleEditorContainer from '../../../src-old/components/schedule/ScheduleEditorContainer'
+import CalendarContainer from './CalendarContainer'
 
 const Schedule = ({onCreateNew, loading, translate}) => {
   return (
     <Sidebar.Pushable>
+      {
+        /*
+
       <ScheduleEditorContainer
         msg={{...translate([
           'schedule.edit.titleNew','schedule.edit.titleEdit','schedule.edit.assistant','schedule.edit.startDate',
@@ -14,9 +18,12 @@ const Schedule = ({onCreateNew, loading, translate}) => {
           'schedule.edit.delete', 'schedule.edit.cancel', 'schedule.edit.save'
         ])}}
       />
-      <Container className="page-container">
-        <Header floated="left" as="h1"><Icon name="calendar"/> {translate('schedule.title')}</Header>
-        <Button primary size="big" floated="right" icon="add" content={translate('schedule.newBtn')} onClick={onCreateNew}/>
+
+         */
+      }
+      <Container className='page-container'>
+        <Header floated='left' as='h1'><Icon name='calendar'/> {translate('schedule.title')}</Header>
+        <Button primary size='big' floated='right' icon='add' content={translate('schedule.newBtn')} onClick={onCreateNew}/>
         <Divider hidden section clearing/>
         <Segment basic loading={loading}>
           <CalendarContainer/>

@@ -77,7 +77,7 @@ const testState = {
   // 3rd party
   router: {},
   toastr: {},
-  forms: {},
+  form: {},
   locale: {
     languages: [],
     translations: {},

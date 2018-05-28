@@ -8,14 +8,14 @@ import {maxValue, minValue, number, required} from "../../utils/validationConstr
 const FormTimeGroupWithErrorLabel = (props) => {
   let {name, label} = props
   return (
-    <Grid columns="equal">
-      <Grid.Row verticalAlign="bottom">
+    <Grid columns='equal'>
+      <Grid.Row verticalAlign='bottom'>
         <Grid.Column>
-          <Field name={name+"Hours"} placeholder="h (00-23)" component={FormFieldWithErrorLabel} type="text" label={label}
+          <Field name={name+"Hours"} placeholder='h (00-23)' component={FormFieldWithErrorLabel} type='text' label={label}
                  validate={[required, number, minValue(0), maxValue(23)]}/>
         </Grid.Column>
         <Grid.Column>
-          <Field name={name+"Minutes"} placeholder="min (00-59)" component={FormFieldWithErrorLabel} type="text"
+          <Field name={name+"Minutes"} placeholder='min (00-59)' component={FormFieldWithErrorLabel} type='text'
                  validate={[required, number, minValue(0), maxValue(59)]}/>
         </Grid.Column>
       </Grid.Row>

@@ -1,9 +1,20 @@
-import {handleActions} from "redux-actions"
-import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from "../actions/api/assistantActions"
+import {handleActions} from 'redux-actions'
+import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from '../actions/api/assistantActions'
 import {
   createWorkShiftSuccess, deleteWorkShiftSuccess, listWorkShiftsSuccess,
   updateWorkShiftSuccess
-} from "../actions/api/workShiftActions"
+} from '../actions/api/workShiftActions'
+import {getSelfSuccess} from '../actions/api/employerActions'
+import initialState from './initialState'
+
+const reduceGetSelfSuccess = (state, {payload: employer}) => {
+  return {
+    ...state,
+    employer: {
+      ...employer
+    }
+  }
+}
 
 const reduceCreateAssistantSuccess = (state, {payload: assistant}) => ({
   ...state,
@@ -114,6 +125,9 @@ const reduceDeleteWorkShiftSuccess = (state, {payload: workShiftId}) => {
 }
 
 const entitiesReducer = handleActions({
+  // == employer / user ==
+  [getSelfSuccess]: reduceGetSelfSuccess,
+
   // == assistants ==
   [createAssistantSuccess]: reduceCreateAssistantSuccess,
   [listAssistantsSuccess]: reduceListAssistantsSuccess,
@@ -124,9 +138,6 @@ const entitiesReducer = handleActions({
   [listWorkShiftsSuccess]: reduceListWorkShiftsSuccess,
   [updateWorkShiftSuccess]: reduceUpdateWorkShiftSuccess,
   [deleteWorkShiftSuccess]: reduceDeleteWorkShiftSuccess
-//
-}, {
-  assistants: {}
-})
+}, initialState.entities)
 
 export default entitiesReducer

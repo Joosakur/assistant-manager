@@ -4,9 +4,9 @@ import {connect} from 'react-redux'
 import {Container} from "semantic-ui-react"
 import moment from 'moment'
 import DateContentRow from 'react-big-calendar/lib/DateContentRow'
-import SharedScheduleContainer from "../containers/SharedScheduleContainer"
-import {getWorkShifts} from "../thunks/workShiftsThunk"
-import {getCoworkers} from "../thunks/assistantsThunk"
+import SharedScheduleContainer from "../components/schedule/SharedScheduleContainer"
+import {getWorkShifts} from "../../src-old/thunks/workShiftsThunk"
+import {getCoworkers} from "../../src-old/thunks/assistantsThunk"
 
 class SharedSchedulePage extends React.Component {
 
@@ -27,7 +27,7 @@ class SharedSchedulePage extends React.Component {
   render() {
     return (
       <div>
-        <Container fluid id="main-container">
+        <Container fluid id='main-container'>
           <SharedScheduleContainer assistantId={this.props.params.shareId}/>
         </Container>
       </div>

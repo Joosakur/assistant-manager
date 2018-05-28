@@ -2,14 +2,14 @@ import { clone } from 'ramda'
 
 import { testState } from './testData'
 import rootReducer from './index'
-import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from "../actions/api/assistantActions"
-import {selAssistantById, selAssistantsArray} from "../selectors/entities/assistants"
-import {selWorkShiftIdsByAssistant, selWorkShiftsByAssistantIndex} from "../selectors/entities/indexes"
+import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from '../actions/api/assistantActions'
+import {selAssistantById, selAssistantsArray} from '../selectors/entities/assistants'
+import {selWorkShiftIdsByAssistant, selWorkShiftsByAssistantIndex} from '../selectors/entities/indexes'
 import {
   createWorkShiftSuccess, deleteWorkShiftSuccess, listWorkShiftsSuccess,
   updateWorkShiftSuccess
-} from "../actions/api/workShiftActions"
-import {selWorkShiftById, selWorkShiftsArray} from "../selectors/entities/workShifts"
+} from '../actions/api/workShiftActions'
+import {selWorkShiftById, selWorkShiftsArray} from '../selectors/entities/workShifts'
 
 describe('entities reducer', () => {
   let beforeState

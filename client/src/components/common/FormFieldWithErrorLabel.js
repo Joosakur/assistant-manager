@@ -7,14 +7,15 @@ const FormFieldWithErrorLabel = (props) => {
   return (
     <Form.Field error={error && touched}>
       <label style={{float: 'left'}}>{label}</label>
-      {error && touched && <Label pointing="left" basic horizontal color="red">{error}</Label>}
+      {error && touched && <Label pointing='left' basic horizontal color='red'>{error}</Label>}
       <Input {...input}
              placeholder={placeholder}
              type={type}
              error={error && touched}
              fluid
              label={isRequired ? { icon: 'asterisk'} : undefined}
-             labelPosition={isRequired ? 'right corner' : undefined}/>
+             labelPosition={isRequired ? 'right corner' : undefined}
+      />
     </Form.Field>
   )
 }

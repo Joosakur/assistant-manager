@@ -1,33 +1,37 @@
 import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
-import {reducer as toastr } from 'react-redux-toastr'
-import { reducer as forms } from 'redux-form'
+import { reducer as toastr } from 'react-redux-toastr'
+import { reducer as form } from 'redux-form'
 import { localeReducer as locale } from 'react-localize-redux'
 
-import entities from "./entities"
-// import assistants from './pages/assistantReducer'
-// import registration from './pages/registrationReducer'
-// import login from "./pages/loginReducer"
-// import schedule from "./pages/scheduleReducer"
-// import verification from "./pages/verificationReducer"
-// import reports from "./pages/reportingReducer"
+import initialState from "./initialState"
+import {logout} from "../actions/authActions"
+import entities from './entities'
+import auth from './auth'
+import pages from './pages'
 
-const mockReducer = state => state || {}
-
-export default combineReducers({
+const combinedReducer = combineReducers({
   entities,
-
-  // page reducers
-  registration: mockReducer,
-  verification: mockReducer,
-  login: mockReducer,
-  assistants: mockReducer,
-  schedule: mockReducer,
-  reports: mockReducer,
+  auth,
+  pages,
 
   // 3rd party
-   router,
-   toastr,
-   forms,
-   locale
+  router,
+  toastr,
+  form, // note: redux-form expects that the reducer name is exactly 'form'
+  locale
 })
+
+const rootReducer = (state, action) => {
+  if(action.type === logout.toString()) {
+    return {
+      ...initialState,
+      router: state.router,
+      locale: state.locale
+    }
+  }
+
+  return combinedReducer(state, action)
+}
+
+export default rootReducer
