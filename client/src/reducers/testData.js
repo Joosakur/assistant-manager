@@ -66,15 +66,25 @@ const testState = {
     }
   },
 
-  // page reducers
-  registration: {},
-  verification: {},
-  login: {},
-  assistants: {},
-  schedule: {},
-  reports: {},
+  pages: {
+    registration: {},
+    verification: {},
+    assistants: {
+      loading: false,
+      assistantDialog: {
+        open: false,
+        assistantId: null
+      }},
+    schedule: {
+      loading: false,
+      workShiftDialog: {
+        open: false,
+        workShiftId: null
+      },
+      copiedDay: null},
+    reports: {}
+  },
 
-  // 3rd party
   router: {},
   toastr: {},
   form: {},

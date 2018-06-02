@@ -1,10 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import DayControls from "./DayControls"
-import moment from "moment"
-import {copyDay} from "../../actions/api/workShiftActions"
-import {pasteDay} from "../../../src-old/thunks/workShiftsThunk"
+import moment from 'moment'
+
+import DayControls from './DayControls'
+import {copyDay} from '../../actions/ui/workShiftActions'
+import {pasteDay} from '../../actions/api/workShiftActions'
+import {selCopiedDay} from '../../selectors/pages/schedule'
+import {selWorkShiftsByStartDate} from '../../selectors/entities/workShifts'
 
 class DayControlsContainer extends React.Component {
   constructor(props, context) {
@@ -34,8 +37,8 @@ DayControlsContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   let date = moment(ownProps.value)
-  let copied = state.schedule.copiedDay
-  let events = state.entities.workShiftsByStartDate [date.format("DD.MM.YYYY")]
+  let copied = selCopiedDay(state)
+  let events = selWorkShiftsByStartDate(date)(state)
   return {
     date,
     thisCopied: copied && date.isSame(copied),
@@ -53,4 +56,3 @@ function mapDispatchToProps(dispatch, ownProps) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayControlsContainer)
-

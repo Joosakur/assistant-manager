@@ -4,7 +4,7 @@ import moment from 'moment'
 import WorkEvent from './WorkEvent'
 import {listWorkShifts} from '../../actions/api/workShiftActions'
 import {openWorkShiftModal} from '../../actions/ui/workShiftActions'
-// import DayControlsContainer from '../../../src-old/components/schedule/DayControlsContainer'
+import DayControlsContainer from './DayControlsContainer'
 
 const getEvent = (workShift, assistant) =>
 {
@@ -84,7 +84,8 @@ const mapStateToProps = (state, ownProps) => {
     endAccessor: 'calEnd',
     views: ['month'],
     components: {
-      event: WorkEvent, // dateCellWrapper: DayControlsContainer
+      event: WorkEvent,
+      dateCellWrapper: DayControlsContainer
     },
     eventPropGetter: eventStyling(ownProps.workShiftId)
   }

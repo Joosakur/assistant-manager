@@ -1,13 +1,18 @@
 import {takeLatest, put, call, select} from 'redux-saga/effects'
 import {toastr} from 'react-redux-toastr'
+import moment from 'moment'
 
 import {
   listWorkShifts, listWorkShiftsSuccess, listWorkShiftsFail,
   createWorkShift, createWorkShiftSuccess, createWorkShiftFail,
-  updateWorkShift, updateWorkShiftSuccess, updateWorkShiftFail
+  updateWorkShift, updateWorkShiftSuccess, updateWorkShiftFail,
+  deleteWorkShift, deleteWorkShiftSuccess, deleteWorkShiftFail,
+  pasteDay
 } from '../actions/api/workShiftActions'
+import {closeWorkShiftModal} from '../actions/ui/workShiftActions'
 import WorkShiftsApi from '../api/workShifts'
 import {selToken} from '../selectors/auth'
+import {selCopiedDay} from '../selectors/pages/schedule'
 import {generalErrorFromApiError} from '../utils/errorUtils'
 
 export function* handleListWorkShifts({payload: {from, to, assistantId}}) {
@@ -49,16 +54,65 @@ function* handleUpdateWorkShift({payload: formValues}) {
   }
 }
 
-const buildPayload = formValues => {
-  const payload = {
+const buildPayload = form => {
+  const start = moment(form.startDate, "D.M.YYYY").hours(form.startTimeHours).minutes(form.startTimeMinutes)
+  const end = moment(form.startDate, "D.M.YYYY")
+  const startTimeHours = parseInt(form.startTimeHours)
+  const startTimeMinutes = parseInt(form.startTimeMinutes)
+  const endTimeHours = parseInt(form.endTimeHours)
+  const endTimeMinutes = parseInt(form.endTimeMinutes)
 
+  if(endTimeHours === 24) {
+    end.add(1, "days").hours(0)
   }
-  // todo
-  return payload
+  else {
+    end.hours(endTimeHours).minutes(endTimeMinutes)
+    const endTimeBeforeStartTime = endTimeHours < startTimeHours ||
+      (endTimeHours === startTimeHours && endTimeMinutes < startTimeMinutes)
+    if(endTimeBeforeStartTime)
+      end.add(1, "days")
+  }
+
+  return {
+    assistantId: form.assistant === "Unassigned" ? null : form.assistant,
+    start: start.format("YYYY-MM-DDTHH:mm:ss"),
+    end: end.format("YYYY-MM-DDTHH:mm:ss"),
+    sick: form.sick
+  }
+}
+
+function* handleDeleteWorkShift({payload: workShiftId}) {
+  const token = yield select(selToken)
+  try {
+    yield call(WorkShiftsApi.deleteWorkShift, token, workShiftId)
+    yield put(deleteWorkShiftSuccess(workShiftId))
+    yield put(closeWorkShiftModal())
+  } catch (e) {
+    toastr.error('Error', generalErrorFromApiError(e))
+    yield put(deleteWorkShiftFail())
+  }
+}
+
+function* handlePasteDay({payload: targetDate}) {
+  const token = yield select(selToken)
+  const sourceDate = yield select(selCopiedDay)
+
+  const from = moment(sourceDate).format('YYYY-MM-DD')
+  const to = moment(targetDate).format('YYYY-MM-DD')
+  try {
+    const response = yield call(WorkShiftsApi.pasteDay, token, from, to)
+    for (const workShift of response.data) {
+      yield put(createWorkShiftSuccess(workShift))
+    }
+  } catch (e) {
+    toastr.error('Error', generalErrorFromApiError(e))
+  }
 }
 
 export default [
   takeLatest(listWorkShifts, handleListWorkShifts),
   takeLatest(createWorkShift, handleCreateWorkShift),
-  takeLatest(updateWorkShift, handleUpdateWorkShift)
+  takeLatest(updateWorkShift, handleUpdateWorkShift),
+  takeLatest(deleteWorkShift, handleDeleteWorkShift),
+  takeLatest(pasteDay, handlePasteDay)
 ]

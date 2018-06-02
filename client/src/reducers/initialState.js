@@ -24,7 +24,8 @@ export default {
       workShiftDialog: {
         open: false,
         workShiftId: null
-      }
+      },
+      copiedDay: null
     },
     reports: undefined,
   }

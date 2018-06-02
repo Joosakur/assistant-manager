@@ -16,9 +16,12 @@ const deleteWorkShift = createAction('API__WORK_SHIFTS__DELETE')
 const deleteWorkShiftSuccess = createAction('API__WORK_SHIFTS__DELETE_SUCCESS')
 const deleteWorkShiftFail = createAction('API__WORK_SHIFTS__DELETE_FAIL')
 
+const pasteDay = createAction('API__WORK_SHIFTS__PASTE_DAY')
+
 export {
   createWorkShift, createWorkShiftSuccess, createWorkShiftFail,
   listWorkShifts, listWorkShiftsSuccess, listWorkShiftsFail,
   updateWorkShift, updateWorkShiftSuccess, updateWorkShiftFail,
-  deleteWorkShift, deleteWorkShiftSuccess, deleteWorkShiftFail
+  deleteWorkShift, deleteWorkShiftSuccess, deleteWorkShiftFail,
+  pasteDay
 }

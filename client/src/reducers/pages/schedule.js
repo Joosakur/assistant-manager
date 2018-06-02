@@ -4,7 +4,7 @@ import {
   createWorkShiftSuccess,
   updateWorkShiftSuccess
 } from '../../actions/api/workShiftActions'
-import {openWorkShiftModal, closeWorkShiftModal} from '../../actions/ui/workShiftActions'
+import {openWorkShiftModal, closeWorkShiftModal, copyDay} from '../../actions/ui/workShiftActions'
 import initialState from '../initialState'
 
 const startLoading = state => ({...state, loading: true})
@@ -28,6 +28,11 @@ const setModalClosed = state => ({
   }
 })
 
+const setCopiedDay = (state, {payload: copiedDay}) => ({
+  ...state,
+  copiedDay
+})
+
 const schedulePageReducer = handleActions({
   [listWorkShifts]: startLoading,
   [listWorkShiftsSuccess]: stopLoading,
@@ -37,6 +42,7 @@ const schedulePageReducer = handleActions({
   [closeWorkShiftModal]: setModalClosed,
   [createWorkShiftSuccess]: setModalClosed,
   [updateWorkShiftSuccess]: setModalClosed,
+  [copyDay]: setCopiedDay
 }, initialState.pages.schedule)
 
 export default schedulePageReducer
