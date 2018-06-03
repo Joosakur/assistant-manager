@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react"
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import HeaderContainer from "../components/header/HeaderContainer"
-import Container from "semantic-ui-react/dist/es/elements/Container/Container"
+import HeaderContainer from '../components/header/HeaderContainer'
+import Container from 'semantic-ui-react/dist/es/elements/Container/Container'
 import { localize } from 'react-localize-redux'
 
 class HomePage extends Component {

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import ReduxToastr from 'react-redux-toastr'
 
-import AppContainer from "./AppContainer"
-import Routes from "../routes/Routes"
+import AppContainer from './AppContainer'
+import Routes from '../routes/Routes'
 
 export default class Root extends Component {
   static propTypes = {

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { selEmployer } from "./entities/employer"
+import { selEmployer } from './entities/employer'
 
 const selAuth = state => state.auth
 const selToken = createSelector(selAuth, auth => auth.token)

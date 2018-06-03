@@ -3,6 +3,7 @@ package fi.helsinki.cs.joosakur.asmgr.service;
 import fi.helsinki.cs.joosakur.asmgr.entity.Assistant;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.entity.WorkShift;
+import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
 import fi.helsinki.cs.joosakur.asmgr.sheet.hourlists.HourList;
 import fi.helsinki.cs.joosakur.asmgr.sheet.HourListBuilderService;
 import org.jopendocument.dom.spreadsheet.Sheet;
@@ -36,7 +37,7 @@ public class HourListBuilderIntegrationTest {
     @Autowired
     private HourListBuilderService hourListBuilder;
 
-    private Employer createEmployer(String city, boolean hetaMember) {
+    private Employer createEmployer(String city, boolean hetaMember) throws NotUniqueException {
         Employer employer = new Employer("test@test.com", "qwertyui", "test", "tester",
                 LocalDate.of(1990, 2, 20), city, hetaMember);
         return employerService.create(employer, true);

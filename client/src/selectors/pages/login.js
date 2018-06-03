@@ -1,6 +1,6 @@
-import {createSelector} from "reselect"
+import {createSelector} from 'reselect'
 
-import {selPages} from "../pages"
+import {selPages} from '../pages'
 
 const selLoginPage = createSelector(selPages, pages => pages.login)
 

@@ -1,5 +1,5 @@
-import {API} from "../constants/urls"
-import axios from "axios"
+import {API} from '../constants/urls'
+import axios from 'axios'
 
 export async function postLogin(email, password) {
   return axios.post(

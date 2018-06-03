@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { createSelector } from 'reselect'
 
-import { selEntities } from "../entities"
+import { selEntities } from '../entities'
 
 const sortByCaseInsensitive = prop => R.sortBy(R.compose(R.toLower, R.prop(prop)))
 const sortByName = R.sortWith([

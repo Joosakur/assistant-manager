@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 
-const requestReport = createAction('API__REPORTS__REQUEST')
+const requestReport = createAction('API__REPORTS__REQUEST', payload => payload, (payload, meta) => meta)
 const requestReportSuccess = createAction('API__REPORTS__REQUEST_SUCCESS')
 const requestReportFail = createAction('API__REPORTS__REQUEST_FAIL')
 

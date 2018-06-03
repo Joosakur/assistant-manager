@@ -6,7 +6,7 @@ import {Button, Container, Divider, Header, Icon} from 'semantic-ui-react'
 
 import AssistantsListContainer from '../components/assistants/AssistantsListContainer'
 import HeaderContainer from '../components/header/HeaderContainer'
-import AssistantEditorContainer from '../components/assistants/AssistantEditorContainer'
+import AssistantEditorContainer from '../components/assistants/edit/AssistantEditorContainer'
 import {openAssistantModal} from '../actions/ui/assistantActions'
 import {listAssistants} from '../actions/api/assistantActions'
 

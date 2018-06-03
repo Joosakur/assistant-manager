@@ -2,13 +2,12 @@ import { combineReducers } from 'redux'
 
 import assistantsPageReducer from './pages/assistants'
 import schedulePageReducer from './pages/schedule'
-
-const mockReducer = state => state || {}
+import verificationPageReducer from './pages/verification'
+import reportingPageReducer from './pages/reporting'
 
 export default combineReducers({
-  registration: mockReducer,
-  verification: mockReducer,
+  verification: verificationPageReducer,
   assistants: assistantsPageReducer,
   schedule: schedulePageReducer,
-  reports: mockReducer,
+  reporting: reportingPageReducer
 })

@@ -1,6 +1,8 @@
-export const formErrorFromApiError = e => {
+import {SubmissionError} from 'redux-form'
+
+export const submissionErrorFromApiError = e => {
   let error = {}
-  if(!e.response.data)
+  if(!e.response || !e.response.data)
     error = {_error: 'Connection error'}
   else {
     let fieldErrors = e.response.data.fieldErrors
@@ -15,15 +17,13 @@ export const formErrorFromApiError = e => {
     if(msg)
       error._error = msg
   }
-  return error
+  return new SubmissionError(error)
 }
 
-export const generalErrorFromApiError = e => {
-  if(!e.response) {
-    return 'Oops, something went wrong..'
+export const errorMessageFromApiError = e => {
+  if(!e.response || !e.response.data) {
+    return 'Could not connect to the server'
   }
-  if(!e.response.data)
-    return 'Connection error'
 
   let msg = e.response.data.message
   return msg ? msg : 'Unknown error'

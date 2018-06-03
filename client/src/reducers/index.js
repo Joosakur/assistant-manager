@@ -4,8 +4,8 @@ import { reducer as toastr } from 'react-redux-toastr'
 import { reducer as form } from 'redux-form'
 import { localeReducer as locale } from 'react-localize-redux'
 
-import initialState from "./initialState"
-import {logout} from "../actions/authActions"
+import initialState from './initialState'
+import {logout} from '../actions/authActions'
 import entities from './entities'
 import auth from './auth'
 import pages from './pages'

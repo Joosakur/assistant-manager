@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment from 'moment'
 
 export const required = value => value ? undefined : 'Required'
 export const minLength = min => value =>
@@ -12,7 +12,7 @@ export const maxValue = max => value =>
   value && value > max ? `Must be ${max} or less` : undefined
 export const email = value =>
 // eslint-disable-next-line no-useless-escape
-  value && !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) ?
+  value && !/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) ?
     'Invalid email address' : undefined
 export const date = format => value =>
   value && !moment(value, format, true).isValid() ? 'Invalid date' : undefined

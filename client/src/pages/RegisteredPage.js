@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import HeaderContainer from "../components/header/HeaderContainer"
-import Container from "semantic-ui-react/dist/es/elements/Container/Container"
-import {Divider, Icon, Message} from "semantic-ui-react"
-import {localize} from "react-localize-redux"
+import Container from 'semantic-ui-react/dist/es/elements/Container/Container'
+import {Divider, Icon, Message} from 'semantic-ui-react'
+import {localize} from 'react-localize-redux'
+
+import HeaderContainer from '../components/header/HeaderContainer'
 
 class RegisteredPage extends React.Component {
 

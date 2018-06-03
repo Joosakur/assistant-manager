@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, Label} from 'semantic-ui-react'
 import moment from 'moment'
-import Datetime from "react-datetime"
+import Datetime from 'react-datetime'
 
 
 const FormDateFieldWithErrorLabel = (props) => {
@@ -13,13 +13,13 @@ const FormDateFieldWithErrorLabel = (props) => {
       {error && <Label pointing='left' basic horizontal color='red'>{error}</Label>}
       <Datetime
         value = {input.value}
-        onChange={(value) => input.onChange(typeof value === "string" ? value : value.format('DD.MM.YYYY'))}
+        onChange={(value) => input.onChange(typeof value === 'string' ? value : value.format('DD.MM.YYYY'))}
         timeFormat={false}
         closeOnSelect
         isValidDate={isValidDate || (() => true)}
         inputProps={{
-          type: "text",
-          placeholder: placeholder || moment().format("DD.MM.YYYY")
+          type: 'text',
+          placeholder: placeholder || moment().format('DD.MM.YYYY')
         }}
       />
     </Form.Field>

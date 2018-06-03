@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Card} from "semantic-ui-react"
-import AssistantCard from "./AssistantCard"
+import {Card} from 'semantic-ui-react'
+import AssistantCard from './AssistantCard'
 
 const AssistantsList = ({assistants, openEditAssistantDialog, translate}) => {
   return (

@@ -1,4 +1,4 @@
-import {API} from "../constants/urls"
+import {API} from '../constants/urls'
 import axios from 'axios'
 
 const rootPath = API.origin+API.workShifts

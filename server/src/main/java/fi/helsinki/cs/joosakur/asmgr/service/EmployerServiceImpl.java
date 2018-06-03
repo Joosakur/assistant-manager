@@ -5,6 +5,7 @@ import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.entity.VerificationToken;
 import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
+import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
 import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
 import fi.helsinki.cs.joosakur.asmgr.repository.EmployerRepository;
 import org.slf4j.Logger;
@@ -44,7 +45,19 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public Employer create(Employer employer, boolean autoEnabled) {
+    public Employer create(Employer employer, boolean autoEnabled) throws NotUniqueException {
+        try {
+            Employer existingEmployer = findByEmail(employer.getEmail());
+            if (existingEmployer.isEnabled()) {
+                throw new NotUniqueException("An account already exists with this email");
+            } else {
+                delete(existingEmployer.getId());
+                repository.flush();
+            }
+        } catch (NotFoundException e) {
+            // ok
+        }
+
         logger.debug("Starting employer creation for email {}}", employer.getEmail());
         if(employer.getId() != null)
             throw new IllegalArgumentException("Can not give id on create.");

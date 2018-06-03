@@ -2,6 +2,7 @@ package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
 import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
+import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
 import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerPost;
@@ -18,14 +19,15 @@ public interface EmployersApi {
             response = EmployerGet.class, tags = {})
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Employer created.", response = EmployerGet.class),
-            @ApiResponse(code = 400, message = "Invalid data was sent on the request.", response = ErrorResponse.class)
+            @ApiResponse(code = 400, message = "Invalid data was sent on the request.", response = ErrorResponse.class),
+            @ApiResponse(code = 409, message = "An enabled employer with same email already exists.", response = ErrorResponse.class)
     })
     @CrossOrigin
     @RequestMapping(value = "/employers",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    EmployerGet createEmployer(@ApiParam(required = true) @RequestBody EmployerPost employerModel);
+    EmployerGet createEmployer(@ApiParam(required = true) @RequestBody EmployerPost employerModel) throws NotUniqueException;
 
 
     @ApiOperation(value = "Get employer", notes = "This endpoint is for retrieving the currently logged in employer. ",

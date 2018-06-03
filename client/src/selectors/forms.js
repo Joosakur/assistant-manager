@@ -1,4 +1,4 @@
-import {createSelector} from "reselect"
+import {createSelector} from 'reselect'
 
 const selForms = state => state.form
 const selForm = reduxFormName => createSelector(selForms, forms => forms[reduxFormName])

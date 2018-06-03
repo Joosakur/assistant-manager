@@ -1,6 +1,6 @@
-import {createSelector} from "reselect"
+import {createSelector} from 'reselect'
 
-import {selPages} from "../pages"
+import {selPages} from '../pages'
 
 const selWorkShiftsPage = createSelector(selPages, pages => pages.schedule)
 const selIsLoading = createSelector(selWorkShiftsPage, page => page.loading)

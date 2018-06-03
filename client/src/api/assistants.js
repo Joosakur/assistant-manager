@@ -1,10 +1,15 @@
-import {API} from "../constants/urls"
+import {API} from '../constants/urls'
 import axios from 'axios'
 
 const rootPath = API.origin+API.assistants
 
 async function listAssistants(token) {
   return axios.get(rootPath, {headers: {'Authorization': token}})
+}
+
+async function listCoworkers(token, assistantId) {
+  const url = `${rootPath}/${assistantId}/coworkers`
+  return axios.get(url, {headers: {'Authorization': token}})
 }
 
 async function createAssistant(token, data) {
@@ -19,5 +24,6 @@ async function updateAssistant(token, assistantId, data) {
 export default {
   listAssistants,
   createAssistant,
-  updateAssistant
+  updateAssistant,
+  listCoworkers
 }

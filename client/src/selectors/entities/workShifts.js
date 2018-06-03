@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import moment from 'moment'
 
-import { selEntities } from "../entities"
+import { selEntities } from '../entities'
 
 const selWorkShifts = createSelector(selEntities, entities => entities.workShifts)
 const selWorkShiftsArray = createSelector(selWorkShifts, workShifts => Object.values(workShifts))

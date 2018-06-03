@@ -32,6 +32,8 @@
       ]
     },
     "verified": {
+      "verifying": ["Varmennetaan...","Verifying..."],
+      "errorTitle": ["Voi ei, jotain meni pieleen ja varmentaminen epäonnistui","Oops, something went wrong with verification"],
       "title": ["Sähköpostisi on varmennettu ja tilisi on aktivoitu!","Email verified and account is active!"],
       "subtitle": ["Voit nyt kirjautua sisään","You can now sign in"],
       "proceedBtn": ["Jatka kirjautumiseen","Proceed to Sign In"]

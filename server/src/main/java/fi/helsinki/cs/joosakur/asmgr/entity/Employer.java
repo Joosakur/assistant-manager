@@ -68,12 +68,13 @@ public class Employer implements UserDetails {
     @NotNull
     private List<Assistant> assistants = new ArrayList<>();
 
+    @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull
+    private List<VerificationToken> verificationTokens = new ArrayList<>();
+
     @Column(name = "enabled")
     @NotNull
     private boolean enabled;
-
-
-
 
     public Employer() {
     }
@@ -138,6 +139,10 @@ public class Employer implements UserDetails {
 
     public List<Assistant> getAssistants() {
         return assistants;
+    }
+
+    public List<VerificationToken> getVerificationTokens() {
+        return verificationTokens;
     }
 
     @Override

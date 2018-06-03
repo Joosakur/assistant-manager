@@ -10,8 +10,10 @@ export default {
     authenticating: false
   },
   pages: {
-    registration: undefined,
-    verification: undefined,
+    verification: {
+      loading: false,
+      error: null
+    },
     assistants: {
       loading: false,
       assistantDialog: {
@@ -27,6 +29,9 @@ export default {
       },
       copiedDay: null
     },
-    reports: undefined,
+    reporting: {
+      polling: false,
+      downloadLink: null
+    }
   }
 }

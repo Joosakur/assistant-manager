@@ -8,9 +8,14 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { SELF } from '../constants/urls'
 import HomePage from '../pages/HomePage'
 import LoginPage from '../pages/LoginPage'
-import AuthLoader from '../components/login/AuthLoader'
 import AssistantsPage from '../pages/AssistantsPage'
 import SchedulePage from '../pages/SchedulePage'
+import SharedSchedulePage from '../pages/SharedSchedulePage'
+import RegisteredPage from '../pages/RegisteredPage'
+import RegistrationPage from '../pages/RegistrationPage'
+import VerificationPage from '../pages/VerificationPage'
+import ReportingPage from '../pages/ReportingPage'
+import AuthLoader from '../components/login/AuthLoader'
 import {selIsAuthenticated, selIsAuthenticating} from '../selectors/auth'
 
 const locationHelper = locationHelperBuilder({})
@@ -44,9 +49,14 @@ class Routes extends React.Component {
       <ConnectedRouter history={this.props.history}>
         <Switch>
           <Route exact path='/' component={HomePage}/>
-          <Route path={SELF.login} component={userIsNotAuthenticated(LoginPage)}/>
-          <Route path={SELF.assistants} component={userIsAuthenticated(AssistantsPage)}/>
-          <Route path={SELF.schedule} component={userIsAuthenticated(SchedulePage)}/>
+          <Route exact path={SELF.register} component={userIsNotAuthenticated(RegistrationPage)}/>
+          <Route exact path={SELF.registered} component={RegisteredPage}/>
+          <Route exact path={SELF.verifyAccount} component={VerificationPage}/>
+          <Route exact path={SELF.login} component={userIsNotAuthenticated(LoginPage)}/>
+          <Route exact path={SELF.assistants} component={userIsAuthenticated(AssistantsPage)}/>
+          <Route exact path={SELF.schedule} component={userIsAuthenticated(SchedulePage)}/>
+          <Route path={`${SELF.scheduleShare}/:shareId`} component={SharedSchedulePage}/>
+          <Route path={SELF.reporting} component={userIsAuthenticated(ReportingPage)}/>
         </Switch>
       </ConnectedRouter>
     )

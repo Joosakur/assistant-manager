@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Container, Divider, Header, Sidebar, Icon, Segment} from 'semantic-ui-react'
 
-import ScheduleEditorContainer from './ScheduleEditorContainer'
-import CalendarContainer from './CalendarContainer'
+import ScheduleEditorContainer from './edit/ScheduleEditorContainer'
+import CalendarContainer from './calendar/CalendarContainer'
 
 const Schedule = ({onCreateNew, loading, translate}) => {
   return (

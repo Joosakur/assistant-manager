@@ -67,8 +67,10 @@ const testState = {
   },
 
   pages: {
-    registration: {},
-    verification: {},
+    verification: {
+      loading: false,
+      error: null
+    },
     assistants: {
       loading: false,
       assistantDialog: {
@@ -82,7 +84,10 @@ const testState = {
         workShiftId: null
       },
       copiedDay: null},
-    reports: {}
+    reporting: {
+      polling: false,
+      downloadLink: null
+    }
   },
 
   router: {},

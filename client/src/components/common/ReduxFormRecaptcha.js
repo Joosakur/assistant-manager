@@ -1,21 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-recaptcha'
-import {Icon, Message} from "semantic-ui-react"
+import {Icon, Message} from 'semantic-ui-react'
 
 
 const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
-  console.debug("rendering recaptcha")
   return (
     <div className='recaptcha-group'>
       <div className='recaptcha'>
         <Recaptcha
           sitekey={__RECAPTCHA_SITE_KEY__}  // eslint-disable-line no-undef
-          render={explicit ? "explicit" : undefined}
+          render={explicit ? 'explicit' : undefined}
           verifyCallback={response => {
             input.onChange(response)
           }}
-          hl={country && "fi"}
+          hl={country && 'fi'}
         />
       </div>
       {error && (
