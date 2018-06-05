@@ -34,7 +34,7 @@ export function* handleListCoworkers({payload: assistantId}) {
   }
 }
 
-function* handleCreateAssistant({payload: formValues, meta: {resolve, reject}}) {
+export function* handleCreateAssistant({payload: formValues, meta: {resolve, reject}}) {
   const token = yield select(selToken)
   try {
     const data = buildPayload(formValues)
@@ -48,11 +48,13 @@ function* handleCreateAssistant({payload: formValues, meta: {resolve, reject}}) 
   }
 }
 
-function* handleUpdateAssistant({payload: formValues, meta: {resolve, reject}}) {
+export function* handleUpdateAssistant({payload: formValues, meta: {resolve, reject}}) {
   const token = yield select(selToken)
   const {assistantId} = formValues
-  if (!(assistantId && assistantId.length > 0))
-    return put(updateAssistantFail('Missing assistantId to update'))
+  if (!(assistantId && assistantId.length > 0)) {
+    yield put(updateAssistantFail('Missing assistantId to update'))
+    return
+  }
 
   try {
     const data = buildPayload(formValues)

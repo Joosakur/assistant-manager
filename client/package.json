@@ -108,6 +108,7 @@
     "replace": "0.3.0",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
+    "sinon": "5.0.10",
     "style-loader": "0.20.1",
     "sugarss": "1.0.1",
     "url-loader": "0.6.2",
