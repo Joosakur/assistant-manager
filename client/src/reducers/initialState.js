@@ -3,7 +3,8 @@ export default {
     employer: undefined,
     assistants: {},
     workShifts: {},
-    workShiftsByAssistant: {}
+    workShiftsByAssistant: {},
+    workShiftsByStartDate: {} // key format YYYY-MM-DD
   },
   auth: {
     token: undefined,

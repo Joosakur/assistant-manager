@@ -28,7 +28,7 @@ class AppContainer extends React.Component {
 }
 
 AppContainer.propTypes = {
-  children: PropTypes.any, // todo: right type
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
   dispatch: PropTypes.func.isRequired
 }
 

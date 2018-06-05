@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, Button, Container, Divider, Message, Input} from 'semantic-ui-react'
+import {Form, Button, Container, Divider, Message} from 'semantic-ui-react'
 import {reduxForm, Field} from 'redux-form'
 import FormFieldWithErrorLabel from '../common/FormFieldWithErrorLabel'
 

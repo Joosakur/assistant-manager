@@ -7,7 +7,7 @@ import DayControls from './DayControls'
 import {copyDay} from '../../../actions/ui/workShiftActions'
 import {pasteDay} from '../../../actions/api/workShiftActions'
 import {selCopiedDay} from '../../../selectors/pages/schedule'
-import {selWorkShiftsByStartDate} from '../../../selectors/entities/workShifts'
+import {selWorkShiftsByStartDate} from '../../../selectors/entities/indexes'
 
 class DayControlsContainer extends React.Component {
   constructor(props, context) {

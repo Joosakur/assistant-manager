@@ -63,6 +63,11 @@ const testState = {
     workShiftsByAssistant: {
       'a001': ['ws001', 'ws002'],
       'a002': ['ws003', 'ws004']
+    },
+    workShiftsByStartDate: {
+      '2017-12-01': ['ws001', 'ws003'],
+      '2017-12-02': ['ws002'],
+      '2017-12-03': ['ws004']
     }
   },
 

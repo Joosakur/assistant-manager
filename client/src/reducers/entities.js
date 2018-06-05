@@ -1,4 +1,6 @@
 import {handleActions} from 'redux-actions'
+import moment from 'moment'
+
 import {createAssistantSuccess, listAssistantsSuccess, updateAssistantSuccess} from '../actions/api/assistantActions'
 import {
   createWorkShiftSuccess, deleteWorkShiftSuccess, listWorkShiftsSuccess,
@@ -50,19 +52,53 @@ const reduceUpdateAssistantSuccess = (state, {payload: assistant}) => ({
   }
 })
 
-const reduceCreateWorkShiftSuccess = (state, {payload: workShift}) => ({
-  ...state,
-  workShifts: {
-    ...state.workShifts,
-    [workShift.id]: workShift
-  },
-  workShiftsByAssistant: {
-    ...state.workShiftsByAssistant,
-    [workShift.assistantId]: state.workShiftsByAssistant[workShift.assistantId]
-      ? [...state.workShiftsByAssistant[workShift.assistantId], workShift.id]
-      : [workShift.id]
+const reduceCreateWorkShiftSuccess = (state, {payload: workShift}) => {
+  const startDate = moment(workShift.start).format('YYYY-MM-DD')
+  const { id, assistantId } = workShift
+  return {
+    ...state,
+    workShifts: {
+      ...state.workShifts,
+      [id]: workShift
+    },
+    workShiftsByAssistant: {
+      ...state.workShiftsByAssistant,
+      [assistantId]: state.workShiftsByAssistant[assistantId]
+        ? [...state.workShiftsByAssistant[assistantId], id]
+        : [id]
+    },
+    workShiftsByStartDate: {
+      ...state.workShiftsByStartDate,
+      [startDate]: state.workShiftsByStartDate[startDate]
+        ? [...state.workShiftsByStartDate[startDate], id]
+        : [id]
+
+    }
   }
-})
+}
+
+const getWorkShiftsByAssistant = workShiftsArray => {
+  return workShiftsArray
+    .filter(({assistantId}) => assistantId)
+    .reduce((index, {id, assistantId}) => {
+      const old = index[assistantId] || []
+      index[assistantId] = [...old, id]
+      return index
+    }, {})
+}
+
+const getWorkShiftsByStartDate = workShiftsArray => {
+  return workShiftsArray.reduce((ind, workspace) => {
+    const {id, start} = workspace
+    const key = moment(start).format('YYYY-MM-DD')
+    if (ind[key]) {
+      ind[key].push(id)
+    } else {
+      ind[key] = [id]
+    }
+    return ind
+  }, {})
+}
 
 const reduceListWorkShiftsSuccess = (state, {payload: workShiftsArray}) => {
   const workShifts = workShiftsArray.reduce((map, workShift) => {
@@ -70,33 +106,16 @@ const reduceListWorkShiftsSuccess = (state, {payload: workShiftsArray}) => {
     return map
   }, {})
 
-  // first empty current index entries but keep the keys
-  const workShiftsByAssistant = Object.keys(state.workShiftsByAssistant).reduce((index, assistantId) => {
-    index[assistantId] = []
-    return index
-  }, {})
+  const workShiftsByAssistant = getWorkShiftsByAssistant(workShiftsArray)
+  const workShiftsByStartDate = getWorkShiftsByStartDate(workShiftsArray)
 
-  // then add the work shifts to the index
-  workShiftsArray.filter(workShift => workShift.assistantId).forEach(workShift => {
-    if (!workShiftsByAssistant[workShift.assistantId])
-      workShiftsByAssistant[workShift.assistantId] = []
-
-    workShiftsByAssistant[workShift.assistantId].push(workShift.id)
-  })
-
-  return { ...state, workShifts, workShiftsByAssistant }
+  return { ...state, workShifts, workShiftsByAssistant, workShiftsByStartDate }
 }
 
-const reduceUpdateWorkShiftSuccess = (state, {payload: workShift}) => {
-  const workShifts = {
-    ...state.workShifts,
-    [workShift.id]: workShift
-  }
+const updateWorkShiftsByAssistant = (workShift, oldState) => {
+  const workShiftsByAssistant = { ...oldState.workShiftsByAssistant }
 
-  const workShiftsByAssistant = { ...state.workShiftsByAssistant }
-
-  const oldVersion = state.workShifts[workShift.id]
-  const oldAssistantId = oldVersion.assistantId
+  const oldAssistantId = oldState.workShifts[workShift.id].assistantId
   if ( workShift.assistantId !== oldAssistantId ) {
     if (oldAssistantId) {
       // remove from old index
@@ -108,20 +127,50 @@ const reduceUpdateWorkShiftSuccess = (state, {payload: workShift}) => {
     }
   }
 
-  return { ...state, workShifts, workShiftsByAssistant }
+  return workShiftsByAssistant
+}
+
+const updateWorkShiftsByStartDate = (workShift, oldState) => {
+  const { id, start } = workShift
+  const date = moment(start).format('YYYY-MM-DD')
+  const workShiftsByStartDate = { ...oldState.workShiftsByStartDate }
+  const oldDate = moment(oldState.workShifts[id].start).format('YYYY-MM-DD')
+
+  if( date !== oldDate) {
+    workShiftsByStartDate[oldDate] = [...workShiftsByStartDate[oldDate]].filter(i => i !== id)
+    workShiftsByStartDate[date] = [...(workShiftsByStartDate[date] || []), id]
+  }
+
+  return workShiftsByStartDate
+}
+
+const reduceUpdateWorkShiftSuccess = (state, {payload: workShift}) => {
+  const workShifts = {
+    ...state.workShifts,
+    [workShift.id]: workShift
+  }
+
+  const workShiftsByAssistant = updateWorkShiftsByAssistant(workShift, state)
+  const workShiftsByStartDate = updateWorkShiftsByStartDate(workShift, state)
+
+  return { ...state, workShifts, workShiftsByAssistant, workShiftsByStartDate }
 }
 
 const reduceDeleteWorkShiftSuccess = (state, {payload: workShiftId}) => {
   const workShifts = { ...state.workShifts }
+  const { assistantId, start } = state.workShifts[workShiftId]
   delete workShifts[workShiftId]
 
-  const assistantId = state.workShifts[workShiftId].assistantId
   const workShiftsByAssistant = { ...state.workShiftsByAssistant }
   if (assistantId) {
-    workShiftsByAssistant[assistantId] = workShiftsByAssistant[assistantId].filter(id => id !== workShiftId)
+    workShiftsByAssistant[assistantId] = (workShiftsByAssistant[assistantId] || []).filter(id => id !== workShiftId)
   }
 
-  return { ...state, workShifts, workShiftsByAssistant }
+  const date = moment(start).format('YYYY-MM-DD')
+  const workShiftsByStartDate = { ...state.workShiftsByStartDate }
+  workShiftsByStartDate[date] = (workShiftsByStartDate[date] || []).filter(id => id !== workShiftId)
+
+  return { ...state, workShifts, workShiftsByAssistant, workShiftsByStartDate }
 }
 
 const entitiesReducer = handleActions({
