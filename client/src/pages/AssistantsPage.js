@@ -9,7 +9,7 @@ import HeaderContainer from '../components/header/HeaderContainer'
 import AssistantEditorContainer from '../components/assistants/edit/AssistantEditorContainer'
 import {openAssistantModal} from '../actions/ui/assistantActions'
 import {listAssistants} from '../actions/api/assistantActions'
-
+import s from '../localization'
 
 const addUserIcon = (
   <Icon.Group size='large' style={{marginRight: '2rem'}}>
@@ -24,16 +24,16 @@ class AssistantsPage extends React.Component {
   }
 
   render() {
-    const {translate, openCreateAssistantDialog} = this.props
+    const {openCreateAssistantDialog} = this.props
 
     return (
       <Fragment>
         <HeaderContainer/>
         <Container fluid id='main-container'>
           <Container className='page-container'>
-            <Header floated='left' as='h1'><Icon name='address book'/> {translate('assistants.title')}</Header>
+            <Header floated='left' as='h1'><Icon name='address book'/> {s.assistants.title}</Header>
             <Button primary size='large' floated='right' icon={addUserIcon}
-                    content={translate('assistants.buttons.new')}
+                    content={s.assistants.buttons.add}
                     onClick={openCreateAssistantDialog}/>
             <Divider hidden section clearing/>
             <AssistantsListContainer/>
@@ -46,7 +46,6 @@ class AssistantsPage extends React.Component {
 }
 
 AssistantsPage.propTypes = {
-  translate: PropTypes.func.isRequired,
   loadAssistants: PropTypes.func.isRequired,
   openCreateAssistantDialog: PropTypes.func.isRequired
 }

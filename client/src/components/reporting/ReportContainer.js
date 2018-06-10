@@ -1,6 +1,5 @@
 import {connect} from 'react-redux'
 import {actions, reset} from 'redux-form'
-import { getTranslate } from 'react-localize-redux'
 import moment from 'moment'
 
 import ReportForm, {reduxFormName} from './ReportForm'
@@ -38,11 +37,7 @@ const mapStateToProps = state => {
     assistants,
     enableReinitialize: true,
     city,
-    initialValues,
-    msg: {...getTranslate(state.locale)([
-      'reporting.assistant','reporting.startDate','reporting.endDate','reporting.startBtn','reporting.downloadBtn',
-      'reporting.year','reporting.month','reporting.range','reporting.range0','reporting.range1','reporting.range2',
-    ])}
+    initialValues
   }
 }
 

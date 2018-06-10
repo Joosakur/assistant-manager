@@ -10,4 +10,3 @@ const AuthLoader = () => {
 }
 
 export default AuthLoader
-

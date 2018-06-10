@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Recaptcha from 'react-recaptcha'
 import {Icon, Message} from 'semantic-ui-react'
 
+import s from '../../localization'
 
 const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
   return (
@@ -21,7 +22,7 @@ const ReduxFormRecaptcha = ({input, explicit, meta: {error}}, country) => {
         <Message visible error icon className='recaptcha-msg'>
           <Icon name='android'/>
           <Message.Content>
-            <Message.Header>Please make sure you are not a robot</Message.Header>
+            <Message.Header>{s.signUp.notRobot}</Message.Header>
           </Message.Content>
         </Message>
       )}

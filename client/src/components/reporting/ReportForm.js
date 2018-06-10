@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import {Button, Form, Grid} from 'semantic-ui-react'
+import {Button, Form, Grid, Icon} from 'semantic-ui-react'
 import {reduxForm, Field} from 'redux-form'
 import moment from 'moment'
 
@@ -10,6 +10,7 @@ import {dateBetween, required} from '../../utils/validationConstraints'
 import RangeTypes from '../../constants/reportRangeTypes'
 import Ranges from '../../constants/reportRanges'
 import cities from '../../constants/cities'
+import s from "../../localization"
 
 export const reduxFormName = 'ReportForm'
 
@@ -61,19 +62,20 @@ class ReportForm extends React.Component {
   }
 
   getRangeOptions() {
-    return Object.values(Ranges).map(r => {return {key: r, text: this.props.msg ['reporting.range'+r], value: r}})
+    return Object.values(Ranges).map(r => {return {key: r, text: s.reporting[`range${r}`]}})
   }
 
   render() {
-    const { handleSubmit, msg, assistants, downloadLink, downloadable,
+    const { handleSubmit, assistants, downloadLink, downloadable,
       onAssistantChange, polling, onStartDownload, submitting} = this.props
+    const rs = s.reporting
     const { assistantArray, yearsArray, monthsArray, rangesArray, rangeStyle} = this.state
     return (
       <Form id='WorkShiftForm' onSubmit={handleSubmit}>
         <Grid columns='equal'>
           <Grid.Column computer='4' tablet='16' mobile='16'>
             <Field name='assistant' component={FormDropdownField}
-                   label={msg['reporting.assistant']}
+                   label={rs.assistant}
                    options={assistantArray}
                    onChangeExtra={value => {
                      const assistantById = assistants.filter(a => a.id === value)
@@ -86,7 +88,7 @@ class ReportForm extends React.Component {
             <Fragment>
               <Grid.Column computer='3' tablet='16' mobile='16'>
                 <Field name='startDate' component={FormDateFieldWithErrorLabel} type='text'
-                       label={msg['reporting.startDate']}
+                       label={rs.startDate}
                        isValidDate={(date) => {
                          return date.isBetween(moment('2017-01-01'), moment())}
                        }
@@ -95,7 +97,7 @@ class ReportForm extends React.Component {
               </Grid.Column>
               <Grid.Column computer='3' tablet='16' mobile='16'>
                 <Field name='endDate' component={FormDateFieldWithErrorLabel} type='text'
-                       label={msg['reporting.endDate']}
+                       label={rs.endDate}
                        isValidDate={(date) => {
                          return date.isBetween(moment('2017-01-01'), moment().add(1, 'days'))}
                        }
@@ -108,21 +110,21 @@ class ReportForm extends React.Component {
             <Fragment>
               <Grid.Column computer='2' tablet='16' mobile='16'>
                 <Field name='year' component={FormDropdownField}
-                       label={msg['reporting.year']}
+                       label={rs.year}
                        options={yearsArray}
                        validate={[required]}
                 />
               </Grid.Column>
               <Grid.Column computer='2' tablet='16' mobile='16'>
                 <Field name='month' component={FormDropdownField}
-                       label={msg['reporting.month']}
+                       label={rs.month}
                        options={monthsArray}
                        validate={[required]}
                 />
               </Grid.Column>
               <Grid.Column computer='3' tablet='16' mobile='16'>
                 <Field name='range' component={FormDropdownField}
-                       label={msg['reporting.range']}
+                       label={rs.range}
                        options={rangesArray}
                        validate={[required]}
                 />
@@ -138,8 +140,8 @@ class ReportForm extends React.Component {
               }}>
                 <Button
                   as='a' href={downloadLink}
-                  floated='right' primary size='large' style={{width: '250px'}} >
-                  {msg['reporting.downloadBtn']}
+                  floated='right' primary size='large' style={{width: '250px'}} positive>
+                  <Icon name='download'/>{rs.downloadBtn}
                 </Button>
               </div>
             ) : (
@@ -147,7 +149,7 @@ class ReportForm extends React.Component {
                       disabled={submitting || polling}
                       loading={submitting || polling}
                       style={{width: '250px'}}>
-                {msg['reporting.startBtn']}
+                <Icon name='magic'/>{rs.startBtn}
               </Button>
             )}
           </Grid.Column>
@@ -168,8 +170,7 @@ ReportForm.propTypes = {
   downloadable: PropTypes.bool.isRequired,
   downloadLink: PropTypes.string,
   onAssistantChange: PropTypes.func.isRequired,
-  onStartDownload: PropTypes.func.isRequired,
-  msg: PropTypes.object.isRequired
+  onStartDownload: PropTypes.func.isRequired
 }
 
 export default reduxForm({

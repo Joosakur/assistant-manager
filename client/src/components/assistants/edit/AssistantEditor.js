@@ -8,6 +8,7 @@ import FormToggle from '../../common/FormToggle'
 import FormFieldWithErrorLabel from '../../common/FormFieldWithErrorLabel'
 import FormColorPickerWithLabel from '../../common/FormColorPickerWithLabel'
 import {dateBefore, maxLength, required} from '../../../utils/validationConstraints'
+import s from '../../../localization'
 
 export const reduxFormName = 'AssistantForm'
 
@@ -16,7 +17,7 @@ class AssistantEditor extends React.Component {
     return (
       <Modal dimmer='inverted' size='small' open={this.props.open} onClose={this.props.onClose}>
         <Modal.Header style={{height: '70px'}}>
-          {this.props.assistantId ? <span>{this.props.msg['assistants.edit.titleEdit']}</span> : <span>{this.props.msg['assistants.edit.titleNew']}</span>}
+          <span>{this.props.assistantId ? s.assistants.edit.titleEdit : s.assistants.edit.titleNew}</span>
           <Label style={{float: 'right', width: '150px', overflow: 'hidden', whiteSpace: 'no-wrap',
             backgroundColor: this.props.backgroundColor, color: this.props.whiteText ? '#ffffff' : '#000000'}} size='large'>
             <Icon name='user' size='large'/> {this.props.shortName}
@@ -27,38 +28,38 @@ class AssistantEditor extends React.Component {
             <Grid columns='equal'>
               <Grid.Column computer='8' tablet='8' mobile='16'>
                 <Field name='firstName' component={FormFieldWithErrorLabel} type='text'
-                       label={this.props.msg['assistants.edit.firstName']}
-                       placeholder={this.props.msg['assistants.edit.firstName']}
+                       label={s.assistants.edit.firstName}
+                       placeholder={s.assistants.edit.firstName}
                        isRequired
                        validate={[required, maxLength(20)]}/>
               </Grid.Column>
               <Grid.Column computer='8' tablet='8' mobile='16'>
                 <Field name='lastName' component={FormFieldWithErrorLabel} type='text'
-                       label={this.props.msg['assistants.edit.lastName']}
-                       placeholder={this.props.msg['assistants.edit.lastName']}
+                       label={s.assistants.edit.lastName}
+                       placeholder={s.assistants.edit.lastName}
                        isRequired
                        validate={[required, maxLength(30)]}/>
               </Grid.Column>
               <Grid.Column computer='8' tablet='8' mobile='16'>
                 <Field name='nickName' component={FormFieldWithErrorLabel} type='text'
-                       label={this.props.msg['assistants.edit.nickName']}
-                       placeholder={this.props.msg['assistants.edit.nickName']}
+                       label={s.assistants.edit.nickName}
+                       placeholder={s.assistants.edit.nickName}
                        validate={[maxLength(12)]}/>
               </Grid.Column>
               <Grid.Column computer='8' tablet='8' mobile='16'>
                 <Field name='birthday' component={FormFieldWithErrorLabel} type='text'
-                       label={this.props.msg['assistants.edit.birthday']}
+                       label={s.assistants.edit.birthday}
                        placeholder='31.12.1980'
                        isRequired
                        validate={[required, dateBefore('D.M.YYYY', moment().add(-16, 'years'))]}/>
               </Grid.Column>
               <Grid.Column computer='8' tablet='8' mobile='16'>
                 <Field name='backgroundColor' component={FormColorPickerWithLabel}
-                       label={this.props.msg['assistants.edit.backgroundColor']}/>
+                       label={s.assistants.edit.backgroundColor}/>
               </Grid.Column>
               <Grid.Column computer='8' tablet='8' mobile='16' verticalAlign='top'>
                 <Field name='whiteText' component={FormToggle}
-                       label={this.props.msg['assistants.edit.textInvert']}
+                       label={s.assistants.edit.textInvert}
                        icon='font'/>
               </Grid.Column>
             </Grid>
@@ -68,11 +69,11 @@ class AssistantEditor extends React.Component {
         <Modal.Actions>
           <Button secondary onClick={this.props.onClose} loading={this.props.submitting}
                   disabled={this.props.submitting}>
-            {this.props.msg['assistants.edit.cancel']}
+            {s.assistants.edit.cancelBtn}
           </Button>
           <Button form='AssistantForm' type='submit' loading={this.props.submitting}
                   disabled={this.props.pristine || this.props.submitting} positive>
-            {this.props.msg['assistants.edit.save']}
+            {s.assistants.edit.saveBtn}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -89,8 +90,7 @@ AssistantEditor.propTypes = {
   pristine: PropTypes.bool,
   shortName: PropTypes.string,
   whiteText: PropTypes.bool,
-  backgroundColor: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  msg: PropTypes.object.isRequired
+  backgroundColor: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 }
 
 export default reduxForm({

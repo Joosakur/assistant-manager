@@ -1,14 +1,13 @@
 import {connect} from 'react-redux'
-import { getTranslate } from 'react-localize-redux'
 
-import LoginForm from './LoginForm'
+import LoginForm, { reduxFormName } from './LoginForm'
 import { login } from '../../actions/authActions'
 import {dispatchForm} from '../../utils/formUtils'
+import {selIsFormSubmitting} from '../../selectors/forms'
 
 const mapStateToProps = state => {
   return {
-    loading: false, //state.login.loading,
-    translate: getTranslate(state.locale)
+    submitting: selIsFormSubmitting(reduxFormName)(state),
   }
 }
 

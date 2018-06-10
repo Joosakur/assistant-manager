@@ -45,7 +45,7 @@
     "react-color": "2.13.8",
     "react-datetime": "2.12.0",
     "react-dom": "16.2.0",
-    "react-localize-redux": "2.14.1",
+    "react-localization": "1.0.10",
     "react-recaptcha": "2.3.6",
     "react-redux": "5.0.6",
     "react-redux-toastr": "7.2.0",

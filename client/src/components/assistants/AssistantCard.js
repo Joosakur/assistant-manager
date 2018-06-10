@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import {Button, Card, Header, Icon} from 'semantic-ui-react'
 
 import SharePopup from './SharePopup'
+import s from '../../localization'
 
-const AssistantCard = ({assistant: {id, firstName, lastName, backgroundColor}, onEdit, translate}) => {
+const AssistantCard = ({assistant: {id, firstName, lastName, backgroundColor}, onEdit}) => {
   if(!backgroundColor)
     backgroundColor = '#333333'
   let archived = false
@@ -18,8 +19,8 @@ const AssistantCard = ({assistant: {id, firstName, lastName, backgroundColor}, o
             {firstName} {lastName}
           </div>
           <div style={{float: 'right'}}>
-            {!archived && <SharePopup translate={translate} id={id}/>}
-            <Button onClick={onEdit} icon='edit' content={translate('assistants.buttons.edit')}/>
+            {!archived && <SharePopup id={id}/>}
+            <Button onClick={onEdit} icon='edit' content={s.assistants.buttons.edit}/>
           </div>
         </Header>
       </Card.Content>
@@ -35,8 +36,7 @@ AssistantCard.propTypes = {
     nickName: PropTypes.string,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
-  onEdit: PropTypes.func.isRequired,
-  translate: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired
 }
 
 export default AssistantCard

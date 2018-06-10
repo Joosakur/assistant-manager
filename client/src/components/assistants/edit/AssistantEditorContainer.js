@@ -1,6 +1,5 @@
 import {connect} from 'react-redux'
 import {formValueSelector} from 'redux-form'
-import { getTranslate } from 'react-localize-redux'
 import moment from 'moment'
 
 import AssistantEditor, {reduxFormName} from './AssistantEditor'
@@ -37,12 +36,7 @@ const mapStateToProps = state => {
     enableReinitialize: true,
     shortName,
     backgroundColor,
-    whiteText,
-    msg: {...getTranslate(state.locale)([
-        'assistants.edit.titleNew', 'assistants.edit.titleEdit', 'assistants.edit.firstName', 'assistants.edit.lastName',
-        'assistants.edit.nickName', 'assistants.edit.birthday', 'assistants.edit.backgroundColor',
-        'assistants.edit.textInvert', 'assistants.edit.cancel', 'assistants.edit.save'
-      ])}
+    whiteText
   }
 
   if (assistant) {

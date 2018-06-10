@@ -8,6 +8,7 @@ import {listWorkShifts} from '../../../actions/api/workShiftActions'
 import {openWorkShiftModal} from '../../../actions/ui/workShiftActions'
 import {selWorkShiftsArray} from '../../../selectors/entities/workShifts'
 import {selAssistantById} from '../../../selectors/entities/assistants'
+import s from '../../../localization'
 
 const calculateCalendarEnd = (start, end) => {
   /*
@@ -34,7 +35,7 @@ const buildEvent = (workShift, assistant = {}) =>
     sick,
     assistant: {
       id: assistantId,
-      name: assistantId ? (nickName || `${firstName} ${lastName[0]}`) : 'None',
+      name: assistantId ? (nickName || `${firstName} ${lastName[0]}`) : s.schedule.unassigned,
       textColor: textColor || '#440000',
       backgroundColor: backgroundColor || '#e4c9dd'
     }

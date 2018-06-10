@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Container from 'semantic-ui-react/dist/es/elements/Container/Container'
 import {Divider, Icon, Message} from 'semantic-ui-react'
-import {localize} from 'react-localize-redux'
 
 import HeaderContainer from '../components/header/HeaderContainer'
+import s from '../localization'
 
 class RegisteredPage extends React.Component {
 
@@ -14,13 +13,13 @@ class RegisteredPage extends React.Component {
         <HeaderContainer/>
         <Container fluid id='main-container'>
           <Container className='page-container'>
-            <h1>{this.props.translate('signUp.verifying.title')}</h1>
+            <h1>{s.registered.title}</h1>
             <Divider hidden/>
             <Message info floating icon size='large'>
               <Icon name='mail'/>
               <Message.Content>
-                <Message.Header>{this.props.translate('signUp.verifying.subtitle')}</Message.Header>
-                <p>{this.props.translate('signUp.verifying.p1')}</p>
+                <Message.Header>{s.registered.subtitle}</Message.Header>
+                <p>{s.registered.p1}</p>
               </Message.Content>
             </Message>
           </Container>
@@ -30,8 +29,4 @@ class RegisteredPage extends React.Component {
   }
 }
 
-RegisteredPage.propTypes = {
-  translate: PropTypes.func.isRequired
-}
-
-export default localize(RegisteredPage, 'locale')
+export default RegisteredPage

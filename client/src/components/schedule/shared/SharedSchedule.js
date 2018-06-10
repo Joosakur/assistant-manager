@@ -7,7 +7,7 @@ import CalendarContainer from '../calendar/CalendarContainer'
 const SharedSchedule = ({loading, assistantId}) => {
   return (
       <Container>
-        <Header floated='left' as='h1'><Icon name='calendar'/> Work Schedule</Header>
+        <Header floated='left' as='h1'><Icon name='calendar'/> Työvuorot / Work schedule</Header>
         <Divider hidden section clearing/>
         <Segment basic loading={loading}>
           <CalendarContainer assistantId={assistantId}/>

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Button, Icon, Loader, Message, Segment} from 'semantic-ui-react'
 
 import {SELF} from '../../constants/urls'
+import s from '../../localization'
 
 class Verifier extends React.Component {
 
@@ -12,19 +13,19 @@ class Verifier extends React.Component {
   }
 
   render() {
-    let {loading, error, msg} = this.props
+    let {loading, error} = this.props
     return (
       <div>
         {loading && (
           <Segment inverted style={{position: 'absolute', top:0, bottom:0, width: '100%', display: 'flex', alignItems: 'center'}}>
-            <Loader active size='huge' content={msg['signUp.verified.verifying']}/>
+            <Loader active size='huge' content={s.verification.verifying}/>
           </Segment>
         )}
         {!loading && error && (
           <Message negative floating icon>
             <Icon name='frown'/>
             <Message.Content>
-              <Message.Header>{msg['signUp.verified.errorTitle']}</Message.Header>
+              <Message.Header>{s.verification.errorTitle}</Message.Header>
               <p>{error}</p>
             </Message.Content>
           </Message>
@@ -33,11 +34,11 @@ class Verifier extends React.Component {
           <Message positive floating icon size='big'>
             <Icon name='checkmark'/>
             <Message.Content>
-              <Message.Header>{msg['signUp.verified.title']}</Message.Header>
-              <p>{msg['signUp.verified.subtitle']}</p>
+              <Message.Header>{s.verification.title}</Message.Header>
+              <p>{s.verification.subtitle}</p>
             </Message.Content>
             <Button as={Link} to={SELF.login} primary floated='right'>
-              {msg['signUp.verified.proceedBtn']+' '}<Icon name='arrow right'/>
+              {s.verification.proceedBtn}<Icon name='arrow right'/>
             </Button>
           </Message>
         )}
@@ -51,8 +52,7 @@ class Verifier extends React.Component {
 Verifier.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  onMount: PropTypes.func.isRequired,
-  msg: PropTypes.object.isRequired
+  onMount: PropTypes.func.isRequired
 }
 
 export default Verifier

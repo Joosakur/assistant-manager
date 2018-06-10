@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
-import HeaderContainer from '../components/header/HeaderContainer'
 import Container from 'semantic-ui-react/dist/es/elements/Container/Container'
-import { localize } from 'react-localize-redux'
+
+import HeaderContainer from '../components/header/HeaderContainer'
+import s from '../localization'
 
 class HomePage extends Component {
   render() {
@@ -11,8 +11,8 @@ class HomePage extends Component {
         <HeaderContainer/>
         <Container fluid id='main-container'>
           <Container className='page-container'>
-            <h1>{this.props.translate('home.title')}</h1>
-            <p>{this.props.translate('home.p1')}</p>
+            <h1>{s.home.title}</h1>
+            <p>{s.home.p1}</p>
           </Container>
         </Container>
       </Fragment>
@@ -20,8 +20,4 @@ class HomePage extends Component {
   }
 }
 
-HomePage.propTypes = {
-  translate: PropTypes.func.isRequired
-}
-
-export default localize(HomePage, 'locale')
+export default HomePage

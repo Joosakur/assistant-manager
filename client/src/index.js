@@ -2,8 +2,9 @@ import React from 'react'
 import { render } from 'react-dom'
 import createHistory from 'history/createBrowserHistory'
 import { AppContainer as HotLoader } from 'react-hot-loader'
+
+import localization from './localization'
 import Root from './components/Root'
-import { initialize, addTranslation } from 'react-localize-redux'
 import configureStore from './store/configureStore'
 import './styles/styles.scss'
 require('./favicon.ico')
@@ -11,10 +12,7 @@ require('./favicon.ico')
 const history = createHistory()
 const store = configureStore(history)
 
-const languages = ['fi', 'en']
-store.dispatch(initialize(languages))
-const translations = require('./global.locale.json')
-store.dispatch(addTranslation(translations))
+localization.setLanguage('fi')
 
 render(
   <HotLoader>

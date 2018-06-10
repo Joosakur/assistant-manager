@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
 import { reducer as toastr } from 'react-redux-toastr'
 import { reducer as form } from 'redux-form'
-import { localeReducer as locale } from 'react-localize-redux'
 
 import initialState from './initialState'
 import {logout} from '../actions/authActions'
@@ -18,8 +17,7 @@ const combinedReducer = combineReducers({
   // 3rd party
   router,
   toastr,
-  form, // note: redux-form expects that the reducer name is exactly 'form'
-  locale
+  form // note: redux-form expects that the reducer name is exactly 'form'
 })
 
 const rootReducer = (state, action) => {
