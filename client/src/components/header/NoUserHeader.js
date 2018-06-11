@@ -1,20 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {Link} from "react-router";
-import {Icon, Menu} from "semantic-ui-react";
-import {SELF} from "../../constants/urls";
+import React from 'react'
+import {Link} from 'react-router-dom'
+import {Icon, Menu} from 'semantic-ui-react'
 
-const NoUserHeader = ({translate}) => {
+import {SELF} from '../../constants/urls'
+import s from '../../localization'
+
+const NoUserHeader = () => {
   return (
-      <Menu.Menu position="right">
-        <Menu.Item as={Link} activeClassName="active" to={SELF.login}><Icon name="sign in"/> {translate('nav.signIn')}</Menu.Item>
-        <Menu.Item as={Link} activeClassName="active" to={SELF.register}> {translate('nav.signUp')}</Menu.Item>
+      <Menu.Menu position='right'>
+        <Menu.Item as={Link} to={SELF.login}><Icon name='sign in'/> {s.nav.signIn}</Menu.Item>
+        <Menu.Item as={Link} to={SELF.register}> {s.nav.signUp}</Menu.Item>
       </Menu.Menu>
-  );
-};
+  )
+}
 
-NoUserHeader.propTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default NoUserHeader;
+export default NoUserHeader

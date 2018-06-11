@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class AssistantPost {
      * @return email
      **/
     @ApiModelProperty(required = true, value = "")
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "Invalid email")
     @Size(min = 3, max = 60)
     public String getEmail() {
         return email;
@@ -53,14 +55,13 @@ public class AssistantPost {
         this.email = email;
     }
 
-
     /**
      * Get firstName
      *
      * @return firstName
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 20)
     public String getFirstName() {
         return firstName;
@@ -76,7 +77,7 @@ public class AssistantPost {
      * @return lastName
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 30)
     public String getLastName() {
         return lastName;
@@ -107,7 +108,7 @@ public class AssistantPost {
      * @return birthday
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @NotNull()
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -122,7 +123,7 @@ public class AssistantPost {
      * @return active
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @NotNull()
     public Boolean getActive() {
         return active;
     }
@@ -137,6 +138,8 @@ public class AssistantPost {
      * @return backgroundColor
      **/
     @ApiModelProperty(value = "")
+    @NotNull()
+    @Pattern(regexp = "#([0-9abcdef]{6})", message = "Invalid color, must be a hex code")
     public String getBackgroundColor() {
         return backgroundColor;
     }
@@ -152,6 +155,8 @@ public class AssistantPost {
      * @return textColor
      **/
     @ApiModelProperty(value = "")
+    @NotNull()
+    @Pattern(regexp = "#([0-9abcdef]{6})", message = "Invalid color, must be a hex code")
     public String getTextColor() {
         return textColor;
     }

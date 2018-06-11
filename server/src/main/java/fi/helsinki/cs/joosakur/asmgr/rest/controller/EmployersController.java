@@ -3,6 +3,7 @@ package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
 import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
 import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
+import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
 import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.*;
 import fi.helsinki.cs.joosakur.asmgr.service.EmployerService;
@@ -54,7 +55,7 @@ public class EmployersController implements EmployersApi {
 
     @Override
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployerGet createEmployer(@Valid @RequestBody EmployerPost employerModel) {
+    public EmployerGet createEmployer(@Valid @RequestBody EmployerPost employerModel) throws NotUniqueException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         Employer employer = new Employer(
@@ -107,6 +108,5 @@ public class EmployersController implements EmployersApi {
     public void verify(@RequestParam("token") String token) throws AuthorizationException, ResourceExpiredException {
         employerService.verifyAccount(token);
     }
-
 
 }

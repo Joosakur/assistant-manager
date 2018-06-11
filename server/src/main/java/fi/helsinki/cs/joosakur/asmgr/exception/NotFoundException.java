@@ -10,4 +10,8 @@ public class NotFoundException extends ApplicationException {
         super(msg);
     }
 
+    public NotFoundException(String msg, AppErrors errorCode) {
+        super(msg, errorCode);
+    }
+
 }

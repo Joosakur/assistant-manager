@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import routes from '../routes';
-import { Router } from 'react-router';
-import ReduxToastr from 'react-redux-toastr';
+import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { Provider } from 'react-redux'
+import ReduxToastr from 'react-redux-toastr'
+
+import AppContainer from './AppContainer'
+import Routes from '../routes/Routes'
 
 export default class Root extends Component {
+  static propTypes = {
+    store: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
 
   render() {
-    const { store, history } = this.props;
+    const { store, history } = this.props
     return (
       <Provider store={store}>
-        <div>
-          <Router history={history} routes={routes} />
+        <Fragment>
+          <AppContainer>
+            <Routes history={history} />
+          </AppContainer>
           <ReduxToastr/>
-        </div>
+        </Fragment>
       </Provider>
-    );
+    )
   }
 }
-
-Root.propTypes = {
-  store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
-};

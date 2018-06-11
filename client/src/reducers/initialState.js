@@ -1,44 +1,38 @@
 export default {
   entities: {
+    employer: undefined,
+    assistants: {},
+    workShifts: {},
+    workShiftsByAssistant: {},
+    workShiftsByStartDate: {} // key format YYYY-MM-DD
+  },
+  auth: {
+    token: undefined,
+    authenticating: false
+  },
+  pages: {
+    verification: {
+      loading: false,
+      error: null
+    },
     assistants: {
-
+      loading: false,
+      assistantDialog: {
+        open: false,
+        assistantId: null
+      }
     },
-    workShifts: {
-
+    schedule: {
+      loading: false,
+      workShiftDialog: {
+        open: false,
+        workShiftId: null
+      },
+      copiedDay: null
     },
-    workShiftsByStartDate: {
-
+    reporting: {
+      polling: false,
+      downloadLink: null
     }
-  },
-  assistants: {
-    loading: false,
-    editing: false,
-    submitting: false
-  },
-  schedule: {
-    loading: false,
-    submitting: false,
-    editing: false,
-    target: null,
-    copiedDay: null
-  },
-  registration: {
-    loading: false
-  },
-  verification: {
-    loading: false,
-    error: undefined
-  },
-  login: {
-    loading: false,
-    authenticated: false,
-    token: '',
-    userData: undefined
-  },
-  reporting: {
-    submitting: false,
-    polling: false,
-    downloadLink: undefined
   }
-
-};
+}

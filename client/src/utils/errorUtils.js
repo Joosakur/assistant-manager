@@ -1,31 +1,35 @@
-export const formErrorFromApiError = e => {
-  let error = {};
-  if(!e.response.data)
-    error = {_error: "Connection error"};
+import {SubmissionError} from 'redux-form'
+
+import s from '../localization'
+
+export const submissionErrorFromApiError = e => {
+  let error = {}
+  if(!e.response || !e.response.data)
+    error = {_error: s.errorCodes.CONNECTION_ERROR}
   else {
-    let fieldErrors = e.response.data.fieldErrors;
+    const fieldErrors = e.response.data.fieldErrors
     if(fieldErrors) {
       for(let fieldError of fieldErrors) {
-        error[fieldError.field] = fieldError.message;
+        error[fieldError.field] = fieldError.message
       }
-      error._error = "Validation failed";
+      error._error = s.errorCodes.VALIDATION_FAILED
+    } else {
+      error._error = errorMessageFromApiError(e)
     }
-
-    let msg = e.response.data.message;
-    if(msg)
-      error._error = msg;
   }
-  return error;
-};
+  return new SubmissionError(error)
+}
 
-export const generalErrorFromApiError = e => {
-  if(!e.response) {
-    return "Oops, something went wrong..";
+export const errorMessageFromApiError = e => {
+  if(!e.response || !e.response.data) {
+    return s.errorCodes.CONNECTION_ERROR
   }
-  if(!e.response.data)
-    return "Connection error";
 
-  let msg = e.response.data.message;
-  return msg ? msg : "Unknown error";
-};
-
+  const { message, errorCode} = e.response.data
+  if (errorCode && s.errorCodes[errorCode]) {
+    return s.errorCodes[errorCode]
+  }
+  if (message) {
+    console.warn(message)
+  }
+}

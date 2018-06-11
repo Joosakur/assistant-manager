@@ -6,6 +6,7 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
+@Profile({"!dev"})
 public class MailSendingServiceImpl implements MailSendingService {
 
     private static final Logger logger = LoggerFactory.getLogger(MailSendingServiceImpl.class);

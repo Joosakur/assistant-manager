@@ -10,4 +10,8 @@ public class NotReadyException extends ApplicationException {
         super(msg);
     }
 
+    public NotReadyException(String msg, AppErrors errorCode) {
+        super(msg, errorCode);
+    }
+
 }

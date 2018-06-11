@@ -1,6 +1,6 @@
 @import '~react-redux-toastr/src/styles/index';
 @import '~react-big-calendar/lib/css/react-big-calendar.css';
-@import "~react-datetime/css/react-datetime.css";
+@import '~react-datetime/css/react-datetime.css';
 
 /* Variables */
 $header-height: 50px;
@@ -123,4 +123,6 @@ p.details {
   background-color: #c9ffcb !important;
 }
 
-
+.redux-toastr .top-left, .redux-toastr .top-right, .redux-toastr .top-center {
+  top: 50px;
+}
