@@ -8,9 +8,7 @@ import s from "../../localization"
 
 export const reduxFormName = 'LoginForm'
 
-const LoginForm = (props) => {
-  let {handleSubmit, error, submitting} = props
-
+const LoginForm = ({handleSubmit, error, submitting}) => {
   return (
     <Container className='narrow'>
       <Form error={!!error} onSubmit={handleSubmit}>

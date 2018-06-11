@@ -123,4 +123,6 @@ p.details {
   background-color: #c9ffcb !important;
 }
 
-
+.redux-toastr .top-left, .redux-toastr .top-right, .redux-toastr .top-center {
+  top: 50px;
+}

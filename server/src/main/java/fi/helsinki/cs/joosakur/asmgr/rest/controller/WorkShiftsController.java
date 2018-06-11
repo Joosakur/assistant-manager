@@ -142,7 +142,7 @@ public class WorkShiftsController implements WorkShiftsApi {
         if(workShiftModel.getAssistantId() != null)
             assistant = assistantService.find(workShiftModel.getAssistantId());
         WorkShift workShift = new WorkShift(employer, assistant, workShiftModel.getStart(), workShiftModel.getEnd());
-        workShift.setSick(workShiftModel.getSick());
+        workShift.setSick(workShiftModel.getSick() == null ? false : workShiftModel.getSick());
         workShift = workShiftService.create(workShift);
         return new WorkShiftGet().fromEntity(workShift);
     }

@@ -10,4 +10,8 @@ public class ResourceExpiredException extends ApplicationException {
         super(msg);
     }
 
+    public ResourceExpiredException(String msg, AppErrors errorCode) {
+        super(msg, errorCode);
+    }
+
 }

@@ -14,6 +14,7 @@ import WorkShiftsApi from '../api/workShifts'
 import {selToken} from '../selectors/auth'
 import {selCopiedDay} from '../selectors/pages/schedule'
 import {submissionErrorFromApiError, errorMessageFromApiError} from '../utils/errorUtils'
+import s from '../localization'
 
 export function* handleListWorkShifts({payload: {from, to, assistantId}}) {
   const token = yield select(selToken)
@@ -21,7 +22,7 @@ export function* handleListWorkShifts({payload: {from, to, assistantId}}) {
     const response = yield call(WorkShiftsApi.listWorkShifts, token, {from, to, assistantId})
     yield put(listWorkShiftsSuccess(response.data))
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.schedule.errors.list, errorMessageFromApiError(e))
     yield put(listWorkShiftsFail())
   }
 }
@@ -35,7 +36,7 @@ function* handleCreateWorkShift({payload: formValues, meta: {resolve, reject}}) 
     yield put(createWorkShiftSuccess(response.data))
   } catch (e) {
     yield call(reject, submissionErrorFromApiError(e))
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.schedule.errors.create, errorMessageFromApiError(e))
     yield put(createWorkShiftFail())
   }
 }
@@ -55,7 +56,7 @@ function* handleUpdateWorkShift({payload: formValues, meta: {resolve, reject}}) 
     yield call(resolve)
   } catch (e) {
     yield call(reject, submissionErrorFromApiError(e))
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.schedule.errors.edit, errorMessageFromApiError(e))
     yield put(createWorkShiftFail())
   }
 }
@@ -94,7 +95,7 @@ function* handleDeleteWorkShift({payload: workShiftId}) {
     yield put(deleteWorkShiftSuccess(workShiftId))
     yield put(closeWorkShiftModal())
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.schedule.errors.del, errorMessageFromApiError(e))
     yield put(deleteWorkShiftFail())
   }
 }
@@ -111,7 +112,7 @@ function* handlePasteDay({payload: targetDate}) {
       yield put(createWorkShiftSuccess(workShift))
     }
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.schedule.errors.copy, errorMessageFromApiError(e), {timeout: 0})
   }
 }
 

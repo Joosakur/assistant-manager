@@ -10,4 +10,8 @@ public class NotUniqueException extends ApplicationException {
         super(msg);
     }
 
+    public NotUniqueException(String msg, AppErrors errorCode) {
+        super(msg, errorCode);
+    }
+
 }

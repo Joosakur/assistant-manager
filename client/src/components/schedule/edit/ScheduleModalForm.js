@@ -42,7 +42,7 @@ class ScheduleModalForm extends React.Component {
   }
 
   render() {
-    const { workShiftId, open, handleSubmit, onClose, onDelete, reset, submitting, msg } = this.props
+    const { workShiftId, open, handleSubmit, onClose, onDelete, reset, submitting } = this.props
     return (
       <Modal dimmer='inverted' size='small' open={open} onClose={onClose}>
         <Modal.Header>

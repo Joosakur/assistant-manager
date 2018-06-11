@@ -1,5 +1,4 @@
 import {connect} from 'react-redux'
-import {getTranslate} from 'react-localize-redux'
 
 import {openWorkShiftModal} from '../../actions/ui/workShiftActions'
 import {selIsLoading} from '../../selectors/pages/schedule'
@@ -7,8 +6,7 @@ import Schedule from './Schedule'
 
 function mapStateToProps(state) {
   return {
-    loading: selIsLoading(state),
-    translate: getTranslate(state.locale)
+    loading: selIsLoading(state)
   }
 }
 

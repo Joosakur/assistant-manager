@@ -11,6 +11,7 @@ import {
 import AssistantsApi from '../api/assistants'
 import {selToken} from '../selectors/auth'
 import {errorMessageFromApiError, submissionErrorFromApiError} from '../utils/errorUtils'
+import s from '../localization'
 
 export function* handleListAssistants() {
   const token = yield select(selToken)
@@ -18,7 +19,7 @@ export function* handleListAssistants() {
     const response = yield call(AssistantsApi.listAssistants, token)
     yield put(listAssistantsSuccess(response.data))
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.assistants.errors.list, errorMessageFromApiError(e))
     yield put(listAssistantsFail())
   }
 }
@@ -29,7 +30,7 @@ export function* handleListCoworkers({payload: assistantId}) {
     const response = yield call(AssistantsApi.listCoworkers, token, assistantId)
     yield put(listAssistantsSuccess(response.data))
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.assistants.errors.list, errorMessageFromApiError(e))
     yield put(listAssistantsFail())
   }
 }
@@ -42,7 +43,7 @@ export function* handleCreateAssistant({payload: formValues, meta: {resolve, rej
     yield call(resolve)
     yield put(createAssistantSuccess(response.data))
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.assistants.errors.create, errorMessageFromApiError(e))
     yield call(reject, submissionErrorFromApiError(e))
     yield put(createAssistantFail())
   }
@@ -62,7 +63,7 @@ export function* handleUpdateAssistant({payload: formValues, meta: {resolve, rej
     yield call(resolve)
     yield put(updateAssistantSuccess(response.data))
   } catch (e) {
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.assistants.errors.edit, errorMessageFromApiError(e))
     yield call(reject, submissionErrorFromApiError(e))
     yield put(updateAssistantFail())
   }

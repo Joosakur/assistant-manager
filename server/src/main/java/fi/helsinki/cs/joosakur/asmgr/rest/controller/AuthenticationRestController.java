@@ -1,6 +1,7 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
 import fi.helsinki.cs.joosakur.asmgr.exception.NotReadyException;
+import fi.helsinki.cs.joosakur.asmgr.exception.AppErrors;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.auth.JwtAuthenticationRequest;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.auth.JwtAuthenticationResponse;
 import fi.helsinki.cs.joosakur.asmgr.security.JwtTokenUtil;
@@ -45,7 +46,7 @@ public class AuthenticationRestController {
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         if(!userDetails.isEnabled())
-            throw new NotReadyException("Account is pending for verification, please check your email.");
+            throw new NotReadyException("Account is pending for verification, please check your email.", AppErrors.ACCOUNT_NOT_VERIFIED);
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
         // Return the token

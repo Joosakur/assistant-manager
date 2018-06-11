@@ -15,7 +15,6 @@ class RegistrationPage extends React.Component {
         <Container fluid id='main-container'>
           <Container className='page-container narrow'>
             <h1>{s.signUp.title}</h1>
-            <h4>{s.signUp.subtitle}</h4>
             <Divider hidden/>
             <RegistrationContainer/>
           </Container>

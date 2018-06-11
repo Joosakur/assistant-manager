@@ -8,6 +8,7 @@ import {register, registerSuccess, registerFail} from '../actions/api/employerAc
 import {selToken} from '../selectors/auth'
 import EmployersApi from '../api/employers'
 import {errorMessageFromApiError, submissionErrorFromApiError} from '../utils/errorUtils'
+import s from '../localization'
 
 function* handleRegister({payload: formValues, meta: {resolve, reject}}) {
   const token = yield select(selToken)
@@ -19,7 +20,7 @@ function* handleRegister({payload: formValues, meta: {resolve, reject}}) {
     yield put(push(SELF.registered))
   } catch (e) {
     yield call(reject, submissionErrorFromApiError(e))
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.signUp.error, errorMessageFromApiError(e))
     yield put(registerFail())
   }
 }

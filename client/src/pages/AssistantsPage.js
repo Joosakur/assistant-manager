@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import { getTranslate } from 'react-localize-redux'
 import {Button, Container, Divider, Header, Icon} from 'semantic-ui-react'
 
 import AssistantsListContainer from '../components/assistants/AssistantsListContainer'
@@ -50,12 +49,6 @@ AssistantsPage.propTypes = {
   openCreateAssistantDialog: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => {
-  return {
-    translate: getTranslate(state.locale),
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     loadAssistants: () => dispatch(listAssistants()),
@@ -63,4 +56,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AssistantsPage)
+export default connect(null, mapDispatchToProps)(AssistantsPage)

@@ -11,6 +11,7 @@ import ReportStatuses from '../constants/reportStatuses'
 import ReportingApi from '../api/reporting'
 import {selToken} from '../selectors/auth'
 import {submissionErrorFromApiError, errorMessageFromApiError} from '../utils/errorUtils'
+import s from '../localization'
 
 function* handleRequestReport({payload: formValues, meta: {resolve, reject}}) {
   const token = yield select(selToken)
@@ -22,13 +23,13 @@ function* handleRequestReport({payload: formValues, meta: {resolve, reject}}) {
     yield put(getReport(exportId))
   } catch (e) {
     yield call(reject, submissionErrorFromApiError(e))
-    yield call(toastr.error, 'Error', errorMessageFromApiError(e))
+    yield call(toastr.error, s.reporting.errors.request, errorMessageFromApiError(e))
     yield put(requestReportFail())
   }
 }
 
 function* handleGetReportFail() {
-  yield call(toastr.error, 'Generating report failed', 'Please try again')
+  yield call(toastr.error, s.reporting.errors.download, s.reporting.errors.tryAgain)
 }
 
 function* handleGetReport({payload: exportId}) {

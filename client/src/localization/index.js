@@ -1,112 +1,28 @@
 import LocalizedStrings from 'react-localization'
 
 const m = new LocalizedStrings({
-  en: {
-    nav: {
-      home: '',
-      assistants: '',
-      schedule: '',
-      reporting: '',
-      signIn: '',
-      signUp: '',
-      signOut: '',
-      loggedIn: ''
-    },
-    signUp: {
-      title: '',
-      subtitle: '',
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-      birthday: '',
-      city: '',
-      cbox1a: '',
-      cbox1b: '',
-      cbox2a: '',
-      cbox2b: '',
-      submit: '',
-    },
-    registered: {
-      title: '',
-      subtitle: '',
-      p1: '',
-    },
-    verification: {
-      verifying: '',
-      errorTitle: '',
-      title: '',
-      subtitle: '',
-      proceedBtn: ''
-    },
-    signIn: {
-      email: '',
-      password: '',
-      submit: ''
-    },
-    home: {
-      title: '',
-      p1: '',
-    },
-    assistants: {
-      title: '',
-      buttons: {
-        add: '',
-        share: '',
-        edit: ''
-      },
-      share: {
-        title: '',
-        p1: '',
-        p2: '',
-        copyBtn: ''
-      },
-      edit: {
-        titleNew: '',
-        titleEdit: '',
-        firstName: '',
-        lastName: '',
-        nickName: '',
-        birthday: '',
-        backgroundColor: '',
-        textInvert: '',
-        cancelBtn: '',
-        saveBtn: '',
-      }
-    },
-    schedule: {
-      title: '',
-      addBtn: '',
-      edit: {
-        titleNew: '',
-        titleEdit: '',
-        assistant: '',
-        startDate: '',
-        endTime: '',
-        sick: '',
-        deleteBtn: '',
-        cancelBtn: '',
-        saveBtn: ''
-      }
-    },
-    reporting: {
-      title: '',
-      subtitle: '',
-      assistant: '',
-      startDate: '',
-      endDate: '',
-      year: '',
-      month: '',
-      range0: '',
-      range1: '',
-      range2: '',
-      startBtn: '',
-      downloadBtn: '',
-      p1: '',
-      p2: '',
-    }
-  },
   fi: {
+    errorCodes: {
+      CONNECTION_ERROR: 'Yhteysongelma',
+      VALIDATION_FAILED: 'Virheellisesti täytettyjä kenttiä',
+      AUTHENTICATION_ERROR: 'Tunnistautuminen epäonnistui',
+      AUTHORIZATION_ERROR: 'Oikeudet toimintoon puuttuvat',
+      BAD_CREDENTIALS: 'Virheellinen sähköposti tai salasana',
+      ACCOUNT_NOT_VERIFIED: 'Sähköposti on vielä varmentamatta, klikkaa linkkiä saapuneesta viestistä.'
+    },
+    validation: {
+      required: 'Pakollinen kenttä',
+      minLength: 'Vähintään {0} merkkiä',
+      maxLength: 'Korkeintaan {0} merkkiä',
+      number: 'Virheellinen numero',
+      minValue: 'Vähintään {0}',
+      maxValue: 'Korkeintaan {0}',
+      email: 'Virheellinen sähköpostiosoite',
+      date: 'Anna päivämäärä muodossa {0}',
+      dateBefore: 'Oltava ennen {0}',
+      dateAfter: 'Oltava aikaisintaan {0}',
+      dateBetween: 'Oltava välillä {0} - {1}'
+    },
     nav: {
       home: 'Koti',
       assistants: 'Avustajani',
@@ -119,9 +35,8 @@ const m = new LocalizedStrings({
     },
     signUp: {
       title: 'Rekisteröidy käyttäjäksi',
-      subtitle: 'Täytä tietosi',
       email: 'Sähköposti',
-      password: 'Salasana (vähintään 8 merkkiä)',
+      password: 'Salasana',
       firstName: 'Etunimi',
       lastName: 'Sukunimi',
       birthday: 'Syntymäaika',
@@ -131,12 +46,13 @@ const m = new LocalizedStrings({
       cbox2a: 'Hyväksyn palvelun ',
       cbox2b: 'käyttöehdot',
       submitBtn: 'Liity mukaan!',
-      notRobot: 'Auta osoittamaan ettet ole robotti'
+      notRobot: 'Auta osoittamaan ettet ole robotti',
+      error: 'Rekisteröityminen epäonnistui'
     },
     registered: {
       title: 'Kiitos kun rekisteröidyit!',
       subtitle: 'Odottaa sähköpostin varmennusta',
-      p1: 'Sähköpostisi täytyy vielä varmentaa. Tarkista sähköpostisi ja klikkaa saamaasi vahvistuslinkkiä ennen sisäänkirjautumista.',
+      p1: 'Sähköpostisi täytyy vielä varmentaa. Tarkista sähköpostisi ja klikkaa saamaasi vahvistuslinkkiä ennen sisäänkirjautumista.'
     },
     verification: {
       verifying: 'Varmennetaan...',
@@ -178,6 +94,11 @@ const m = new LocalizedStrings({
         textInvert: 'Valkoinen teksti',
         cancelBtn: 'Peruuta',
         saveBtn: 'Tallenna'
+      },
+      errors: {
+        list: 'Avustajien lataaminen epäonnistui',
+        create: 'Avustajan lisääminen epäonnistui',
+        edit: 'Muutosten tallentaminen epäonnistui'
       }
     },
     schedule: {
@@ -195,6 +116,13 @@ const m = new LocalizedStrings({
         deleteBtn: 'Poista',
         cancelBtn: 'Peruuta',
         saveBtn: 'Tallenna'
+      },
+      errors: {
+        list: 'Työvuorojen lataaminen epäonnistui',
+        create: 'Työvuron lisääminen epäonnistui',
+        edit: 'Muutosten tallentaminen epäonnistui',
+        del: 'Työvuoron poistaminen epäonnistui',
+        copy: 'Työvuorojen kopiointi epäonnistui'
       }
     },
     reporting: {
@@ -213,6 +141,11 @@ const m = new LocalizedStrings({
       downloadBtn: 'Lataa tuntilista',
       p1: 'Toiminto tuottaa tuntilistan .ods laskentataulukkona, jonka voit avaa esimerkiksi riittävän uudella Microsoft Excelillä tai ilmaisella OpenOffice Calc -ohjelmalla.',
       p2: 'Huom! Assistant Manager on vielä Alpha-vaiheessa, joten tuntilistan sisältö kannattaa vielä tarkistaa etenkin pyhäkorvausten ja muiden poikkeusten osalta, ja tehdä tarvittavat korjaukset ennen tulostamista.',
+      errors: {
+        request: 'Tuntilistan käsittely epäonnistui',
+        download: 'Tuntilistan lataaminen epäonnistui',
+        tryAgain: 'Ole hyvä ja yritä uudelleen'
+      }
     }
   }
 })
