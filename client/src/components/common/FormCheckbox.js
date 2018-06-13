@@ -8,7 +8,7 @@ const FormCheckbox = (props) => {
     <Form.Field error={error && touched}>
       <div style={{display: 'flex', alignItems: 'center'}}>
         <Checkbox
-          checked={input.checked}
+          checked={input.checked || input.value}
           onChange={(event, data) => {
             event.preventDefault()
             input.onChange(data.checked)

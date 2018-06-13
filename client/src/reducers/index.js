@@ -24,8 +24,7 @@ const rootReducer = (state, action) => {
   if(action.type === logout.toString()) {
     return {
       ...initialState,
-      router: state.router,
-      locale: state.locale
+      router: state.router
     }
   }
 

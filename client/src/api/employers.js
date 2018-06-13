@@ -4,12 +4,16 @@ import {API} from '../constants/urls'
 
 const rootPath = API.origin + API.employers
 
+async function register(token, data) {
+  return axios.post(rootPath, data, {headers: {'Authorization': token}})
+}
+
 async function getSelf(token) {
   return axios.get(`${rootPath}/self`, {headers: {'Authorization': token}})
 }
 
-async function register(token, data) {
-  return axios.post(rootPath, data, {headers: {'Authorization': token}})
+async function update(token, data) {
+  return axios.put(`${rootPath}/self`, data, {headers: {'Authorization': token}})
 }
 
 async function verifyRegistration(verificationToken) {
@@ -17,7 +21,8 @@ async function verifyRegistration(verificationToken) {
 }
 
 export default {
-  getSelf,
   register,
+  getSelf,
+  update,
   verifyRegistration
 }

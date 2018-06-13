@@ -48,14 +48,14 @@ public class EmployersController implements EmployersApi {
         }
     }
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
+    @InitBinder(value = "employerModel")
+    protected void initBinderEmployerPostValidator(WebDataBinder binder) {
         binder.addValidators(employerPostValidator);
     }
 
     @Override
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployerGet createEmployer(@Valid @RequestBody EmployerPost employerModel) throws NotUniqueException {
+    public EmployerGet createEmployer(@Valid @ModelAttribute("employerModel") @RequestBody EmployerPost employerModel) throws NotUniqueException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         Employer employer = new Employer(
@@ -74,7 +74,7 @@ public class EmployersController implements EmployersApi {
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployerGet getEmployerSelf() throws NotFoundException {
+    public EmployerGet getEmployerSelf() {
         Employer employer = getAuthenticatedEmployer();
         return new EmployerGet().fromEntity(employer);
     }
@@ -90,14 +90,14 @@ public class EmployersController implements EmployersApi {
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployerGet updateEmployer(@Valid @RequestBody EmployerPut employerModel) throws NotFoundException {
+    public EmployerGet updateEmployer(@Valid @RequestBody EmployerPut employerUpdateModel) throws NotFoundException {
         Employer employer = getAuthenticatedEmployer();
 
-        employer.setFirstName(employerModel.getFirstName());
-        employer.setLastName(employerModel.getLastName());
-        employer.setBirthday(employerModel.getBirthday());
-        employer.setHetaMember(employerModel.isHetaMember());
-        employer.setCity(employerModel.getCity());
+        employer.setFirstName(employerUpdateModel.getFirstName());
+        employer.setLastName(employerUpdateModel.getLastName());
+        employer.setBirthday(employerUpdateModel.getBirthday());
+        employer.setHetaMember(employerUpdateModel.isHetaMember());
+        employer.setCity(employerUpdateModel.getCity());
 
         employer = employerService.update(employer);
         return new EmployerGet().fromEntity(employer);

@@ -30,8 +30,7 @@ const m = new LocalizedStrings({
       reporting: 'Tuntilistat',
       signIn: 'Kirjaudu',
       signUp: 'Rekisteröidy',
-      signOut: 'Kirjaudu ulos',
-      loggedIn: 'Kirjautunut käyttäjänä'
+      signOut: 'Kirjaudu ulos'
     },
     signUp: {
       title: 'Rekisteröidy käyttäjäksi',
@@ -69,6 +68,23 @@ const m = new LocalizedStrings({
     home: {
       title: 'Assistant Manager',
       p1: 'Web-sovellus henkilökohtaisten avustajien työvuorojen suunnitteluun, kirjanpitoon ja raportointiin.',
+    },
+    profile: {
+      tabs: {
+        userDetails: 'Käyttäjätiedot',
+        emailChange: 'Vaihda sähköpostiosoite',
+        passwordChange: 'Vaihda salasana'
+      },
+      userDetails: {
+        title: 'Käyttäjätiedot',
+        firstName: 'Etunimi',
+        lastName: 'Sukunimi',
+        birthday: 'Syntymäaika',
+        city: 'Kotikunta',
+        cbox1a: 'Kuulun ',
+        cbox1b: 'HETA-liittoon',
+        submitBtn: 'Tallenna',
+      }
     },
     assistants: {
       title: 'Avustajani',

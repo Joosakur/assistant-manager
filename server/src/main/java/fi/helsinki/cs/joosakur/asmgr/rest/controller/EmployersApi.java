@@ -27,7 +27,7 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    EmployerGet createEmployer(@ApiParam(required = true) @RequestBody EmployerPost employerModel) throws NotUniqueException;
+    EmployerGet createEmployer(@ApiParam(required = true) @ModelAttribute("employerModel") @RequestBody EmployerPost employerModel) throws NotUniqueException;
 
 
     @ApiOperation(value = "Get employer", notes = "This endpoint is for retrieving the currently logged in employer. ",
@@ -67,7 +67,7 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    EmployerGet updateEmployer(@ApiParam(required = true) @RequestBody EmployerPut employerModel) throws NotFoundException;
+    EmployerGet updateEmployer(@ApiParam(required = true) @RequestBody EmployerPut employerUpdateModel) throws NotFoundException;
 
     @ApiOperation(value = "Verify employer account", notes = "This endpoint is for verifying email and activating newly created account.",
             response = Void.class, tags = {})

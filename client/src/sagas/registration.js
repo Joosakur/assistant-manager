@@ -27,7 +27,7 @@ function* handleRegister({payload: formValues, meta: {resolve, reject}}) {
 
 const buildPayload = formValues => ({
   ...formValues,
-  birthday: moment(formValues.birthday, 'DD.MM.YYYY').toDate()
+  birthday: moment(formValues.birthday, 'D.M.YYYY').format('YYYY-MM-DD')
 })
 
 export default [

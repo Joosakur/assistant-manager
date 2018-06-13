@@ -97,16 +97,7 @@ const testState = {
 
   router: {},
   toastr: {},
-  form: {},
-  locale: {
-    languages: [],
-    translations: {},
-    options: {
-      renderInnerHtml: true,
-      showMissingTranslationMsg: true,
-      missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }'
-    }
-  }
+  form: {}
 }
 
 export {

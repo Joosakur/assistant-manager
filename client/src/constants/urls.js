@@ -16,6 +16,7 @@ export const SELF = {
   registered: '/registered',
   verifyAccount: '/verify-account',
   login: '/login',
+  profile: '/profile',
   assistants: '/assistants',
   schedule: '/schedule',
   scheduleShare: '/schedule/share',

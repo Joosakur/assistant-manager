@@ -14,10 +14,10 @@ const LoginForm = ({handleSubmit, error, submitting}) => {
       <Form error={!!error} onSubmit={handleSubmit}>
         <Field name='email' component={FormFieldWithErrorLabel} type='text' label={s.signIn.email}/>
         <Field name='password' component={FormFieldWithErrorLabel} type='password' label={s.signIn.password}/>
-        {error && <Message error>{error}</Message>}
 
         <Divider hidden/>
         <Button type='submit' disabled={submitting} loading={submitting} fluid size='big' positive>{s.signIn.submitBtn}</Button>
+        {error && <Message error>{error}</Message>}
       </Form>
     </Container>
   )

@@ -9,6 +9,7 @@ import { SELF } from '../constants/urls'
 import HomePage from '../pages/HomePage'
 import LoginPage from '../pages/LoginPage'
 import AssistantsPage from '../pages/AssistantsPage'
+import ProfilePage from '../pages/ProfilePage'
 import SchedulePage from '../pages/SchedulePage'
 import SharedSchedulePage from '../pages/SharedSchedulePage'
 import RegisteredPage from '../pages/RegisteredPage'
@@ -53,6 +54,7 @@ class Routes extends React.Component {
           <Route exact path={SELF.registered} component={RegisteredPage}/>
           <Route exact path={SELF.verifyAccount} component={VerificationPage}/>
           <Route exact path={SELF.login} component={userIsNotAuthenticated(LoginPage)}/>
+          <Route exact path={SELF.profile} component={userIsAuthenticated(ProfilePage)}/>
           <Route exact path={SELF.assistants} component={userIsAuthenticated(AssistantsPage)}/>
           <Route exact path={SELF.schedule} component={userIsAuthenticated(SchedulePage)}/>
           <Route path={`${SELF.scheduleShare}/:shareId`} component={SharedSchedulePage}/>
