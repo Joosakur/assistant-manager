@@ -13,11 +13,13 @@ public class EmployerPostValidatorMockImpl implements EmployerPostValidator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return EmployerPost.class.equals(clazz);
+        return EmployerPost.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        logger.info("validating captcha");
+        EmployerPost model = (EmployerPost) target;
+        String captcha = model.getCaptcha();
+        logger.info("validating captcha: "+captcha);
     }
 }

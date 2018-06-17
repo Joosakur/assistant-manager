@@ -41,6 +41,20 @@ public class ControllerAdviceImpl extends ResponseEntityExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
+    @Override
+    @ResponseBody
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        logger.warn("Responding with 400", ex);
+        return new ResponseEntity<>(new FormErrorResponse(ex.getBindingResult()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LateValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ResponseEntity<Object> handleException(LateValidationException ex) {
+        logger.info("Responding with 400", ex);
+        return new ResponseEntity<>(new FormErrorResponse(ex.getErrors()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     ErrorResponse handleException(BadCredentialsException ex) {
@@ -119,11 +133,4 @@ public class ControllerAdviceImpl extends ResponseEntityExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
-    @Override
-    @ResponseBody
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        //todo: better handling
-        logger.warn("Responding with 400", ex);
-        return new ResponseEntity<>(new FormErrorResponse(ex.getBindingResult()), HttpStatus.BAD_REQUEST);
-    }
 }

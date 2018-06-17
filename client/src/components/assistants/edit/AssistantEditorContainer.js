@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {formValueSelector} from 'redux-form'
+import {formValueSelector, reset} from 'redux-form'
 import moment from 'moment'
 
 import AssistantEditor, {reduxFormName} from './AssistantEditor'
@@ -20,12 +20,12 @@ const mapStateToProps = state => {
   const assistantId = selEditedAssistantId(state)
   const assistant = assistantId ? selAssistantById(assistantId)(state) : null
 
-  const selector = formValueSelector('AssistantForm')
+  const selector = formValueSelector(reduxFormName)
   const {
     firstName = '',
     lastName = '',
     nickName = '',
-    backgroundColor = '#808080',
+    backgroundColor = '#cccccc',
     whiteText = false
   } = selector(state, 'firstName', 'lastName', 'nickName', 'backgroundColor', 'whiteText')
   const shortName = getShortNameValue(firstName, lastName, nickName)
@@ -39,16 +39,21 @@ const mapStateToProps = state => {
     whiteText
   }
 
-  if (assistant) {
-    props.initialValues = {
-      assistantId,
-      firstName:  assistant.firstName || '',
-      lastName:  assistant.lastName || '',
-      nickName:  assistant.nickName || '',
-      birthday:  assistant.birthday && moment(assistant.birthday, 'YYYY-MM-DD').format('DD.MM.YYYY'),
-      backgroundColor: assistant.backgroundColor || '#808080',
-      whiteText: assistant.textColor === '#ffffff'
-    }
+  props.initialValues = assistant ? {
+    assistantId,
+    firstName:  assistant.firstName || '',
+    lastName:  assistant.lastName || '',
+    nickName:  assistant.nickName || '',
+    birthday:  assistant.birthday && moment(assistant.birthday, 'YYYY-MM-DD').format('DD.MM.YYYY'),
+    backgroundColor: assistant.backgroundColor || '#808080',
+    whiteText: assistant.textColor === '#ffffff'
+  } : {
+    firstName: '',
+    lastName: '',
+    nickName: '',
+    birthday: '',
+    backgroundColor: '#cccccc',
+    whiteText: false
   }
 
   return props
@@ -56,10 +61,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClose: () => dispatch(closeAssistantModal()),
+    onClose: () => {
+      dispatch(closeAssistantModal())
+      dispatch(reset(reduxFormName))
+    },
     onSubmit: values => {
       const actionCreator = values.assistantId ? updateAssistant : createAssistant
-      return dispatchForm(dispatch, actionCreator, values)
+      return dispatchForm(dispatch, actionCreator, values).then(() => dispatch(reset(reduxFormName)))
     }
   }
 }

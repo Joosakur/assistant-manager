@@ -16,9 +16,14 @@ const updateEmployer = createAction('API__EMPLOYERS__PUT_SELF', payload => paylo
 const updateEmployerSuccess = createAction('API__EMPLOYERS__PUT_SELF_SUCCESS')
 const updateEmployerFail = createAction('API__EMPLOYERS__PUT_SELF_FAIL')
 
+const changePassword = createAction('API__EMPLOYERS__PASSWORD_CHANGE', payload => payload, (payload, meta) => meta)
+const changePasswordSuccess = createAction('API__EMPLOYERS__PASSWORD_CHANGE_SUCCESS')
+const changePasswordFail = createAction('API__EMPLOYERS__PASSWORD_CHANGE_FAIL')
+
 export {
   register, registerSuccess, registerFail,
   verifyRegistration, verifyRegistrationSuccess, verifyRegistrationFail,
   getSelf, getSelfSuccess, getSelfFail,
-  updateEmployer, updateEmployerSuccess, updateEmployerFail
+  updateEmployer, updateEmployerSuccess, updateEmployerFail,
+  changePassword, changePasswordSuccess, changePasswordFail
 }

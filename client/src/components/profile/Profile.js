@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import { Grid, Menu } from 'semantic-ui-react'
 
 import UserDetails from './UserDetails/UserDetailsFormContainer'
+import PasswordChange from './PasswordChange/PasswordChangeFormContainer'
 import s from '../../localization'
 
-const TABS = ['userDetails', 'emailChange', 'passwordChange']
+const TABS = ['userDetails', 'passwordChange']
 
 const Profile = ({activeTab, onTabChange}) => (
   <Grid>
@@ -20,8 +21,8 @@ const Profile = ({activeTab, onTabChange}) => (
     </Grid.Column>
 
     <Grid.Column stretched width={12}>
-      { activeTab === TABS[0] && <UserDetails />}
-      { activeTab !== TABS[0] && <h1>Tulossa pian</h1>}
+      { activeTab === TABS[0] && <UserDetails /> }
+      { activeTab === TABS[1] && <PasswordChange /> }
     </Grid.Column>
   </Grid>
 )

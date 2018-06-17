@@ -1,7 +1,9 @@
 import {takeLatest, put, call, select} from 'redux-saga/effects'
 import {toastr} from 'react-redux-toastr'
+import {reset} from 'redux-form'
 import moment from 'moment'
 
+import {reduxFormName} from '../components/schedule/edit/ScheduleModalForm'
 import {
   listWorkShifts, listWorkShiftsSuccess, listWorkShiftsFail,
   createWorkShift, createWorkShiftSuccess, createWorkShiftFail,
@@ -94,6 +96,7 @@ function* handleDeleteWorkShift({payload: workShiftId}) {
     yield call(WorkShiftsApi.deleteWorkShift, token, workShiftId)
     yield put(deleteWorkShiftSuccess(workShiftId))
     yield put(closeWorkShiftModal())
+    yield put(reset(reduxFormName))
   } catch (e) {
     yield call(toastr.error, s.schedule.errors.del, errorMessageFromApiError(e))
     yield put(deleteWorkShiftFail())

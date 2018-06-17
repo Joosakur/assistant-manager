@@ -1,15 +1,13 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
-import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
-import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
-import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
-import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
+import fi.helsinki.cs.joosakur.asmgr.exception.*;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerGet;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerPost;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.EmployerPut;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.PasswordChange;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.error.ErrorResponse;
 import io.swagger.annotations.*;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "employers", description = "the employers API")
@@ -27,7 +25,7 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    EmployerGet createEmployer(@ApiParam(required = true) @ModelAttribute("employerModel") @RequestBody EmployerPost employerModel) throws NotUniqueException;
+    EmployerGet createEmployer(@ApiParam(required = true) @RequestBody EmployerPost employerPost) throws NotUniqueException;
 
 
     @ApiOperation(value = "Get employer", notes = "This endpoint is for retrieving the currently logged in employer. ",
@@ -53,7 +51,7 @@ public interface EmployersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    void changePassword(@ApiParam(required = true) @RequestBody PasswordChange passwordData) throws NotFoundException, AuthorizationException;
+    void changePassword(@ApiParam(required = true) @RequestBody PasswordChange passwordChange, Errors errors) throws NotFoundException, LateValidationException;
 
 
     @ApiOperation(value = "Update employer", notes = "This endpoint is for updating the currently logged in employer. All data except password needs to be passed and will replace the existing data. ",

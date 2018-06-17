@@ -102,10 +102,8 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @Transactional
-    public Employer changePassword(UUID id, String oldPassword, String newPassword) throws NotFoundException, AuthorizationException {
+    public Employer changePassword(UUID id, String oldPassword, String newPassword) throws NotFoundException {
         Employer employer = find(id);
-        if(!passwordEncoder.matches(employer.getPassword(), oldPassword))
-            throw new AuthorizationException("Old password did not match");
         employer.setPassword(passwordEncoder.encode(newPassword));
         employer = repository.save(employer);
 

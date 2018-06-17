@@ -1,10 +1,7 @@
 package fi.helsinki.cs.joosakur.asmgr.rest.controller;
 
 import fi.helsinki.cs.joosakur.asmgr.entity.Employer;
-import fi.helsinki.cs.joosakur.asmgr.exception.AuthorizationException;
-import fi.helsinki.cs.joosakur.asmgr.exception.NotFoundException;
-import fi.helsinki.cs.joosakur.asmgr.exception.NotUniqueException;
-import fi.helsinki.cs.joosakur.asmgr.exception.ResourceExpiredException;
+import fi.helsinki.cs.joosakur.asmgr.exception.*;
 import fi.helsinki.cs.joosakur.asmgr.rest.model.employer.*;
 import fi.helsinki.cs.joosakur.asmgr.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +27,16 @@ public class EmployersController implements EmployersApi {
 
     private final EmployerPostValidator employerPostValidator;
 
+    private final PasswordChangeValidator passwordChangeValidator;
+
+    private final PasswordChangeLateValidator passwordChangeLateValidator;
+
     @Autowired
-    public EmployersController(EmployerService employerService, EmployerPostValidator employerPostValidator) {
+    public EmployersController(EmployerService employerService, EmployerPostValidator employerPostValidator, PasswordChangeValidator passwordChangeValidator, PasswordChangeLateValidator passwordChangeLateValidator) {
         this.employerService = employerService;
         this.employerPostValidator = employerPostValidator;
+        this.passwordChangeValidator = passwordChangeValidator;
+        this.passwordChangeLateValidator = passwordChangeLateValidator;
     }
 
     private Employer getAuthenticatedEmployer() throws AuthenticationException {
@@ -48,24 +52,24 @@ public class EmployersController implements EmployersApi {
         }
     }
 
-    @InitBinder(value = "employerModel")
+    @InitBinder("employerPost")
     protected void initBinderEmployerPostValidator(WebDataBinder binder) {
         binder.addValidators(employerPostValidator);
     }
 
     @Override
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployerGet createEmployer(@Valid @ModelAttribute("employerModel") @RequestBody EmployerPost employerModel) throws NotUniqueException {
+    public EmployerGet createEmployer(@Valid @RequestBody EmployerPost employerPost) throws NotUniqueException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         Employer employer = new Employer(
-                employerModel.getEmail(),
-                employerModel.getPassword(),
-                employerModel.getFirstName(),
-                employerModel.getLastName(),
-                employerModel.getBirthday(),
-                employerModel.getCity(),
-                employerModel.isHetaMember()
+                employerPost.getEmail(),
+                employerPost.getPassword(),
+                employerPost.getFirstName(),
+                employerPost.getLastName(),
+                employerPost.getBirthday(),
+                employerPost.getCity(),
+                employerPost.isHetaMember()
         );
         employer = employerService.create(employer, false);
         return new EmployerGet().fromEntity(employer);
@@ -79,12 +83,19 @@ public class EmployersController implements EmployersApi {
         return new EmployerGet().fromEntity(employer);
     }
 
+    @InitBinder("passwordChange")
+    protected void initBinderPasswordChangeValidator(WebDataBinder binder) {
+        binder.addValidators(passwordChangeValidator);
+    }
+
     @Override
     @PreAuthorize("hasRole('EMPLOYER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@Valid @RequestBody PasswordChange passwordData) throws NotFoundException, AuthorizationException {
+    public void changePassword(@Valid @RequestBody PasswordChange passwordChange, Errors errors) throws NotFoundException, LateValidationException {
         Employer employer = getAuthenticatedEmployer();
-        employerService.changePassword(employer.getId(), passwordData.getOldPassword(), passwordData.getNewPassword());
+        passwordChangeLateValidator.validate(passwordChange, employer, errors);
+        if(errors.hasErrors()) throw new LateValidationException(errors);
+        employerService.changePassword(employer.getId(), passwordChange.getOldPassword(), passwordChange.getNewPassword());
     }
 
     @Override

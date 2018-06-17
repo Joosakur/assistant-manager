@@ -46,3 +46,5 @@ export const dateBetween = (format, before, after) => value => {
   return value && !moment(value, format, true).isBetween(before,after) ?
     s.formatString(s.validation.dateBetween, before.format(format), after.format(format)) : undefined
 }
+
+export const passwordMatch = targetValue => value => value !== targetValue ? s.validation.passwordMatch : undefined

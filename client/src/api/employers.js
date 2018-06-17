@@ -20,9 +20,15 @@ async function verifyRegistration(verificationToken) {
   return axios.post(`${rootPath}/verify`, null, {params: {token: verificationToken}})
 }
 
+async function changePassword(token, data) {
+  return axios.post(`${rootPath}/self/password`, data, {headers: {'Authorization': token}})
+}
+
+
 export default {
   register,
   getSelf,
   update,
-  verifyRegistration
+  verifyRegistration,
+  changePassword
 }

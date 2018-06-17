@@ -1,4 +1,5 @@
 import {connect} from 'react-redux'
+import {reset} from 'redux-form'
 import moment from 'moment'
 import { pathOr } from 'ramda'
 
@@ -36,10 +37,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClose: () => dispatch(closeWorkShiftModal()),
+    onClose: () => {
+      dispatch(closeWorkShiftModal())
+      dispatch(reset(reduxFormName))
+    },
     onSubmit: values => {
       const actionCreator = values.workShiftId ? updateWorkShift : createWorkShift
-      return dispatchForm(dispatch, actionCreator, values)
+      return dispatchForm(dispatch, actionCreator, values).then(() => dispatch(reset(reduxFormName)))
     },
     onDelete: (id) => {
       dispatch(deleteWorkShift(id))

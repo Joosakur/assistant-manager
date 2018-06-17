@@ -12,7 +12,7 @@ public interface EmployerService {
     Employer create(Employer employer, boolean autoEnabled) throws NotUniqueException;
     Employer update(Employer employer) throws NotFoundException;
 
-    Employer changePassword(UUID id, String oldPassword, String newPassword) throws NotFoundException, AuthorizationException;
+    Employer changePassword(UUID id, String oldPassword, String newPassword) throws NotFoundException;
 
     Employer find(UUID id) throws NotFoundException;
     Employer findByEmail(String email) throws NotFoundException;

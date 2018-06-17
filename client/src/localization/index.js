@@ -8,7 +8,18 @@ const m = new LocalizedStrings({
       AUTHENTICATION_ERROR: 'Tunnistautuminen epäonnistui',
       AUTHORIZATION_ERROR: 'Oikeudet toimintoon puuttuvat',
       BAD_CREDENTIALS: 'Virheellinen sähköposti tai salasana',
-      ACCOUNT_NOT_VERIFIED: 'Sähköposti on vielä varmentamatta, klikkaa linkkiä saapuneesta viestistä.'
+      ACCOUNT_NOT_VERIFIED: 'Sähköposti on vielä varmentamatta, klikkaa linkkiä saapuneesta viestistä.',
+      WRONG_PASSWORD: 'Virheellinen salasana',
+      PASSWORD_MISMATCH: 'Salasanat eivät täsmää',
+      Size: (min, max) => {
+        if (min) {
+          if (max) return `Pituus ${min} - ${max} merkkiä`
+          else return `Pituus vähintään ${min} merkkiä`
+        } else {
+          if (max) return `Pituus korkeintaan ${max} merkkiä`
+          else return `Virheellinen pituus`
+        }
+      }
     },
     validation: {
       required: 'Pakollinen kenttä',
@@ -21,7 +32,8 @@ const m = new LocalizedStrings({
       date: 'Anna päivämäärä muodossa {0}',
       dateBefore: 'Oltava ennen {0}',
       dateAfter: 'Oltava aikaisintaan {0}',
-      dateBetween: 'Oltava välillä {0} - {1}'
+      dateBetween: 'Oltava välillä {0} - {1}',
+      passwordMatch: 'Salasanat eivät täsmää'
     },
     nav: {
       home: 'Koti',
@@ -84,7 +96,18 @@ const m = new LocalizedStrings({
         cbox1a: 'Kuulun ',
         cbox1b: 'HETA-liittoon',
         submitBtn: 'Tallenna',
-      }
+        success: 'Käyttäjätietosi on päivitetty',
+        error: 'Käyttäjätietojen päivitys epäonnistui'
+      },
+      passwordChange: {
+        title: 'Salasanan vaihtaminen',
+        oldPassword: 'Vanha salasana',
+        newPassword: 'Uusi salasana',
+        confirmPassword: 'Toista uusi salasana',
+        submitBtn: 'Vaihda salasana',
+        success: 'Salasanasi on vaihdettu',
+        error: 'Salasanan vaihtaminen epäonnistui'
+      },
     },
     assistants: {
       title: 'Avustajani',

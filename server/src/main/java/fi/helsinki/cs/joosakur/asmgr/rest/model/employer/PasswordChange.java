@@ -29,8 +29,6 @@ public class PasswordChange {
      * @return oldPassword
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 8, max = 30)
     public String getOldPassword() {
         return oldPassword;
     }
@@ -62,8 +60,6 @@ public class PasswordChange {
      * @return confirmPassword
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 8, max = 30)
     public String getConfirmPassword() {
         return confirmPassword;
     }
